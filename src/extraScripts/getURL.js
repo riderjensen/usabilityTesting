@@ -1,5 +1,6 @@
 const request = require('request');
 const fs = require('fs');
+const { MongoClient } = require('mongodb');
 
 module.exports={
     requestURL(URL) {
@@ -25,6 +26,9 @@ module.exports={
             let replaceStyleURL = changeStyleURL.replace(/url\(/g, 'url('+requestingURL+'/');
             let changeStyleBack = replaceStyleURL.replace(/URL\(HTTP/g, 'url\(http');
             
+
+            // This creates a file currently but need to replace with code to push it into mongo BSON file
+            // See GridFS in mongo documentation
             fs.appendFile('index.html', changeStyleBack, function(err) {
                 if (err) throw err;
             })
