@@ -4,6 +4,14 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const extraScripts = require('./src/extraScripts/getURL');
+
+
+// function createIndexFile() {
+//     const { requestURL } = extraScripts;
+//     requestURL('http://www.riderjensen.com');
+// }
+// createIndexFile();
 
 const nav = [{
     Link: '/auth/profile',
