@@ -18,3 +18,23 @@ console.log(rider);
 //   isStupid: true,
 //   name: "Rider"
 // }
+
+
+function idiotRecursion (idiot) {
+  if(idiot === "kenny") {
+    console.log(`${idiot} is an idiot`);
+    idiotRecursion("kenny");
+  }
+  else if(idiot ==="rider") {
+    if (hell === "frozen over") {
+      idiotRecursion("rider");
+    }
+    else{
+      idiotRecursion("kenny");
+    }
+  }
+  else {
+    console.log('You idiot');
+  }
+}
+idiotRecursion("Kenny");
