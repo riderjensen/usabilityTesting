@@ -1,1 +1,4 @@
 just read the file name
+const rider='kenny';
+Therefore the title reads kennysucks.txt
+ROASTED
