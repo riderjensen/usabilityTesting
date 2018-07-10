@@ -2,3 +2,19 @@ just read the file name
 const rider='kenny';
 Therefore the title reads kennysucks.txt
 ROASTED
+
+
+// Practicing Constructor Functions
+const StupidPerson = function(name, isStupid) {
+  this.name = name;
+  this.isStupid = isStupid;
+}
+
+const rider = new StupidPerson('Rider', true);
+console.log(rider);
+
+// Output
+// Object {
+//   isStupid: true,
+//   name: "Rider"
+// }
