@@ -4,7 +4,7 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const extraScripts = require('./src/extraScripts/getURL');
+// const extraScripts = require('./src/extraScripts/getURL');
 
 
 // function createIndexFile() {
@@ -14,13 +14,14 @@ const extraScripts = require('./src/extraScripts/getURL');
 // createIndexFile();
 
 const nav = [{
-    Link: '/auth/profile',
-    Text: 'Profile'
-},
-{
-    Link: '/auth/stats',
-    Text: 'Stats'
-}];
+        Link: '/auth/profile',
+        Text: 'Profile'
+    },
+    {
+        Link: '/auth/stats',
+        Text: 'Stats'
+    }
+];
 
 // creating the application
 const app = express();
@@ -53,6 +54,10 @@ app.set('view engine', 'ejs');
 const authRouter = require('./src/routes/authRouter.js')(nav);
 
 app.use('/auth', authRouter);
+
+const siteRouter = require('./src/routes/siteRouter.js')(nav);
+
+app.use('/site', siteRouter);
 
 // getting our index served
 app.get('/', (req, res) => {
