@@ -55,24 +55,19 @@ function router(nav) {
                 let client;
                 try {
                     client = await MongoClient.connect(url);
-
                     const db = client.db(dbName);
-                    const col = db.collection('websites');
-                        
+                    const col = db.collection('websites');    
                     const website = new webStorage ({ 
                         webURL,
                         testArray,
                         addedOn
                     });
                     await col.insertOne(website);
-                    console.log(`Website: ${website}`);
-                    const userFromDB = await col.findOne({ webURL });
+                    const userFromDB = await col.findOne({ addedOn });
                     console.log(`User from DB Found: ${userFromDB}`);
                     const { _id } = userFromDB;
-
                     const { requestURL } = extraScripts;
                     requestURL(webURL, _id);
-                    
                     }
                     catch(err){
                         console.log(err);

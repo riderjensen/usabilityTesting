@@ -6,35 +6,36 @@ module.exports = {
     requestURL(URL, id) {
         // Need to check for any issues in the requesting URL before moving it to the request
         // this function creates the index file on the server, need to add validation for a correct URL
+        console.log(id);
         const requestingURL = URL;
-        const s = request(requestingURL);
+        try{
+            const s = request(requestingURL);
 
-        let chunkNumber = 0;
-
-        s.on('data', (chunk) => {
-            chunkNumber += 1;
-            console.log(`CHUNK NUMBER: ${chunkNumber}`);
-            const chunkString = chunk.toString();
-
-            const changeHREFString = chunkString.replace(/href="http/g, 'HREF="HTTP');
-            const replaceHREFString = changeHREFString.replace(/href="\/|href="/g, `href="${requestingURL}/`);
-            const changeHREFBack = replaceHREFString.replace(/HREF="HTTP/g, 'href="http');
-            const changeSRCString = changeHREFBack.replace(/src="http/g, 'SRC="HTTP');
-            const replaceSRCString = changeSRCString.replace(/src="\/|src="/g, `src="${requestingURL}/`);
-            const changeSRCBack = replaceSRCString.replace(/SRC="HTTP/g, 'src="http');
-            const changeStyleURL = changeSRCBack.replace(/url\(http/g, 'URL(HTTP');
-            const replaceStyleURL = changeStyleURL.replace(/url\(/g, `url(${requestingURL}/`);
-            const changeStyleBack = replaceStyleURL.replace(/URL\(HTTP/g, 'url(http');
-
-            // need to create file name based on id number of submission
-            fs.appendFile('files/'+id+'.html', changeStyleBack, (err) => {
-                if (err) throw err;
+            s.on('data', (chunk) => {
+                chunkNumber += 1;
+                const chunkString = chunk.toString();
+    
+                const changeHREFString = chunkString.replace(/href="http/g, 'HREF="HTTP');
+                const replaceHREFString = changeHREFString.replace(/href="\/|href="/g, `href="${requestingURL}/`);
+                const changeHREFBack = replaceHREFString.replace(/HREF="HTTP/g, 'href="http');
+                const changeSRCString = changeHREFBack.replace(/src="http/g, 'SRC="HTTP');
+                const replaceSRCString = changeSRCString.replace(/src="\/|src="/g, `src="${requestingURL}/`);
+                const changeSRCBack = replaceSRCString.replace(/SRC="HTTP/g, 'src="http');
+                const changeStyleURL = changeSRCBack.replace(/url\(http/g, 'URL(HTTP');
+                const replaceStyleURL = changeStyleURL.replace(/url\(/g, `url(${requestingURL}/`);
+                const changeStyleBack = replaceStyleURL.replace(/URL\(HTTP/g, 'url(http');
+    
+                // need to create file name based on id number of submission
+                fs.appendFile('files/'+id+'.html', changeStyleBack, (err) => {
+                    if (err) throw err;
+                });
             });
-        });
-
-        s.on('end', () => {
-            console.log('DONE');
-        });
+            s.on('end', () => {
+                console.log('File Completed');
+            });
+        } catch (err){
+            console.log(err);
+        }
     },
     resetAtMidnight() {
         let now = new Date();
