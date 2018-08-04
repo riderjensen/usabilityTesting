@@ -4,14 +4,21 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-// const extraScripts = require('./src/extraScripts/getURL');
+const extraScripts = require('./src/extraScripts/extra');
 
-
-// function createIndexFile() {
-//     const { requestURL } = extraScripts;
-//     requestURL('http://www.riderjensen.com');
-// }
-// createIndexFile();
+const mongoose = require("mongoose");
+const mongoURI = "mongodb://localhost/usabilityTesting";
+const connectOptions = { 
+  keepAlive: true, 
+  reconnectTries: Number.MAX_VALUE 
+}; 
+//Connect to MongoDB 
+mongoose.Promise = global.Promise; 
+mongoose.connect(mongoURI, connectOptions, (err, db) => 
+{ 
+  if (err) console.log(`Error`, err); 
+  console.log(`Connected to MongoDB`); 
+}); 
 
 const nav = [{
         Link: '/auth/profile',
@@ -63,6 +70,16 @@ app.use('/site', siteRouter);
 app.get('/', (req, res) => {
     res.render('index');
 });
+
+
+
+// this function checks the files each night at midnight and deletes anything at a month old
+function resetAtMidnight() {
+    const { resetAtMidnight } = extraScripts;
+    resetAtMidnight();
+}
+resetAtMidnight();
+
 
 // Our app is listening
 app.listen(port, () => console.log(`App is running on ${port}`));

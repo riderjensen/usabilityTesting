@@ -29,13 +29,15 @@ function router(nav) {
                         } else {
                             const user = { username, password: hash };
                             await col.insertOne(user);
-                            res.redirect('/auth/profile');
                         }
+                        
                     } catch (error) {
                         console.log(error);
                     }
                 }());
+
             });
+            res.redirect('/auth/profile');
         });
     authRouter.route('/signIn')
         .get((req, res) => {
