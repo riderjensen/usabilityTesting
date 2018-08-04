@@ -41,6 +41,9 @@ function router(nav) {
             const testArray = [testOne, testTwo, testThree, testFour, testFive, testSix, testSeven, testEight,
             testNine, testTen, testEleven, testTwelve, testThirteen, testFourteen, testFifteen, testSixteen,
             testSeventeen, testEighteen, testNineteen, testTwenty];
+            while(testArray[testArray.length-1] === undefined){
+                testArray.pop();
+            }
             console.log(`Test array: ${testArray}`);
 
             const date = new Date();
