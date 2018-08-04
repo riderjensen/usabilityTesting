@@ -41,11 +41,11 @@ function router(nav) {
             const testArray = [testOne, testTwo, testThree, testFour, testFive, testSix, testSeven, testEight,
             testNine, testTen, testEleven, testTwelve, testThirteen, testFourteen, testFifteen, testSixteen,
             testSeventeen, testEighteen, testNineteen, testTwenty];
+            // fix array issues if they do not submit enough
+            // this will need to be optimized and fixed
             while(testArray[testArray.length-1] === undefined){
                 testArray.pop();
             }
-            console.log(`Test array: ${testArray}`);
-
             const date = new Date();
             const addedOn = date.getDate();
 
@@ -62,12 +62,11 @@ function router(nav) {
                         testArray,
                         addedOn
                     });
-                    await col.insertOne(website);
-                    const userFromDB = await col.findOne({ addedOn });
-                    console.log(`User from DB Found: ${userFromDB}`);
-                    const { _id } = userFromDB;
-                    const { requestURL } = extraScripts;
-                    requestURL(webURL, _id);
+                    await col.insert(website, (err) => {
+                        var objectId = website._id;
+                        const { requestURL } = extraScripts;
+                        requestURL(webURL, objectId);
+                    });
                     }
                     catch(err){
                         console.log(err);
@@ -83,15 +82,61 @@ function router(nav) {
         })
         .post((req, res) => {
             const {
-                url,
+                webURL,
                 testOne,
                 testTwo,
-                testThree
+                testThree,
+                testFour,
+                testFive,
+                testSix,
+                testSeven,
+                testEight,
+                testNine,
+                testTen,
+                testEleven,
+                testTwelve,
+                testThirteen,
+                testFourteen,
+                testFifteen,
+                testSixteen,
+                testSeventeen,
+                testEighteen,
+                testNineteen,
+                testTwenty
             } = req.body;
-            console.log(url);
-            console.log(testOne);
-            console.log(testTwo);
-            console.log(testThree);
+            const testArray = [testOne, testTwo, testThree, testFour, testFive, testSix, testSeven, testEight,
+            testNine, testTen, testEleven, testTwelve, testThirteen, testFourteen, testFifteen, testSixteen,
+            testSeventeen, testEighteen, testNineteen, testTwenty];
+            // fix array issues if they do not submit enough
+            // this will need to be optimized and fixed
+            while(testArray[testArray.length-1] === undefined){
+                testArray.pop();
+            }
+            const date = new Date();
+            const addedOn = date.getDate();
+
+            const url = 'mongodb://localhost:27017';
+            const dbName = 'usabilityTesting';
+            (async function addTest() {
+                let client;
+                try {
+                    client = await MongoClient.connect(url);
+                    const db = client.db(dbName);
+                    const col = db.collection('websites');    
+                    const website = new webStorage ({ 
+                        webURL,
+                        testArray,
+                        addedOn
+                    });
+                    await col.insert(website, (err) => {
+                        var objectId = website._id;
+                        // need to send url to an iframe
+                    });
+                    }
+                    catch(err){
+                        console.log(err);
+                    }
+            }());
             res.redirect('/site/logIn');
         });
     return siteRouter;

@@ -12,7 +12,6 @@ module.exports = {
             const s = request(requestingURL);
 
             s.on('data', (chunk) => {
-                chunkNumber += 1;
                 const chunkString = chunk.toString();
     
                 const changeHREFString = chunkString.replace(/href="http/g, 'HREF="HTTP');
