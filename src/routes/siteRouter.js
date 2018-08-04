@@ -14,7 +14,7 @@ function router(nav) {
                 nav
             });
         })
-        .post((req, res) => {
+        .post((req, res, next) => {
             const {
                 webURL,
                 testOne,
@@ -68,14 +68,17 @@ function router(nav) {
                         var objectId = website._id;
                         const { requestURL } = extraScripts;
                         requestURL(webURL, objectId);
+                        req.webNoLogInID = objectId;
+                        req.webNoLogInNav = nav;
+                        req.webNoLogInArray = testArray;
+                        next();
                     });
                     }
                     catch(err){
                         console.log(err);
                     }
             }());
-            res.redirect('/site/nolog');
-        });
+        }, siteWithNoLogIn);
     siteRouter.route('/logIn')
         .get((req, res) => {
             res.render('logIn', {
@@ -135,11 +138,12 @@ function router(nav) {
                     });
                     await col.insert(website, (err) => {
                         var objectId = website._id;
-                        // need to send url to an iframe in a page, look into this thread for more information
-                        // https://stackoverflow.com/questions/19035373/how-do-i-redirect-in-expressjs-while-passing-some-context
-                        
+                        const { requestIframe } = extraScripts;
+                        requestIframe(webURL, objectId);       
+                        req.webLogObjectID = objectId;     
                         req.webLogInURL = website.webURL;
                         req.webLogInNav = nav;
+                        req.webLogInArray = testArray;
                         next();
                     });
                     }
@@ -147,13 +151,12 @@ function router(nav) {
                         console.log(err);
                     }
             }());
-        }, testing);
+        }, siteWithLogIn);
     siteRouter.route('/:id')
         .get((req, res) => {
-            const { username } = req.user;
             const url = 'mongodb://localhost:27017';
             const dbName = 'usabilityTesting';
-
+            const reqID = req.params.id;
             (async function mongo() {
                 let client;
                 try {
@@ -162,9 +165,9 @@ function router(nav) {
                     const db = client.db(dbName);
 
                     const col = await db.collection('websites');
-                    const userFromDB = await col.findOne({ id });
+                    await col.findOne({ reqID });
 
-                    res.render(`../../files/${id}.html`);
+                    res.render(`../../files/${reqID}`);
                 } catch (err) {
                     console.log(err.stack);
                 }
@@ -175,11 +178,24 @@ function router(nav) {
 // exporting out the router
 module.exports = router;
 
-function testing(req, res){
-    let test1 = req.webLogInURL;
+// function to redirect to logIn site with URL
+function siteWithLogIn(req, res){
     let nav = req.webLogInNav;
+    let webLogInURLPull = `http://localhost:3000/site/${req.webLogObjectID}`;
+    let webLogInArrayPull = req.webLogInArray;
     res.render('logIn', {
         nav,
-        test1
+        webLogInURLPull,
+        webLogInArrayPull
+    });
+}
+function siteWithNoLogIn(req, res){
+    let nav = req.webNoLogInNav;
+    let webNoLogInURLPull = `http://localhost:3000/site/${req.webNoLogInID}`;
+    let webNoLogInArrayPull = req.webNoLogInArray;
+    res.render('noLog', {
+        nav,
+        webNoLogInURLPull,
+        webNoLogInArrayPull
     });
 }

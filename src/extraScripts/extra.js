@@ -6,7 +6,6 @@ module.exports = {
     requestURL(URL, id) {
         // Need to check for any issues in the requesting URL before moving it to the request
         // this function creates the index file on the server, need to add validation for a correct URL
-        console.log(id);
         const requestingURL = URL;
         try{
             const s = request(requestingURL);
@@ -25,7 +24,7 @@ module.exports = {
                 const changeStyleBack = replaceStyleURL.replace(/URL\(HTTP/g, 'url(http');
     
                 // need to create file name based on id number of submission
-                fs.appendFile('files/'+id+'.html', changeStyleBack, (err) => {
+                fs.appendFile(`files/${id}.ejs`, changeStyleBack, (err) => {
                     if (err) throw err;
                 });
             });
@@ -35,6 +34,20 @@ module.exports = {
         } catch (err){
             console.log(err);
         }
+    },
+    requestIframe(URL, id) {
+        // this is creating pages with just iframes
+        fs.createReadStream('src/views/iframe-template.ejs').pipe(fs.createWriteStream(`files/${id}.ejs`));
+        fs.readFile(`files/${id}.ejs`, 'utf-8', function(err, data){
+            if (err) throw err;
+        
+            let newValue = data.replace(`src=""`, `src="${URL}"`);
+        
+            fs.writeFile(`files/${id}.ejs`, newValue, 'utf-8', function (err) {
+              if (err) throw err;
+              console.log('filelistAsync complete');
+            });
+          });
     },
     resetAtMidnight() {
         let now = new Date();
