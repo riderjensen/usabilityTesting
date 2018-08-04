@@ -147,9 +147,29 @@ function router(nav) {
                         console.log(err);
                     }
             }());
-
-            // res.redirect('/site/logIn')
         }, testing);
+    siteRouter.route('/:id')
+        .get((req, res) => {
+            const { username } = req.user;
+            const url = 'mongodb://localhost:27017';
+            const dbName = 'usabilityTesting';
+
+            (async function mongo() {
+                let client;
+                try {
+                    client = await MongoClient.connect(url);
+
+                    const db = client.db(dbName);
+
+                    const col = await db.collection('websites');
+                    const userFromDB = await col.findOne({ id });
+
+                    res.render(`../../files/${id}.html`);
+                } catch (err) {
+                    console.log(err.stack);
+                }
+            }());
+        });
     return siteRouter;
 }
 // exporting out the router
