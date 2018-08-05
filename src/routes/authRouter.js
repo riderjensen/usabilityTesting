@@ -27,7 +27,7 @@ function router(nav) {
                         const date = new Date();
                         const addedOn = date.getDate();
                         const emptyArray = []; // this is to initialize an array of projects that is not filled yet
-                        
+                        const password = hash;
                         const db = client.db(dbName);
                         const col = db.collection('users');
                         const userFromDB = await col.findOne({ username });
@@ -36,20 +36,21 @@ function router(nav) {
                         } else {
                             const user = new userStorage ({
                                 username,
-                                hash,
+                                password,
                                 emptyArray,
                                 addedOn
                             });
                             await col.insertOne(user);
+                            
                         }
-                        
+                        res.redirect('/auth/profile');
                     } catch (error) {
                         console.log(error);
                     }
                 }());
-
+                
             });
-            res.redirect('/auth/profile');
+            
         });
     authRouter.route('/signIn')
         .get((req, res) => {
@@ -77,36 +78,41 @@ function router(nav) {
         })
         // this will be for sending data into the database
         .post((req, res) => {
-            const { username, password } = req.body;
+            const { username, testID } = req.body;
             const url = 'mongodb://localhost:27017';
             const dbName = 'usability';
-            console.log(username);
-            console.log(password);
             (async function storeData() {
                 let client;
                 try {
                     client = await MongoClient.connect(url);
 
                     const db = client.db(dbName);
-                    const col = db.collection('users');
-                    const userFromDB = await col.findOne({ username });
-                    const newVals = {
-                        $push: {
-                            dataCollection: {
-                                // Find out what data to push
-                                // Link: { _id: new ObjectID(_id) },
-                                // Text: 'Your Chat Room'
+                    const col = db.collection('websites');
+                    const idFromDB = await col.findOne({ testID });
+                    if (idFromDB) {
+                        const usercol = db.collection('users');
+                        const userFromDB = await usercol.findOne({ username });
+
+                        const newVals = {
+                            $push: {
+                                dataCollection: {
+                                    // Hopefully pushing existing ID into the empty array - UNTESTED
+                                    id: testID
+                                }
                             }
-                        }
-                    };
-                    col.update(userFromDB, newVals, (error) => {
-                        if (error) {
-                            throw error;
-                        } else {
-                            console.log(`Pushed ${newVals} to the db`);
-                        }
-                    });
-                    res.send('Data posted');
+                        };
+                        col.update(userFromDB, newVals, (error) => {
+                            if (error) {
+                                throw error;
+                            } else {
+                                console.log(`Pushed ${newVals} to the db`);
+                            }
+                        });
+                        res.send('Data posted');
+                    } else {
+                        console.log('No test with this ID can be found.')
+                    }
+                    
                 } catch (error) {
                     console.log(error);
                 }

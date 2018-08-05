@@ -51,7 +51,7 @@ function router(nav) {
             const needLogIn = false;
 
             const url = 'mongodb://localhost:27017';
-            const dbName = 'usabilityTesting';
+            const dbName = 'usability';
             (async function addTest() {
                 let client;
                 try {
@@ -123,7 +123,7 @@ function router(nav) {
             const needLogIn = true;
 
             const url = 'mongodb://localhost:27017';
-            const dbName = 'usabilityTesting';
+            const dbName = 'usability';
             (async function addTest() {
                 let client;
                 try {
@@ -155,7 +155,7 @@ function router(nav) {
     siteRouter.route('/:id')
         .get((req, res) => {
             const url = 'mongodb://localhost:27017';
-            const dbName = 'usabilityTesting';
+            const dbName = 'usability';
             const reqID = req.params.id;
             (async function mongo() {
                 let client;
