@@ -9,5 +9,8 @@
 
 <p>To Do<p>
 <ul>
-    <li>Use <a href="https://github.com/ogt/valid-url">https://github.com/ogt/valid-url</a> and <a href="https://github.com/dylang/shortid">https://github.com/dylang/shortid</a> to create short links
+    <li>Use <a href="https://github.com/ogt/valid-url">https://github.com/ogt/valid-url</a> and <a href="https://github.com/dylang/shortid">https://github.com/dylang/shortid</a> to create short links?</li>
+    <li>Add test requirements box to the bottom of page</li>
+    <li>Can we do those purely through an outside JavaScript file that will keep time?</li>
+    <li>Post javascript results to the test with all the answers to the questions</li>
 </ul>
