@@ -1,6 +1,8 @@
 // required files
 const express = require('express');
 const { MongoClient } = require('mongodb');
+const mongoose = require('../models/model');
+const userStorage = mongoose.model('userStorage');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 
@@ -20,14 +22,24 @@ function router(nav) {
                     let client;
                     try {
                         client = await MongoClient.connect(url);
-
+                        
+                        // Creating variables to send into the database
+                        const date = new Date();
+                        const addedOn = date.getDate();
+                        const emptyArray = []; // this is to initialize an array of projects that is not filled yet
+                        
                         const db = client.db(dbName);
                         const col = db.collection('users');
                         const userFromDB = await col.findOne({ username });
                         if (userFromDB) {
                             console.log('Duplicate User');
                         } else {
-                            const user = { username, password: hash };
+                            const user = new userStorage ({
+                                username,
+                                hash,
+                                emptyArray,
+                                addedOn
+                            });
                             await col.insertOne(user);
                         }
                         

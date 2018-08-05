@@ -7,3 +7,11 @@ const websiteStorage = new Schema({
   createdAt: { type: Date, default: Date.now }
 });
 module.exports = mongoose.model("webStorage", websiteStorage);
+
+const userStorage = new Schema({
+  username: String,
+  password: String,
+  projects: Array,
+  createdAt: { type: Date, default: Date.now }
+});
+module.exports = mongoose.model("userStorage", userStorage);
