@@ -13,4 +13,6 @@
     <li>Add test requirements box to the bottom of page</li>
     <li>Can we do those purely through an outside JavaScript file that will keep time?</li>
     <li>Post javascript results to the test with all the answers to the questions</li>
+    <li>When parsing, only pull files from head and script tags to change src?</li>
+    <li>Store those sources in a seperate file that we include in their head so that it stays the same accross pages?</li>
 </ul>
