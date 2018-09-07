@@ -35,20 +35,6 @@ module.exports = {
             console.log(err);
         }
     },
-    requestIframe(URL, id) {
-        // this is creating pages with just iframes
-        fs.createReadStream('src/views/iframe-template.ejs').pipe(fs.createWriteStream(`files/${id}.ejs`));
-        fs.readFile(`files/${id}.ejs`, 'utf-8', function(err, data){
-            if (err) throw err;
-        
-            let newValue = data.replace(`src=""`, `src="${URL}"`);
-        
-            fs.writeFile(`files/${id}.ejs`, newValue, 'utf-8', function (err) {
-              if (err) throw err;
-              console.log('filelistAsync complete');
-            });
-          });
-    },
     resetAtMidnight() {
         let now = new Date();
         let theDate = now.getDate();
