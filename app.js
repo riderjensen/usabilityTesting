@@ -5,20 +5,19 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const extraScripts = require('./src/extraScripts/extra');
+const mongoose = require('mongoose');
 
-const mongoose = require("mongoose");
-const mongoURI = "mongodb://localhost/usabilityTesting";
-const connectOptions = { 
-  keepAlive: true, 
-  reconnectTries: Number.MAX_VALUE 
-}; 
-//Connect to MongoDB 
-mongoose.Promise = global.Promise; 
-mongoose.connect(mongoURI, connectOptions, (err, db) => 
-{ 
-  if (err) console.log(`Error`, err); 
-  console.log(`Connected to MongoDB`); 
-}); 
+const mongoURI = 'mongodb://localhost/usabilityTesting';
+const connectOptions = {
+    keepAlive: true,
+    reconnectTries: Number.MAX_VALUE
+};
+// Connect to MongoDB
+mongoose.Promise = global.Promise;
+mongoose.connect(mongoURI, connectOptions, (err, db) => {
+    if (err) console.log('Error', err);
+    console.log(`Connected to ${db}`);
+});
 
 const nav = [{
         Link: '/auth/profile',
@@ -72,13 +71,14 @@ app.get('/', (req, res) => {
 });
 
 
-
 // this function checks the files each night at midnight and deletes anything at a month old
-function resetAtMidnight() {
-    const { resetAtMidnight } = extraScripts;
+function midNight() {
+    const {
+        resetAtMidnight
+    } = extraScripts;
     resetAtMidnight();
 }
-resetAtMidnight();
+midNight();
 
 
 // Our app is listening
