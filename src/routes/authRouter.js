@@ -1,6 +1,8 @@
 // required files
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const {
+    MongoClient
+} = require('mongodb');
 const mongoose = require('../models/model');
 const userStorage = mongoose.model('userStorage');
 const passport = require('passport');
@@ -14,7 +16,10 @@ function router(nav) {
             res.redirect('/auth/profile');
         })
         .post((req, res) => {
-            const { username, password } = req.body;
+            const {
+                username,
+                password
+            } = req.body;
             const url = 'mongodb://localhost:27017';
             const dbName = 'usability';
             bcrypt.hash(password, 10, (err, hash) => {
@@ -22,7 +27,7 @@ function router(nav) {
                     let client;
                     try {
                         client = await MongoClient.connect(url);
-                        
+
                         // Creating variables to send into the database
                         const date = new Date();
                         const addedOn = date.getDate();
@@ -30,36 +35,38 @@ function router(nav) {
                         const password = hash;
                         const db = client.db(dbName);
                         const col = db.collection('users');
-                        const userFromDB = await col.findOne({ username });
+                        const userFromDB = await col.findOne({
+                            username
+                        });
                         if (userFromDB) {
                             console.log('Duplicate User');
                         } else {
-                            const user = new userStorage ({
+                            const user = new userStorage({
                                 username,
                                 password,
                                 emptyArray,
                                 addedOn
                             });
                             await col.insertOne(user);
-                            
+
                         }
                         res.redirect('/auth/profile');
                     } catch (error) {
                         console.log(error);
                     }
                 }());
-                
+
             });
-            
+
         });
     authRouter.route('/signIn')
-        .get((req, res) => {
-            res.redirect('auth/profile');
-        })
         .post(passport.authenticate('local', {
             successRedirect: '/auth/profile',
             failureRedirect: '/'
-        }));
+        }))
+        .get((req, res) => {
+            res.redirect('auth/profile');
+        });
     authRouter.route('/profile')
         .all((req, res, next) => {
             if (req.user) {
@@ -78,7 +85,10 @@ function router(nav) {
         })
         // this will be for sending data into the database
         .post((req, res) => {
-            const { username, testID } = req.body;
+            const {
+                username,
+                testID
+            } = req.body;
             const url = 'mongodb://localhost:27017';
             const dbName = 'usability';
             (async function storeData() {
@@ -88,10 +98,14 @@ function router(nav) {
 
                     const db = client.db(dbName);
                     const col = db.collection('websites');
-                    const idFromDB = await col.findOne({ testID });
+                    const idFromDB = await col.findOne({
+                        testID
+                    });
                     if (idFromDB) {
                         const usercol = db.collection('users');
-                        const userFromDB = await usercol.findOne({ username });
+                        const userFromDB = await usercol.findOne({
+                            username
+                        });
 
                         const newVals = {
                             $push: {
@@ -112,7 +126,7 @@ function router(nav) {
                     } else {
                         console.log('No test with this ID can be found.')
                     }
-                    
+
                 } catch (error) {
                     console.log(error);
                 }
