@@ -40,15 +40,18 @@
 	$(window).scroll(navbarCollapse);
 })(jQuery); // End of use strict
 
+
+
+// Needs cleaning up
 document.getElementById('signUpPassword').onfocus = () => {
-    document.getElementById('signUpPasswordReqs').classList.remove('toolTipHide');
+	document.getElementById('signUpPasswordReqs').classList.remove('toolTipHide');
 };
 document.getElementById('signUpPassword').onblur = () => {
-    document.getElementById('signUpPasswordReqs').classList.add('toolTipHide');
+	document.getElementById('signUpPasswordReqs').classList.add('toolTipHide');
 };
 document.getElementById('signUpUsername').onfocus = () => {
-    document.getElementById('signUpUsernameReqs').classList.remove('toolTipHide');
+	document.getElementById('signUpUsernameReqs').classList.remove('toolTipHide');
 };
 document.getElementById('signUpUsername').onblur = () => {
-    document.getElementById('signUpUsernameReqs').classList.add('toolTipHide');
+	document.getElementById('signUpUsernameReqs').classList.add('toolTipHide');
 };
