@@ -1,18 +1,18 @@
-<h2>Usability Testing Server</h2>
-<p>This is a school project designed to create a website and database that will allow users to easily create usability tests and send them to people.</p>
-<p>User should be able to do the following</p>
-<ul>
-    <li>Submit a link for a page that they want tested</li>
-    <li>Submit a number of items they would like completed when they are testing</li>
-    <li>Have a URL that will show them feedback on the website</li>
-</ul>
+## Usability Testing Server
+This is a school project designed to create a website and database that will allow users to easily create usability tests and send them to people.
+User should be able to do the following:
 
-<p>To Do<p>
-<ul>
-    <li>Use <a href="https://github.com/ogt/valid-url">https://github.com/ogt/valid-url</a> and <a href="https://github.com/dylang/shortid">https://github.com/dylang/shortid</a> to create short links?</li>
-    <li>Add test requirements box to the bottom of page</li>
-    <li>Can we do those purely through an outside JavaScript file that will keep time?</li>
-    <li>Post javascript results to the test with all the answers to the questions</li>
-    <li>When parsing, only pull files from head and script tags to change src?</li>
-    <li>Store those sources in a seperate file that we include in their head so that it stays the same accross pages?</li>
-</ul>
+* Submit a link for a page that they want tested
+* Submit a number of items they would like completed when they are testing
+* Have a URL that will show them feedback on the website
+
+## To Do
+
+* Use [this](https://github.com/ogt/valid-url) and [this](https://github.com/dylang/shortid) to create short links?
+* Add test requirements box to the bottom of page
+* Can we do those purely through an outside JavaScript file that will keep time?
+* Post javascript results to the test with all the answers to the questions
+* When parsing, only pull files from head and script tags to change src?
+* Store those sources in a seperate file that we include in their head so that it stays the same accross pages?
+* Add event listener on window lose focus so that we could show a message to user that tester is not active on it?
+
