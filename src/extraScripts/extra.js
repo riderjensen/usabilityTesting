@@ -7,16 +7,21 @@ const {
 // This will be our JS file that we load into the page that will track everything that the user does
 const ourScript = '<script src="http://usable.io/test/test.js"></script>';
 
+
+// Our URL that will be used to request extra href on the page
+const ourURL = 'localhost:3000/request/';
+
 module.exports = {
     requestURL(URL, id) {
         // Need to check for any issues in the requesting URL before moving it to the request
         // this function creates the index file on the server, need to add validation for a correct URL
         let requestingURL = URL;
         const splitURL = requestingURL.split("");
-        // check to see if they added http
-        if (splitURL[0] != 'h') {
+		// check to see if they added http
+		const addedItems = splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
+        if (addedItems != 'http') {
             requestingURL = 'http://' + requestingURL;
-            console.log('added http');
+            // console.log('added http');
         }
         const res = requestingURL.split("/");
         const rootURL = res[0] + '//' + res[2];
@@ -50,10 +55,18 @@ module.exports = {
                 const changeStyleBack = replaceStyleURL.replace(/URL\(HTTP/g, 'url(http');
 
                 // add our JS script to the end of the file, name is at top of file to change
-                const addOurScript = changeStyleBack.replace(/<\/body>/, `${ourScript}<\/body>`);
+				const addOurScript = changeStyleBack.replace(/<\/body>/, `${ourScript}<\/body>`);
+				
+
+				// this is supposed to change all links on page except CSS hrefs
+				// need to figure out how to send the get request correctly
+				const newSplit = addOurScript.split('<body>');
+				const changedHref = newSplit[1].replace(/href="http:\/\//g, `href="${ourURL}`);
+
+				const newCombine = newSplit[0] + changedHref;
 
                 // need to create file name based on id number of submission
-                fs.appendFile(`files/${id}.ejs`, addOurScript, (err) => {
+                fs.appendFile(`files/${id}.ejs`, newCombine, (err) => {
                     if (err) throw err;
                 });
             });

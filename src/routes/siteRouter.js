@@ -41,7 +41,7 @@ function router(nav) {
             const testArray = [testOne, testTwo, testThree, testFour, testFive, testSix, testSeven, testEight,
             testNine, testTen, testEleven, testTwelve, testThirteen, testFourteen, testFifteen, testSixteen,
             testSeventeen, testEighteen, testNineteen, testTwenty];
-            // fix array issues if they do not submit enough
+
             // this will need to be optimized and fixed
             while(testArray[testArray.length-1] === undefined){
                 testArray.pop();
@@ -78,7 +78,12 @@ function router(nav) {
                         console.log(err);
                     }
             }());
-        }, siteWithNoLogIn);
+		}, siteWithNoLogIn);
+	siteRouter.route('/request/:id')
+		.get((req, res) => {
+			let webURL  = req.params.id;
+			console.log(webURL);
+		});
     siteRouter.route('/:id')
         .get((req, res) => {
             const url = 'mongodb://localhost:27017';
@@ -99,7 +104,7 @@ function router(nav) {
                     console.log(err.stack);
                 }
             }());
-        });
+		});
     return siteRouter;
 }
 // exporting out the router
