@@ -81,7 +81,7 @@ function router(nav) {
 		}, siteWithNoLogIn);
 	siteRouter.route('/request/:id')
 		.get((req, res) => {
-			let webURL  = req.params.id;
+			let webURL  = req.query.id;
 			console.log(webURL);
 		});
     siteRouter.route('/:id')
