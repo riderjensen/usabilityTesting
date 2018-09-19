@@ -26,7 +26,7 @@ function router(nav) {
                 (async function addUser() {
                     let client;
                     try {
-                        client = await MongoClient.connect(url);
+                        client = await MongoClient.connect(url, { useNewUrlParser: true });
 
                         // Creating variables to send into the database
                         const date = new Date();
@@ -94,7 +94,7 @@ function router(nav) {
             (async function storeData() {
                 let client;
                 try {
-                    client = await MongoClient.connect(url);
+                    client = await MongoClient.connect(url, { useNewUrlParser: true });
 
                     const db = client.db(dbName);
                     const col = db.collection('websites');

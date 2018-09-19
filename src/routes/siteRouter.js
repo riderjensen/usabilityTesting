@@ -55,7 +55,7 @@ function router(nav) {
             (async function addTest() {
                 let client;
                 try {
-                    client = await MongoClient.connect(url);
+                    client = await MongoClient.connect(url, { useNewUrlParser: true });
                     const db = client.db(dbName);
                     const col = db.collection('websites');    
                     const website = new webStorage ({ 
@@ -64,7 +64,7 @@ function router(nav) {
                         needLogIn,
                         addedOn
                     });
-                    await col.insert(website, (err) => {
+                    await col.insertOne(website, (err) => {
                         var objectId = website._id;
                         const { requestURL } = extraScripts;
                         requestURL(webURL, objectId);
@@ -92,7 +92,7 @@ function router(nav) {
             (async function mongo() {
                 let client;
                 try {
-                    client = await MongoClient.connect(url);
+                    client = await MongoClient.connect(url, { useNewUrlParser: true });
 
                     const db = client.db(dbName);
 
