@@ -1,3 +1,21 @@
+
+const dbCon = require( './src/extraScripts/dbConnect' );
+
+dbCon.connectToServer( function( err ) {
+	// start the rest of app here
+
+
+
+	// this code should make it so that we can import the db connection to any place we need it without having to reconnect
+	// UNTESTED
+	// const mongoUtil = require( 'dbConnect' );
+	// let db = mongoUtil.getDb();
+	// db.collection( 'users' ).find();
+
+} );
+
+
+
 // required statments
 const express = require('express');
 const passport = require('passport');
