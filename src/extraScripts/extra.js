@@ -9,7 +9,7 @@ const ourScript = '<script src="http://usable.io/test/test.js"></script>';
 
 
 // Our URL that will be used to request extra href on the page
-const ourURL = 'localhost:3000/request/';
+const ourURL = 'localhost:3000/req/?url=';
 
 module.exports = {
     requestURL(URL, id) {
@@ -61,9 +61,25 @@ module.exports = {
 				// this is supposed to change all links on page except CSS hrefs
 				// need to figure out how to send the get request correctly
 				const newSplit = addOurScript.split('<body>');
-				const changedHref = newSplit[1].replace(/href="http:\/\//g, `href="${ourURL}`);
 
-				const newCombine = newSplit[0] + changedHref;
+
+				let string = newSplit[1];
+				var newstringreplaced = string.replace(/href="/gi, '1,A,2,B,href="');
+				let strings = newstringreplaced.split('1,A,2,B,');
+				let newRequest;
+				for(let i = 0; i < strings.length; i++){
+					let newTest = strings[i].split('"');
+					if (i>=1) {
+						newTest[1] = ourURL + encodeURIComponent(newTest[1]);					
+					}					
+					for(let j = 0; j < newTest.length; j++){
+						newRequest += newTest[j] + '"';
+					}
+				}
+				
+				newRequest = newRequest.replace(/"href=/gi, 'href=');
+
+				const newCombine = newSplit[0] + '<body>' + newRequest;
 
                 // need to create file name based on id number of submission
                 fs.appendFile(`files/${id}.ejs`, newCombine, (err) => {
