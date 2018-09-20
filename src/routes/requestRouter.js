@@ -4,6 +4,7 @@ const { MongoClient } = require('mongodb');
 const mongoose = require('../models/model');
 const webStorage = mongoose.model('webStorage');
 const extraScripts = require('../extraScripts/extra');
+const shortid = require('shortid');
 
 const reqRouter = express.Router();
 
@@ -12,8 +13,11 @@ function router(nav) {
 		.get((req, res) => {
 			let webURL  = req.query.url;
 			webURL = decodeURIComponent(webURL);
-			console.log(webURL);
+			const { requestURL } = extraScripts;
+			let newID = shortid.generate();
+            requestURL(webURL, newID);
 			// webURL is working, need to feed this back into the scrapper function and get res.render the correct page
+			res.redirect(`/site/${newID}.ejs`)
 		});
     return reqRouter;
 }

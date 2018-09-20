@@ -4,12 +4,15 @@ const {
     MongoClient
 } = require('mongodb');
 
+
+
+
 // This will be our JS file that we load into the page that will track everything that the user does
 const ourScript = '<script src="http://usable.io/test/test.js"></script>';
 
 
 // Our URL that will be used to request extra href on the page
-const ourURL = 'localhost:3000/req/?url=';
+const ourURL = 'http://localhost:3000/req/?url=';
 
 module.exports = {
     requestURL(URL, id) {
@@ -21,7 +24,6 @@ module.exports = {
 		const addedItems = splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
         if (addedItems != 'http') {
             requestingURL = 'http://' + requestingURL;
-            // console.log('added http');
         }
         const res = requestingURL.split("/");
         const rootURL = res[0] + '//' + res[2];
@@ -57,16 +59,18 @@ module.exports = {
                 // add our JS script to the end of the file, name is at top of file to change
 				const addOurScript = changeStyleBack.replace(/<\/body>/, `${ourScript}<\/body>`);
 				
+                // split HTML into two parts, body and not body
+				const newSplit = addOurScript.split('<body');
 
-				// this is supposed to change all links on page except CSS hrefs
-				// need to figure out how to send the get request correctly
-				const newSplit = addOurScript.split('<body>');
-
-
-				let string = newSplit[1];
-				var newstringreplaced = string.replace(/href="/gi, '1,A,2,B,href="');
-				let strings = newstringreplaced.split('1,A,2,B,');
-				let newRequest;
+                // take body part
+                let string = newSplit[1];
+                // replace all HREF with unique identifier
+                var newstringreplaced = string.replace(/href="/gi, '1,A,2,B,href="');
+                // split all body part on hrefs
+                let strings = newstringreplaced.split('1,A,2,B,');
+                
+                let newRequest;
+                // loop through both arrays, encode all urls, add the text to our big string for checking the site
 				for(let i = 0; i < strings.length; i++){
 					let newTest = strings[i].split('"');
 					if (i>=1) {
@@ -76,10 +80,18 @@ module.exports = {
 						newRequest += newTest[j] + '"';
 					}
 				}
-				
+                
+                // fix quote issue throughout the page
 				newRequest = newRequest.replace(/"href=/gi, 'href=');
 
-				const newCombine = newSplit[0] + '<body>' + newRequest;
+
+                // combine the two parts of the HTML
+				const newCombine = newSplit[0] + '<body' + newRequest;
+
+                // if id is null
+                if(id === null){
+                    console.log('its null');
+                }
 
                 // need to create file name based on id number of submission
                 fs.appendFile(`files/${id}.ejs`, newCombine, (err) => {
@@ -89,11 +101,6 @@ module.exports = {
         } catch (err) {
             console.log(err);
         }
-
-
-
-
-
     },
     resetAtMidnight() {
         let now = new Date();

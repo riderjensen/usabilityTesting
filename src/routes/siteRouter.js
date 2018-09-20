@@ -79,11 +79,6 @@ function router(nav) {
                     }
             }());
 		}, siteWithNoLogIn);
-	siteRouter.route('/request/:id')
-		.get((req, res) => {
-			let webURL  = req.query.id;
-			console.log(webURL);
-		});
     siteRouter.route('/:id')
         .get((req, res) => {
             const url = 'mongodb://localhost:27017';

@@ -78,9 +78,11 @@ app.set('view engine', 'ejs');
 const authRouter = require('./src/routes/authRouter.js')(nav);
 app.use('/auth', authRouter);
 
+// site routes go here
 const siteRouter = require('./src/routes/siteRouter.js')(nav);
 app.use('/site', siteRouter);
 
+// any requests pass through this area
 const requestRouter = require('./src/routes/requestRouter.js')(nav);
 app.use('/req', requestRouter);
 
