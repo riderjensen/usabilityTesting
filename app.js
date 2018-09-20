@@ -76,12 +76,13 @@ app.set('view engine', 'ejs');
 
 // all movement for the authorization route on the domain
 const authRouter = require('./src/routes/authRouter.js')(nav);
-
 app.use('/auth', authRouter);
 
 const siteRouter = require('./src/routes/siteRouter.js')(nav);
-
 app.use('/site', siteRouter);
+
+const requestRouter = require('./src/routes/requestRouter.js')(nav);
+app.use('/req', requestRouter);
 
 // getting our index served
 app.get('/', (req, res) => {
