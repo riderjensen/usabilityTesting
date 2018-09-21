@@ -24,6 +24,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const extraScripts = require('./src/extraScripts/extra');
 const mongoose = require('mongoose');
+const request = require('request');
 
 const mongoURI = 'mongodb://localhost/usabilityTesting';
 const connectOptions = {
@@ -110,24 +111,31 @@ midNight();
 // socket.io
 io.on('connection', (socket) => {
 	console.log('Connected');
-    socket.on('beep', () => {
-		console.log('boop');
-    });
     socket.on('website', (data) => {
-        // need to run data through some type of check to see if website is good
-        console.log(data);
-        
-        // if website is good
-        socket.emit
-
+		// need to run data through some type of check to see if website is good
+		const splitURL = data.split("");
+		// check to see if they added http
+		const addedItems = splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
+        if (addedItems != 'http') {
+           	data = 'http://' + data;
+        }
+		try{
+			request(data, (error, response) => {
+				if(error != null){
+					socket.emit('badURL');
+				} else {
+					socket.emit('goodURL');
+				}
+			});
+		} catch (err) {
+			console.log(err);
+		}
     });
     socket.on('disconnect', () => {
-		console.log('disconnect');
     });
 });
 
 
-// Our app is listening
 server.listen(port, () => console.log(`App is running on ${port}`));
 
 // run db

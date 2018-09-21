@@ -1,20 +1,30 @@
 // socket script
-// 
+
 var socket = io.connect();
 
-socket.on('connect', () => {
-    socket.emit('beep');
+const website = document.getElementById('webURL');
+website.onkeyup = () => {
+    // send website to back end with a 1second delay
+    if ((website.value != '')) {
+		clearTimeout(timeout);
+    	timeout = setTimeout(() => {
+			socket.emit('website', website.value);
+    	}, 1000);
+	}
+};
+
+socket.on('goodURL', () => {
+	console.log('This is a good URL');
+	website.style.borderColor = "Green";
+	website.style.borderWidth = "4px";
+	document.getElementById('submit').disabled = false;
 });
 
-
-const testWeb = document.getElementById('testWeb');
-testWeb.onclick = () => {
-    const website = document.getElementById('webURL').value;
-    // send website to back end
-    if ((website !== '')) {
-        socket.emit('website', website);
-    }
-};
-// this will be used to AJAX request the URL 
+socket.on('badURL', () => {
+	console.log('This is a bad URL');
+	website.style.borderColor = "Red";
+	website.style.borderWidth = "4px";
+	document.getElementById('submit').disabled = true;
+});
 
 // we can use this to monitor people testing a site but maybe create a different js file for that?

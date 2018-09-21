@@ -16,7 +16,6 @@ const ourURL = 'http://localhost:3000/req/?url=';
 
 module.exports = {
     requestURL(URL, id) {
-        // Need to check for any issues in the requesting URL before moving it to the request
         // this function creates the index file on the server, need to add validation for a correct URL
         let requestingURL = URL;
         const splitURL = requestingURL.split("");
