@@ -1,8 +1,5 @@
 // required files
 const express = require('express');
-const { MongoClient } = require('mongodb');
-const mongoose = require('../models/model');
-const webStorage = mongoose.model('webStorage');
 const extraScripts = require('../extraScripts/extra');
 const shortid = require('shortid');
 

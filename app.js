@@ -31,6 +31,9 @@ const connectOptions = {
     useNewUrlParser: true,
     reconnectTries: Number.MAX_VALUE
 };
+
+
+
 // Connect to MongoDB
 mongoose.Promise = global.Promise;
 mongoose.connect(mongoURI, connectOptions, (err, db) => {
@@ -47,8 +50,10 @@ const nav = [{
     }
 ];
 
-// creating the application
+// creating the application and attaching to socket	
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 // defining the port to use
 const port = process.env.PORT;
 
@@ -102,8 +107,23 @@ function midNight() {
 midNight();
 
 
+// socket.io
+io.on('connection', (socket) => {
+	console.log('Connected');
+    socket.on('beep', () => {
+		console.log('boop');
+    });
+    socket.on('sweep', (data) => {
+		console.log('swoop');
+    });
+    socket.on('disconnect', () => {
+		console.log('disconnect');
+    });
+});
+
+
 // Our app is listening
-app.listen(port, () => console.log(`App is running on ${port}`));
+server.listen(port, () => console.log(`App is running on ${port}`));
 
 // run db
 // mongod --dbpath "C:\Program Files\MongoDB\data"
