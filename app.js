@@ -113,8 +113,13 @@ io.on('connection', (socket) => {
     socket.on('beep', () => {
 		console.log('boop');
     });
-    socket.on('sweep', (data) => {
-		console.log('swoop');
+    socket.on('website', (data) => {
+        // need to run data through some type of check to see if website is good
+        console.log(data);
+        
+        // if website is good
+        socket.emit
+
     });
     socket.on('disconnect', () => {
 		console.log('disconnect');
