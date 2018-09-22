@@ -1,6 +1,6 @@
 // socket script
 
-var socket = io.connect();
+let socket = io.connect();
 
 const website = document.getElementById('webURL');
 website.onkeyup = () => {
