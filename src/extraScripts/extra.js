@@ -8,7 +8,7 @@ const {
 
 
 // This will be our JS file that we load into the page that will track everything that the user does
-const ourScript = '<script src="http://usable.io/test/test.js"></script>';
+const ourScript = '<script src="http://localhost:3000/js/recMove.js"></script>';
 
 
 // Our URL that will be used to request extra href on the page
@@ -56,7 +56,7 @@ module.exports = {
                 const changeStyleBack = replaceStyleURL.replace(/URL\(HTTP/g, 'url(http');
 
                 // add our JS script to the end of the file, name is at top of file to change
-				const addOurScript = changeStyleBack.replace(/<\/body>/, `${ourScript}<\/body>`);
+				const addOurScript = changeStyleBack.replace(/<\/body>/, `<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>${ourScript}<\/body>`);
 				
                 // split HTML into two parts, body and not body
 				const newSplit = addOurScript.split('<body');
@@ -84,8 +84,8 @@ module.exports = {
 				newRequest = newRequest.replace(/"href=/gi, 'href=');
 
 
-                // combine the two parts of the HTML
-				const newCombine = newSplit[0] + '<body' + newRequest;
+				// combine the two parts of the HTML and adding our script listeners
+				const newCombine = newSplit[0] + '<body id="usableBody" ' + newRequest;
 
                 // if id is null
                 if(id === null){

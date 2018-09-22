@@ -130,9 +130,14 @@ io.on('connection', (socket) => {
 		} catch (err) {
 			console.log(err);
 		}
-    });
+	});
+	socket.on('testingInfo', (data) => {
+		// need to send unique ID with this data so we know who to connect it with in the DB
+		console.log(`Testing info was called with ${data[1]}`);
+	});
     socket.on('disconnect', () => {
-    });
+	});
+	
 });
 
 
