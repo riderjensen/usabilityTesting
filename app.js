@@ -92,6 +92,13 @@ app.use('/site', siteRouter);
 const requestRouter = require('./src/routes/requestRouter.js')(nav);
 app.use('/req', requestRouter);
 
+
+// attempting 404, still broken
+app.use(function (err, req, res, next) {
+	console.log(err);
+	res.status(404).render('404');
+  })
+
 // getting our index served
 app.get('/', (req, res) => {
     res.render('index');

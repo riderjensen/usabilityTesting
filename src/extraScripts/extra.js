@@ -35,6 +35,7 @@ module.exports = {
             s.on('response', (response) => {
                 if (response.statusCode != '200') {
                     console.log('Bad response from server');
+                    // res.send 404 page?
                 }
             })
             s.on('data', (chunk) => {
