@@ -14,6 +14,7 @@ User should be able to do the following:
 * Post javascript results to the test with all the answers to the questions
 * When parsing, only pull files from head and script tags to change src?
 * Store those sources in a seperate file that we include in their head so that it stays the same accross pages?
+* Store the response in the same file each time and change out the body text? Then we dont have to reload JS?
 * Add event listener on window lose focus so that we could show a message to user that tester is not active on it?
 
 ## Codepen links
