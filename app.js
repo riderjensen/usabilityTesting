@@ -132,6 +132,8 @@ io.on('connection', (socket) => {
 		}
 	});
 	socket.on('testingInfo', (data) => {
+
+		// may just need to send each data bit every second instead of sending every few seconds so we dont miss anything
 		// need to send unique ID with this data so we know who to connect it with in the DB
 		console.log(`Testing info was called with ${data[1]}`);
 	});
@@ -143,5 +145,5 @@ io.on('connection', (socket) => {
 
 server.listen(port, () => console.log(`App is running on ${port}`));
 
-// run db
+// run db 
 // mongod --dbpath "C:\Program Files\MongoDB\data"

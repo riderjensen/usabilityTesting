@@ -17,7 +17,7 @@ const ourURL = 'http://localhost:3000/req/?url=';
 module.exports = {
     requestURL(URL, id) {
         // this function creates the index file on the server, need to add validation for a correct URL
-        let requestingURL = URL;
+        let requestingURL = URL.trim();
         const splitURL = requestingURL.split("");
 		// check to see if they added http
 		const addedItems = splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
@@ -28,6 +28,8 @@ module.exports = {
         const rootURL = res[0] + '//' + res[2];
         let largeString = '';
 
+
+        // having issues with redirects throwing error that destroys work
         try {
             const s = request(requestingURL);
             s.on('response', (response) => {
@@ -98,7 +100,7 @@ module.exports = {
                 });
             });
         } catch (err) {
-            console.log(err);
+            console.log('Dont gotcha');
         }
     },
     resetAtMidnight() {
