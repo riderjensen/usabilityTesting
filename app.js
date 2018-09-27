@@ -8,7 +8,7 @@ dbCon.connectToServer( function( err ) {
 
 	// this code should make it so that we can import the db connection to any place we need it without having to reconnect
 	// UNTESTED
-	// const mongoUtil = require( 'dbConnect' );
+	// const mongoUtil = require( 'dbCon' );
 	// let db = mongoUtil.getDb();
 	// db.collection( 'users' ).find();
 
@@ -91,6 +91,10 @@ app.use('/site', siteRouter);
 // any requests pass through this area
 const requestRouter = require('./src/routes/requestRouter.js')(nav);
 app.use('/req', requestRouter);
+
+// any requests pass through this area
+const replayRouter = require('./src/routes/replayRouter.js')(nav);
+app.use('/replay', replayRouter);
 
 
 // attempting 404, still broken
