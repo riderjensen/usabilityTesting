@@ -8,7 +8,7 @@ website.onkeyup = () => {
 	if ((website.value != '')) {
 		timeout = setTimeout(() => {
 			socket.emit('website', website.value);
-		}, 1000);
+		}, 500);
 	}
 };
 // good URL entered
