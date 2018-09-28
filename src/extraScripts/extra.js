@@ -3,7 +3,8 @@ const fs = require('fs');
 const {
     MongoClient
 } = require('mongodb');
-
+const shortid = require('shortid');
+const mongoUtil = require('../extraScripts/dbConnect');
 
 
 
@@ -16,9 +17,10 @@ const ourURL = 'http://localhost:3000/req/?url=';
 
 module.exports = {
     requestURL(URL, id) {
-        // this function creates the index file on the server, need to add validation for a correct URL
+
         let requestingURL = URL.trim();
         const splitURL = requestingURL.split("");
+
         // check to see if they added http
         const addedItems = splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
         if (addedItems != 'http') {
@@ -91,13 +93,16 @@ module.exports = {
 
                         // if id is null
                         if (id === null) {
-                            console.log('its null');
+                            // this should never be called but just in case, we create a new id for it so the page doesnt crash
+                            let newID = shortid.generate();
+                            fs.appendFile(`files/${newID}.ejs`, newCombine, (err) => {
+                                if (err) throw err;
+                            });
+                        } else {
+                            fs.appendFile(`files/${id}.ejs`, newCombine, (err) => {
+                                if (err) throw err;
+                            });
                         }
-
-                        // need to create file name based on id number of submission
-                        fs.appendFile(`files/${id}.ejs`, newCombine, (err) => {
-                            if (err) throw err;
-                        });
                     });
                 }
             })
@@ -124,13 +129,9 @@ module.exports = {
     },
     // this is called every night at midnight to delete files that are a month old
     deleteOldFiles(date) {
-        const url = 'mongodb://localhost:27017';
-        const dbName = 'usabilityTesting';
         (async function deleteFromDB() {
-            let client;
             try {
-                client = await MongoClient.connect(url);
-                const db = client.db(dbName);
+                let db = mongoUtil.getDb();
                 const col = db.collection('websites');
                 var myquery = {
                     createdAt: date
@@ -138,7 +139,6 @@ module.exports = {
                 await col.deleteMany(myquery, function (err, obj) {
                     if (err) throw err;
                     console.log(obj.result.n + " document(s) deleted");
-                    db.close();
                 });
             } catch (err) {
                 console.log(err);
