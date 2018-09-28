@@ -8,12 +8,7 @@ User should be able to do the following:
 
 ## To Do
 
-* Use [this](https://github.com/ogt/valid-url) and [this](https://github.com/dylang/shortid) to create short links?
-* Add test requirements box to the bottom of page
-* Can we do those purely through an outside JavaScript file that will keep time?
 * Post javascript results to the test with all the answers to the questions
-* When parsing, only pull files from head and script tags to change src?
-* Store those sources in a seperate file that we include in their head so that it stays the same accross pages?
 * Store the response in the same file each time and change out the body text? Then we dont have to reload JS?
 * Add event listener on window lose focus so that we could show a message to user that tester is not active on it?
 
@@ -24,7 +19,7 @@ User should be able to do the following:
 ## Broken List
 
 * 404 page when we hit too many redirects
-* Sometimes page directs too soon and the file isnt ready, set a timeout perhaps on all routing in sites?
+* Sometimes page directs too soon and the file isnt ready, we have a timeout set but need a better way to do it
 
 ## Untested
 

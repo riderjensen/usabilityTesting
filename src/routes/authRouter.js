@@ -4,6 +4,7 @@ const {
     MongoClient
 } = require('mongodb');
 const mongoose = require('../models/model');
+const mongoUtil = require('../extraScripts/dbConnect');
 const userStorage = mongoose.model('userStorage');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
@@ -20,23 +21,20 @@ function router(nav) {
                 username,
                 password
             } = req.body;
-            const url = 'mongodb://localhost:27017';
-            const dbName = 'usability';
             bcrypt.hash(password, 10, (err, hash) => {
                 (async function addUser() {
-                    let client;
                     try {
-                        client = await MongoClient.connect(url, {
-                            useNewUrlParser: true
-                        });
+
+                        let db = mongoUtil.getDb();
+                        const col = db.collection('users');
 
                         // Creating variables to send into the database
                         const date = new Date();
                         const addedOn = date.getDate();
                         const emptyArray = []; // this is to initialize an array of projects that is not filled yet
                         const password = hash;
-                        const db = client.db(dbName);
-                        const col = db.collection('users');
+
+
                         const userFromDB = await col.findOne({
                             username
                         });
@@ -82,23 +80,36 @@ function router(nav) {
                 nav
             });
         })
-        // this will be for sending data into the database
-        .post((req, res) => {
+    authRouter.route('/stats')
+        .all((req, res, next) => {
+            if (req.user) {
+                next();
+            } else {
+                res.redirect('/');
+            }
+        })
+        .get((req, res) => {
+            res.send('This is the stats page');
+        });
+    authRouter.route('/addTest')
+        .all((req, res, next) => {
+            if (req.user) {
+                next();
+            } else {
+                res.redirect('/');
+            }
+        })
+        // need to get user ID so that we can attach the test to the user tests in the user db
+        .get((res, req) => {
             const {
                 username,
                 testID
             } = req.body;
-            const url = 'mongodb://localhost:27017';
-            const dbName = 'usability';
             (async function storeData() {
-                let client;
                 try {
-                    client = await MongoClient.connect(url, {
-                        useNewUrlParser: true
-                    });
-
-                    const db = client.db(dbName);
+                    let db = mongoUtil.getDb();
                     const col = db.collection('websites');
+
                     const idFromDB = await col.findOne({
                         testID
                     });
@@ -132,32 +143,6 @@ function router(nav) {
                     console.log(error);
                 }
             }());
-        });
-    authRouter.route('/stats')
-        .all((req, res, next) => {
-            if (req.user) {
-                next();
-            } else {
-                res.redirect('/');
-            }
-        })
-        .get((req, res) => {
-            res.send('This is the stats page');
-        });
-    authRouter.route('/addTest')
-        .all((req, res, next) => {
-            if (req.user) {
-                next();
-            } else {
-                res.redirect('/');
-            }
-        })
-        // need to get user ID so that we can attach the test to the user tests in the user db
-        .get((res, req) => {
-            const {
-                username,
-                testID
-            } = req.body;
         })
     return authRouter;
 }

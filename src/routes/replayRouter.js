@@ -1,5 +1,6 @@
 // required files
 const express = require('express');
+const mongoUtil = require('../extraScripts/dbConnect');
 
 
 const replayRouter = express.Router();
@@ -15,14 +16,14 @@ function router(nav) {
 			// grab the id
 			const reqID = req.params.id;
 			(async function mongo() {
-                let client;
-                try {
-                    client = await MongoClient.connect(url, { useNewUrlParser: true });
+				let client;
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('websites');
 
-                    const db = client.db(dbName);
-
-                    const col = await db.collection('websites');
-                    await col.findOne({ reqID });
+					await col.findOne({
+						reqID
+					});
 
 					// we have found the specific test, now we need to pull the data related to the tests and send it to replay.ejs (UNFINSHED, Waiting on back end data structures)
 					res.render('replay', {
@@ -31,13 +32,13 @@ function router(nav) {
 						// here we will pass the array
 						// etc etc
 					});
-                } catch (err) {
-                    console.log(err.stack);
-                }
-            }());
+				} catch (err) {
+					console.log(err.stack);
+				}
+			}());
 
 		});
-    return replayRouter;
+	return replayRouter;
 }
 // exporting out the router
 module.exports = router;

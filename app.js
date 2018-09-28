@@ -55,6 +55,8 @@ dbCon.connectToServer(function (err) {
 	}));
 	app.use(session({
 		secret: 'library',
+		resave: false,
+		saveUninitialized: true
 	}));
 	app.use(bodyParser.json());
 	// used for passport authentication
@@ -84,7 +86,7 @@ dbCon.connectToServer(function (err) {
 	app.use('/replay', replayRouter);
 
 
-	// attempting 404, still broken
+	// attempting 404, works but the CSS and JS are broken
 	app.use(function (err, req, res, next) {
 		console.log(err);
 		res.status(404).render('404');
@@ -144,14 +146,5 @@ dbCon.connectToServer(function (err) {
 
 	// run db 
 	// mongod --dbpath "C:\Program Files\MongoDB\data"
-
-
-	// this code should make it so that we can import the db connection to any place we need it without having to reconnect
-	// UNTESTED
-	// const mongoUtil = require('./src/extraScripts/dbConnect');
-	// let db = mongoUtil.getDb();
-	// let hello = db.collection('users').find();
-	// console.log(hello);
-
 
 });
