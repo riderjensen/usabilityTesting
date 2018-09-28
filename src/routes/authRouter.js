@@ -26,7 +26,9 @@ function router(nav) {
                 (async function addUser() {
                     let client;
                     try {
-                        client = await MongoClient.connect(url, { useNewUrlParser: true });
+                        client = await MongoClient.connect(url, {
+                            useNewUrlParser: true
+                        });
 
                         // Creating variables to send into the database
                         const date = new Date();
@@ -48,16 +50,13 @@ function router(nav) {
                                 addedOn
                             });
                             await col.insertOne(user);
-
+                            res.redirect('/auth/profile');
                         }
-                        res.redirect('/auth/profile');
                     } catch (error) {
                         console.log(error);
                     }
                 }());
-
             });
-
         });
     authRouter.route('/signIn')
         .post(passport.authenticate('local', {
@@ -94,7 +93,9 @@ function router(nav) {
             (async function storeData() {
                 let client;
                 try {
-                    client = await MongoClient.connect(url, { useNewUrlParser: true });
+                    client = await MongoClient.connect(url, {
+                        useNewUrlParser: true
+                    });
 
                     const db = client.db(dbName);
                     const col = db.collection('websites');
@@ -143,6 +144,21 @@ function router(nav) {
         .get((req, res) => {
             res.send('This is the stats page');
         });
+    authRouter.route('/addTest')
+        .all((req, res, next) => {
+            if (req.user) {
+                next();
+            } else {
+                res.redirect('/');
+            }
+        })
+        // need to get user ID so that we can attach the test to the user tests in the user db
+        .get((res, req) => {
+            const {
+                username,
+                testID
+            } = req.body;
+        })
     return authRouter;
 }
 // exporting out the router

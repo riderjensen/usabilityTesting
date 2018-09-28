@@ -24,6 +24,7 @@ User should be able to do the following:
 ## Broken List
 
 * 404 page when we hit too many redirects
+* Sometimes page directs too soon and the file isnt ready, set a timeout perhaps on all routing in sites?
 
 ## Untested
 
