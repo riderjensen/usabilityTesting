@@ -20,6 +20,7 @@ User should be able to do the following:
 
 * 404 page when we hit too many redirects
 * Sometimes page directs too soon and the file isnt ready, we have a timeout set but need a better way to do it
+* CSS links are broken when in a subfolder but not using a relative path - Scrapper issue
 
 ## Untested
 
