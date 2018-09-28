@@ -16,7 +16,6 @@ function router(nav) {
 			// grab the id
 			const reqID = req.params.id;
 			(async function mongo() {
-				let client;
 				try {
 					let db = mongoUtil.getDb();
 					const col = db.collection('websites');

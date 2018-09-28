@@ -83,8 +83,10 @@ function router(nav) {
     siteRouter.route('/:id')
         .get((req, res) => {
             const reqID = req.params.id;
+
             // setting timeout for slower loading pages -- need to fix so that we only render once we have the whole body
             // maybe passing a value from the scrapper function to this function with a boolean?
+
             setTimeout(function () {
                 res.render(`../../files/${reqID}`);
             }, 1000);
