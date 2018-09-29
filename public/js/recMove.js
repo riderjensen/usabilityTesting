@@ -85,3 +85,52 @@ function getTimeElapsed() {
 	const secondsClicked = timeClicked / 1000;
 	return secondsClicked;
 }
+// anything that loads after page has been saved
+
+
+
+
+// Trying to change scripts when they are loaded after everything else has loaded
+
+// const rootURL = document.getElementById('usableRootURL').innerHTML;
+
+// window.addEventListener("load", function () {
+// 	console.log('---------------------------')
+// 	let linkArray = document.getElementsByTagName('link');
+// 	let scriptArray = document.getElementsByTagName('script');
+
+
+// 	Array.prototype.forEach.call(linkArray, element => {
+// 		let elHREF = element.href;
+// 		let test = elHREF.split('');
+// 		if (test[0] === '/') {
+// 			element.href = rootURL + element.href;
+// 			// console.log(element.href);
+// 		}
+// 	});
+// 	Array.prototype.forEach.call(scriptArray, element => {
+// 		if (element.src === '') {
+// 			// src is null, dont do anything
+// 		} else {
+// 			let elHREF = element.src;
+// 			let test = elHREF.split('');
+// 			let firstPart = test[0] + test[1] + test[2] + test[3] + test[4] + test[5] + test[6] + test[7] + test[8] + test[9] + test[10];
+// 			if (firstPart === 'http://loca') {
+// 				let splitnewURL = elHREF.split('/');
+// 				newURL = rootURL;
+// 				for (let i = 4; i < splitnewURL.length; i++) {
+// 					newURL += '/' + splitnewURL[i];
+// 				}
+// 				console.log(newURL);
+
+// 			}
+// 		}
+
+// 	});
+// 	let my_awesome_script = document.createElement('script');
+
+// 	my_awesome_script.setAttribute('src','http://localhost:3000/recMove.js');
+
+// 	document.head.appendChild(my_awesome_script);
+
+// });

@@ -20,6 +20,7 @@ User should be able to do the following:
 
 * 404 page when we hit too many redirects
 * Sometimes page directs too soon and the file isnt ready, we have a timeout set but need a better way to do it like passing a var into siteRouter or do a loading icon until its ready
+* Change href/src after loading page broken on recMove.js because it changes out our URL - maybe add this URL after we do all the loading in a dif script?
 * CSS links are broken when in a subfolder but not using a relative path - Scrapper issue
 
 ## Untested
