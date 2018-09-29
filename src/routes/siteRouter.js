@@ -89,7 +89,7 @@ function router(nav) {
 
             setTimeout(function () {
                 res.render(`../../files/${reqID}`);
-            }, 1000);
+            }, 2000);
         });
     return siteRouter;
 }
