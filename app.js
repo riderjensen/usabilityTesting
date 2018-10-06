@@ -112,7 +112,6 @@ dbCon.connectToServer(function (err) {
 	io.on('connection', (socket) => {
 		console.log('Connected');
 		socket.on('website', (data) => {
-			// need to run data through some type of check to see if website is good
 			const splitURL = data.split("");
 			// check to see if they added http
 			const addedItems = splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
@@ -137,7 +136,9 @@ dbCon.connectToServer(function (err) {
 			// need to send unique ID with this data so we know who to connect it with in the DB
 			console.log(`Testing info was called with ${data[1]}`);
 		});
-		socket.on('disconnect', () => {});
+		socket.on('disconnect', () => {
+			console.log('Disconnect Event');
+		});
 
 	});
 

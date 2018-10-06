@@ -11,6 +11,7 @@ User should be able to do the following:
 * Post javascript results to the test with all the answers to the questions
 * Store the response in the same file each time and change out the body text? Then we dont have to reload JS?
 * Add event listener on window lose focus so that we could show a message to user that tester is not active on it?
+* Store a cookie on user browser with their DB ID so that any time they load a page with rec.js, we read the cookie and send that into the DB along with the current URL? This would potentially fix the issue of not knowing where people are going? [Stack Overflow](https://stackoverflow.com/questions/26021281/set-cookie-with-js-for-whole-domain-not-specific-page)
 
 ## Codepen links
 
