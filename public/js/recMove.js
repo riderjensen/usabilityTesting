@@ -139,28 +139,37 @@ function getTimeElapsed() {
 
 
 // for getting and setting a cookie
-const pageURL = window.location.href;
-const pageArray = pageURL.split('/');
-const pageID = pageArray[pageArray.length -1];
-const name = "usableCookieTracking=";
-const decodedCookie = decodeURIComponent(document.cookie);
-const ca = decodedCookie.split(';');
-for(let i = 0; i <ca.length; i++) {
-	let c = ca[i];
-	while (c.charAt(0) == ' ') {
-		c = c.substring(1);
+// cookie broke tho
+function cookieTest(){
+	const name = "usableCookieTracking=";
+	const decodedCookie = decodeURIComponent(document.cookie);
+	const ca = decodedCookie.split(';');
+	let c;
+	let cookieIsThere = false;
+	for(let i = 0; i <ca.length; i++) {
+		c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			console.log('test');
+			cookieIsThere = true;
+		}
 	}
-	if (c.indexOf(name) == 0) {
-		console.log(`FOUND: ${c.substring(name.length, c.length)}`);
-	} else {
-		setCookie(pageID);
+	// didnt find cookie
+	if(cookieIsThere === false){
 		console.log(`SETTING COOKIE!!`);
+		const pageURL = window.location.href;
+		const pageArray = pageURL.split('/');
+		const pageID = pageArray[pageArray.length -1];
+
+		const d = new Date();
+		d.setTime(d.getTime() + (1*24*60*60*1000));
+		const expires = "expires="+ d.toUTCString();
+		document.cookie = `usableCookieTracking=${pageID};${expires};path=/`;
+	} else {
+		//found cookie
+		console.log(`FOUND: ${c.substring(name.length, c.length)}`);
 	}
 }
-
-function setCookie(pageID) {
-    const d = new Date();
-    d.setTime(d.getTime() + (1*24*60*60*1000));
-    const expires = "expires="+ d.toUTCString();
-	document.cookie = `usableCookieTracking=${pageID};${expires};path=/`;
-}
+cookieTest();
