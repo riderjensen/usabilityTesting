@@ -111,6 +111,7 @@ dbCon.connectToServer(function (err) {
 	// socket.io
 	io.on('connection', (socket) => {
 		console.log('Connected');
+
 		socket.on('website', (data) => {
 			const splitURL = data.split("");
 			// check to see if they added http
@@ -129,6 +130,10 @@ dbCon.connectToServer(function (err) {
 			} catch (err) {
 				console.log(err);
 			}
+		});
+		socket.on('initInformation', (data) => {
+			// bringing in the init data that should be sent to our db on the first page load
+			// console.log(data);
 		});
 		socket.on('testingInfo', (data) => {
 
