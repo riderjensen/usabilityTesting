@@ -1,8 +1,71 @@
-// record movement js
-// probably need to get screen width/size so we know what size to display back to the user, maybe gather initial information about the test and then send that before the first array?
-
+// global cookie that we are setting/getting
+let globalCookie;
+// this is out main date creation to be used in multiple functions
+const d = new Date();
 // int socket
 let socket = io.connect();
+
+
+// for getting and setting a cookie
+function cookieTest() {
+	const name = "usableCookieTracking=";
+	const decodedCookie = decodeURIComponent(document.cookie);
+	const ca = decodedCookie.split(';');
+	let c;
+	let ourCookie;
+	let cookieIsThere = false;
+	for (let i = 0; i < ca.length; i++) {
+		c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			cookieIsThere = true;
+			ourCookie = c;
+		}
+	}
+	// didnt find cookie
+	if (cookieIsThere === false) {
+		console.log(`SETTING COOKIE!!`);
+		const pageURL = window.location.href;
+		const pageArray = pageURL.split('/');
+		const pageID = pageArray[pageArray.length - 1];
+
+		d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
+		const expires = "expires=" + d.toUTCString();
+		document.cookie = `usableCookieTracking=${pageID};${expires};path=/`;
+		// set our cookie to init page ID
+		globalCookie = pageID;
+	} else {
+		//found cookie and set it to first page ID
+		globalCookie = ourCookie.substring(name.length, ourCookie.length);
+	}
+}
+cookieTest();
+
+
+
+// could also use init information to send screen width and size along with golbalCookie 
+// and then simply check globalCookie against incoming array of information to make sure that the array we are pushing to is the correct one?
+// send interval time in initial information ID but then allow for user on backend to change replay information time?
+
+const initInformation = {
+	'windowHeight': window.innerHeight,
+	'windowWidth': window.innerWidth,
+	'intervalTime': 1,
+	'cookieID': globalCookie
+}
+
+socket.emit('initInformation', initInformation);
+
+
+
+
+
+// ******************************
+// ****** Tracking Section ******
+// ******************************
+
 
 let x, y;
 let objectArray = [];
@@ -10,14 +73,14 @@ let time, scrollOnPage = 0;
 let w = window.innerWidth;
 let h = window.innerHeight;
 
-// these are our event listeners
+// these are our event listeners for things we want to track
 window.addEventListener("scroll", usableScrolling);
 document.getElementById("usableBody").addEventListener("click", usabelClicked);
 document.getElementById("usableBody").addEventListener("mousemove", usableShowCoords);
 
 
 function usabelClicked() {
-	//push the click event into the general larger array
+	// need to push the click event into the general larger array
 	let seconds = getTimeElapsed();
 }
 
@@ -74,7 +137,6 @@ setInterval(function () {
 
 
 // get new date for when we opened the page
-const d = new Date();
 const startTime = d.getTime();
 
 // get time since the page was opened function
@@ -85,7 +147,7 @@ function getTimeElapsed() {
 	const secondsClicked = timeClicked / 1000;
 	return secondsClicked;
 }
-// anything that loads after page has been saved
+
 
 
 
@@ -134,42 +196,3 @@ function getTimeElapsed() {
 // 	document.head.appendChild(my_awesome_script);
 
 // });
-
-
-
-
-// for getting and setting a cookie
-// cookie broke tho
-function cookieTest(){
-	const name = "usableCookieTracking=";
-	const decodedCookie = decodeURIComponent(document.cookie);
-	const ca = decodedCookie.split(';');
-	let c;
-	let cookieIsThere = false;
-	for(let i = 0; i <ca.length; i++) {
-		c = ca[i];
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			console.log('test');
-			cookieIsThere = true;
-		}
-	}
-	// didnt find cookie
-	if(cookieIsThere === false){
-		console.log(`SETTING COOKIE!!`);
-		const pageURL = window.location.href;
-		const pageArray = pageURL.split('/');
-		const pageID = pageArray[pageArray.length -1];
-
-		const d = new Date();
-		d.setTime(d.getTime() + (1*24*60*60*1000));
-		const expires = "expires="+ d.toUTCString();
-		document.cookie = `usableCookieTracking=${pageID};${expires};path=/`;
-	} else {
-		//found cookie
-		console.log(`FOUND: ${c.substring(name.length, c.length)}`);
-	}
-}
-cookieTest();
