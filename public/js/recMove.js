@@ -26,7 +26,7 @@ function cookieTest() {
 	}
 	// didnt find cookie
 	if (cookieIsThere === false) {
-		console.log(`SETTING COOKIE!!`);
+		// setting cookie
 		const pageURL = window.location.href;
 		const pageArray = pageURL.split('/');
 		const pageID = pageArray[pageArray.length - 1];
@@ -75,12 +75,12 @@ let h = window.innerHeight;
 
 // these are our event listeners for things we want to track
 window.addEventListener("scroll", usableScrolling);
-document.getElementById("usableBody").addEventListener("click", usabelClicked);
+document.getElementById("usableBody").addEventListener("mouseup", usabelClicked);
 document.getElementById("usableBody").addEventListener("mousemove", usableShowCoords);
 
 
 function usabelClicked() {
-	// need to push the click event into the general larger array
+	// seconds since the page was openend
 	let seconds = getTimeElapsed();
 }
 
