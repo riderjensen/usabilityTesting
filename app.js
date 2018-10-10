@@ -86,7 +86,7 @@ dbCon.connectToServer(function (err) {
 	app.use('/replay', replayRouter);
 
 
-	// attempting 404, works but the CSS and JS are broken
+	// 404
 	app.use(function (err, req, res, next) {
 		console.log(err);
 		res.status(404).render('404');
@@ -133,13 +133,15 @@ dbCon.connectToServer(function (err) {
 		});
 		socket.on('initInformation', (data) => {
 			// bringing in the init data that should be sent to our db on the first page load
-			// console.log(data);
+			console.log(`User window height: ${data.windowHeight}px`);
+			console.log(`User window width: ${data.windowWidth}px`);
+			console.log(`User cookieID: ${data.cookieID}`);
 		});
 		socket.on('testingInfo', (data) => {
 
 			// may just need to send each data bit every second instead of sending every few seconds so we dont miss anything
 			// need to send unique ID with this data so we know who to connect it with in the DB
-			console.log(`Testing info was called with ${data[1]}`);
+			console.log(`Testing info was called with ${data}`);
 		});
 		socket.on('disconnect', () => {
 			console.log('Disconnect Event');
