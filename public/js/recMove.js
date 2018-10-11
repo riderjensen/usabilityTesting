@@ -45,7 +45,6 @@ cookieTest();
 
 
 
-// could also use init information to send screen width and size along with golbalCookie 
 // and then simply check globalCookie against incoming array of information to make sure that the array we are pushing to is the correct one?
 // send interval time in initial information ID but then allow for user on backend to change replay information time?
 
@@ -64,6 +63,10 @@ socket.emit('initInformation', initInformation);
 
 // ******************************
 // ****** Tracking Section ******
+// eventKey: 
+// 1 - mouse move(called every 0.1 secs)
+// 2 - click
+// 3 - scroll
 // ******************************
 
 
@@ -79,60 +82,80 @@ document.getElementById("usableBody").addEventListener("mouseup", usabelClicked)
 document.getElementById("usableBody").addEventListener("mousemove", usableShowCoords);
 
 
-function usabelClicked() {
-	// seconds since the page was openend
-	let seconds = getTimeElapsed();
-}
-
-
-
-// vars for the scrolling function
-let doneOnce = false;
-let scrollSeconds;
-let myTimeout;
-
-function usableScrolling() {
-	// only grab the scroll time once, right when we start the scroll
-	if (!doneOnce) {
-		scrollSeconds = getTimeElapsed();
-		doneOnce = true;
-	}
-	// wait a half of a second before resetting so that we can get a new scroll time
-
-	clearTimeout(myTimeout);
-	myTimeout = setTimeout(function () {
-		doneOnce = false;
-		scrollOnPage = document.documentElement.scrollTop;
-
-		// need to push scrollOnPage and scrollSeconds to its own array that we can execute on the back
-
-	}, 500);
-}
-
+// changing the x/y coords anytime that the mouse is moved
 function usableShowCoords(event) {
 	x = event.clientX;
 	y = event.clientY;
 }
+// getting the x and y position in a percentage and returning the obj to the req
+function screenPercents() {
+	return object = {
+		x: Math.round((x / w) * 10000) / 100,
+		y: Math.round((y / h) * 10000) / 100
+	}
+}
+
+
+// ****** Click ******
+
+function usabelClicked() {
+	// setting event to clicked on the current arrayObj
+	objectArray[objectArray.length - 1].ev = 'clicked';
+}
+
+// ****** Scroll ******
+
+let doneOnce = false;
+let scrollSeconds;
+let myTimeout;
+let startScroll;
+
+function usableScrolling() {
+	if (!doneOnce) {
+		doneOnce = true;
+		startScroll = document.documentElement.scrollTop;
+		let scrollObj = {
+			type: 'start',
+			// where we started scrolling
+			sScroll: scrollOnPage
+		}
+		// setting event to object on the scroll event
+		objectArray[objectArray.length - 1].ev = scrollObj;
+		console.log(objectArray);
+	}
+
+	// wait a half of a second before resetting so that we can get a new scroll time
+	clearTimeout(myTimeout);
+	myTimeout = setTimeout(function () {
+		doneOnce = false;
+		scrollOnPage = document.documentElement.scrollTop;
+		let scrollObj = {
+			type: 'end',
+			// where we ended scrolling
+			eScroll: scrollOnPage
+		}
+		// setting event to object on the scroll event
+		objectArray[objectArray.length - 1].ev = scrollObj;
+	}, 500);
+}
+
+// ****** Mouse Moves ******
 
 setInterval(function () {
-	// dont send time, just iterate at the same rate that it was recorded to save on space
-	let object = {
-		x: ((x / w) * 100),
-		y: ((y / h) * 100),
-	}
+	let object = screenPercents(1);
 	if (objectArray.length > 50) {
-
-		let testArray = [];
-		testArray = objectArray;
+		let backArray = [];
+		backArray = objectArray;
 		// push testArray to the app
-		socket.emit('testingInfo', testArray);
-
+		socket.emit('testingInfo', backArray);
 		// empty object array and begin again
 		objectArray = [];
 	}
 	// push object to object array
 	objectArray.push(object);
 }, 100);
+
+
 
 
 
