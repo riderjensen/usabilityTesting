@@ -212,10 +212,10 @@ function getTimeElapsed() {
 // 		}
 
 // 	});
-// 	let my_awesome_script = document.createElement('script');
+// 	let my_script = document.createElement('script');
 
-// 	my_awesome_script.setAttribute('src','http://localhost:3000/recMove.js');
+// 	my_script.setAttribute('src','http://localhost:3000/recMove.js');
 
-// 	document.head.appendChild(my_awesome_script);
+// 	document.head.appendChild(my_script);
 
 // });
