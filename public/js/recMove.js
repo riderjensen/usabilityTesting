@@ -49,6 +49,7 @@ cookieTest();
 // send interval time in initial information ID but then allow for user on backend to change replay information time?
 
 const initInformation = {
+	// http://is.js.org use to send browser type
 	'windowHeight': window.innerHeight,
 	'windowWidth': window.innerWidth,
 	'intervalTime': 1,
