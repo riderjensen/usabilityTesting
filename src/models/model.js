@@ -1,21 +1,29 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const {
+	Schema
+} = mongoose;
 
 const websiteStorage = new Schema({
-  	webURL: String,
-  	testArray: Array,
-  	createdAt: { type: Date, default: Date.now }
+	webURL: String,
+	testArray: Array,
+	createdAt: {
+		type: Date,
+		default: Date.now
+	}
 });
 module.exports = mongoose.model("webStorage", websiteStorage);
 
 // userStorage.projects id coresponds to the first page created from the test
 // each userStorage.projects need to be an object that contains the projectID and the questions
-const userStorage = new Schema({	
+const userStorage = new Schema({
 	username: String,
-  	password: String,
-  	// array of objects
-  	projects: Array,
-  	createdAt: { type: Date, default: Date.now }
+	password: String,
+	// array of project objects
+	projects: Array,
+	createdAt: {
+		type: Date,
+		default: Date.now
+	}
 });
 module.exports = mongoose.model("userStorage", userStorage);
 
@@ -28,28 +36,24 @@ const userTracking = new Schema({
 module.exports = mongoose.model("userTracking", userTracking);
 
 
-
-
-
-// this will go in the projects array
-// new object = {
-// 	projectID : String,
-// 	questionArry: {
-// 		// question that needs to be answered
-// 		question: String,
-// 		// shortAnswer, multipleChoice, select
-// 		type: String,
-// 		answers: [
-// 			{
-// 				answer: String,
-// 				correct: Boolean
-// 			},{
-// 				answer: String,
-// 				correct: Boolean
-// 			},{
-// 				answer: String,
-// 				correct: Boolean
-// 			}
-// 		]
-// 	}
-// }
+// this will go in the projects array in the userStorage model
+const projectArray = new Schema({
+	projectID: String,
+	questionArry: {
+		// question that needs to be answered
+		question: String,
+		// shortAnswer, multipleChoice, select
+		type: String,
+		answers: [{
+			answer: String,
+			correct: Boolean
+		}, {
+			answer: String,
+			correct: Boolean
+		}, {
+			answer: String,
+			correct: Boolean
+		}]
+	}
+});
+module.exports = mongoose.model("projectArray", projectArray);
