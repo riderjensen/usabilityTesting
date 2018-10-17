@@ -9,6 +9,25 @@ const websiteStorage = new Schema({
 	createdAt: {
 		type: Date,
 		default: Date.now
+	},
+	questionArray: {
+		// question that needs to be answered
+		question: String,
+		// shortAnswer, multipleChoice, select, task completion with a true/false answer
+		type: String,
+		answers: [{
+			answer: String,
+			correct: Boolean
+		}, {
+			answer: String,
+			correct: Boolean
+		}, {
+			answer: String,
+			correct: Boolean
+		}, {
+			answer: String,
+			correct: Boolean
+		}]
 	}
 });
 module.exports = mongoose.model("webStorage", websiteStorage);
@@ -34,29 +53,3 @@ const userTracking = new Schema({
 	recMoves: Array
 });
 module.exports = mongoose.model("userTracking", userTracking);
-
-
-// this will go in the projects array in the userStorage model
-const projectArray = new Schema({
-	projectID: String,
-	questionArry: {
-		// question that needs to be answered
-		question: String,
-		// shortAnswer, multipleChoice, select, task completion with a true/false answer
-		type: String,
-		answers: [{
-			answer: String,
-			correct: Boolean
-		}, {
-			answer: String,
-			correct: Boolean
-		}, {
-			answer: String,
-			correct: Boolean
-		}, {
-			answer: String,
-			correct: Boolean
-		}]
-	}
-});
-module.exports = mongoose.model("projectArray", projectArray);
