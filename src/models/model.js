@@ -42,7 +42,7 @@ const projectArray = new Schema({
 	questionArry: {
 		// question that needs to be answered
 		question: String,
-		// shortAnswer, multipleChoice, select
+		// shortAnswer, multipleChoice, select, task completion with a true/false answer
 		type: String,
 		answers: [{
 			answer: String,
