@@ -136,6 +136,7 @@ dbCon.connectToServer(function (err) {
 			console.log(`User window height: ${data.windowHeight}px`);
 			console.log(`User window width: ${data.windowWidth}px`);
 			console.log(`User cookieID: ${data.cookieID}`);
+			console.log(`User browser: ${data.browserType}`);
 		});
 		socket.on('testingInfo', (data) => {
 
