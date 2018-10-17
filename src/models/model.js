@@ -53,6 +53,9 @@ const projectArray = new Schema({
 		}, {
 			answer: String,
 			correct: Boolean
+		}, {
+			answer: String,
+			correct: Boolean
 		}]
 	}
 });
