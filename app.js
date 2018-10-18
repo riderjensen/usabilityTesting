@@ -140,6 +140,21 @@ dbCon.connectToServer(function (err) {
 		});
 		socket.on('testingInfo', (data) => {
 
+			try{
+				let db = mongoUtil.getDb();
+                const col = db.collection('websites');
+				const userFromDB = await col.findOne({
+					// find the ID
+				});
+				if (userFromDB == true){
+					// if we find the ID, we need to $push into the array
+				} else {
+					console.log('we could not find the test in the db');
+				}
+			} catch (err) {
+				console.log(err);
+			}
+
 			// may just need to send each data bit every second instead of sending every few seconds so we dont miss anything
 			// need to send unique ID with this data so we know who to connect it with in the DB
 			console.log(`Testing info was called with ${data}`);
