@@ -24,27 +24,9 @@ function router(nav) {
                 testTwo,
                 testThree,
                 testFour,
-                testFive,
-                testSix,
-                testSeven,
-                testEight,
-                testNine,
-                testTen,
-                testEleven,
-                testTwelve,
-                testThirteen,
-                testFourteen,
-                testFifteen,
-                testSixteen,
-                testSeventeen,
-                testEighteen,
-                testNineteen,
-                testTwenty
+                testFive
             } = req.body;
-            const testArray = [testOne, testTwo, testThree, testFour, testFive, testSix, testSeven, testEight,
-                testNine, testTen, testEleven, testTwelve, testThirteen, testFourteen, testFifteen, testSixteen,
-                testSeventeen, testEighteen, testNineteen, testTwenty
-            ];
+            const testArray = [testOne, testTwo, testThree, testFour, testFive];
 
             // this will need to be optimized and fixed
             while (testArray[testArray.length - 1] === undefined) {

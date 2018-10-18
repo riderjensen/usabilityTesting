@@ -10,25 +10,10 @@ const websiteStorage = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	questionArray: {
+	questionArray: [{
 		// question that needs to be answered
-		question: String,
-		// shortAnswer, multipleChoice, select, task completion with a true/false answer
-		type: String,
-		answers: [{
-			answer: String,
-			correct: Boolean
-		}, {
-			answer: String,
-			correct: Boolean
-		}, {
-			answer: String,
-			correct: Boolean
-		}, {
-			answer: String,
-			correct: Boolean
-		}]
-	}
+		question: String
+	}]
 });
 module.exports = mongoose.model("webStorage", websiteStorage);
 
