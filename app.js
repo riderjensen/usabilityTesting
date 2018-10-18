@@ -12,6 +12,8 @@ dbCon.connectToServer(function (err) {
 	const extraScripts = require('./src/extraScripts/extra');
 	const mongoose = require('mongoose');
 	const request = require('request');
+	const mongoUtil = require('./src/extraScripts/dbConnect');
+
 
 	const mongoURI = 'mongodb://localhost/usabilityTesting';
 	const connectOptions = {
@@ -107,6 +109,8 @@ dbCon.connectToServer(function (err) {
 	}
 	midNight();
 
+	// adding userTracking model for use in tracking
+	const userTracking = mongoose.model('userTracking');
 
 	// socket.io
 	io.on('connection', (socket) => {
@@ -133,31 +137,57 @@ dbCon.connectToServer(function (err) {
 		});
 		socket.on('initInformation', (data) => {
 			// bringing in the init data that should be sent to our db on the first page load
-			console.log(`User window height: ${data.windowHeight}px`);
-			console.log(`User window width: ${data.windowWidth}px`);
-			console.log(`User cookieID: ${data.cookieID}`);
-			console.log(`User browser: ${data.browserType}`);
+			let ourCookie = data.cookieID;
+			let userInitData = {
+				userHeight: data.windowHeight,
+				userWidth: data.windowWidth,
+				userBrowserType: data.browserType,
+				userCookie: data.cookieID
+			}
+			console.log(userInitData);
+			(async function createNewUserTest() {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('userTracking');
+					const userTestInit = new userTracking({
+						associatedID: ourCookie,
+						initInformation: userInitData,
+						recMoves: []
+					});
+					await col.insertOne(userTestInit);
+				} catch (err) {
+					console.log(err);
+				}
+			}());
 		});
 		socket.on('testingInfo', (data) => {
-
-			try{
-				let db = mongoUtil.getDb();
-                const col = db.collection('websites');
-				const userFromDB = await col.findOne({
-					// find the ID
-				});
-				if (userFromDB == true){
-					// if we find the ID, we need to $push into the array
-				} else {
-					console.log('we could not find the test in the db');
+			let ourCookie = data.userID;
+			(async function addRecMoves() {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('userTracking');
+					const cookieInDB = await col.findOne({
+						associatedID: ourCookie
+					});
+					if (cookieInDB.associatedID === ourCookie) {
+						// if we find the ID, we need to $push into the array
+						console.log(`We found it lads ${cookieInDB.associatedID}`);
+						db.collection('userTracking').updateOne({
+							associatedID: cookieInDB.associatedID
+						}, {
+							$push: {
+								recMoves: data.recMoves
+							}
+						})
+					} else {
+						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
+					}
+				} catch (err) {
+					console.log(err);
 				}
-			} catch (err) {
-				console.log(err);
-			}
-
+			}());
 			// may just need to send each data bit every second instead of sending every few seconds so we dont miss anything
-			// need to send unique ID with this data so we know who to connect it with in the DB
-			console.log(`Testing info was called with ${data}`);
+
 		});
 		socket.on('disconnect', () => {
 			console.log('Disconnect Event');

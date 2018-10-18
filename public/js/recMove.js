@@ -181,10 +181,12 @@ function usableScrolling() {
 setInterval(function () {
 	let object = screenPercents(1);
 	if (objectArray.length > 50) {
-		let backArray = [];
-		backArray = objectArray;
+		let sendObj = {
+			userID: globalCookie,
+			recMoves: objectArray
+		};
 		// push testArray to the app
-		socket.emit('testingInfo', backArray);
+		socket.emit('testingInfo', sendObj);
 		// empty object array and begin again
 		objectArray = [];
 	}
