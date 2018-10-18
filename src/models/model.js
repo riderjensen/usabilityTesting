@@ -3,20 +3,6 @@ const {
 	Schema
 } = mongoose;
 
-const websiteStorage = new Schema({
-	webURL: String,
-	testArray: Array,
-	createdAt: {
-		type: Date,
-		default: Date.now
-	},
-	questionArray: [{
-		// question that needs to be answered
-		question: String
-	}]
-});
-module.exports = mongoose.model("webStorage", websiteStorage);
-
 // userStorage.projects id coresponds to the first page created from the test
 // each userStorage.projects need to be an object that contains the projectID and the questions
 const userStorage = new Schema({
@@ -31,10 +17,26 @@ const userStorage = new Schema({
 });
 module.exports = mongoose.model("userStorage", userStorage);
 
+const websiteStorage = new Schema({
+	webURL: String,
+	testArray: Array,
+	createdAt: {
+		type: Date,
+		default: Date.now
+	},
+	questionArray: [{
+		// question that needs to be answered
+		question: String
+	}]
+});
+module.exports = mongoose.model("webStorage", websiteStorage);
+
+
 // associated id connects to projects in userStorage.projects array
-const userTracking = new Schema({
+const useTrack = new Schema({
 	associatedID: String,
+	initInfotmation: Object,
 	// array of objects that we continuously push on to
 	recMoves: Array
 });
-module.exports = mongoose.model("userTracking", userTracking);
+module.exports = mongoose.model("userTracking", useTrack);
