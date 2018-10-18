@@ -176,7 +176,9 @@ dbCon.connectToServer(function (err) {
 							associatedID: cookieInDB.associatedID
 						}, {
 							$push: {
-								recMoves: data.recMoves
+								recMoves: {
+									$each: data.recMoves
+								}
 							}
 						})
 					} else {
