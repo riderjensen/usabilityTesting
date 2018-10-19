@@ -191,6 +191,9 @@ dbCon.connectToServer(function (err) {
 			// may just need to send each data bit every second instead of sending every few seconds so we dont miss anything
 
 		});
+		socket.on('replayInformationID', (data) => {
+			console.log(data);
+		});
 		socket.on('disconnect', () => {
 			console.log('Disconnect Event');
 		});

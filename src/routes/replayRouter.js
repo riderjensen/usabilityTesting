@@ -6,7 +6,7 @@ const mongoUtil = require('../extraScripts/dbConnect');
 const replayRouter = express.Router();
 
 // anything sent to this router must contain the ID of the original test so that we can find it in mongo and retrieve the arrays that we need
-function router(nav) {
+function router() {
 	replayRouter.route('/')
 		.get((req, res) => {
 			res.redirect('/auth/profile')
@@ -18,18 +18,17 @@ function router(nav) {
 			(async function mongo() {
 				try {
 					let db = mongoUtil.getDb();
-					const col = db.collection('websites');
+					const col = db.collection('userTracking');
 
-					await col.findOne({
-						reqID
+					const testFound = await col.findOne({
+						associatedID: reqID
 					});
 
-					// we have found the specific test, now we need to pull the data related to the tests and send it to replay.ejs (UNFINSHED, Waiting on back end data structures)
+					const userArray = testFound.recMoves;
+					const initInfo = testFound.initInformation;
 					res.render('replay', {
-						nav,
-						// here we will pass URL
-						// here we will pass the array
-						// etc etc
+						userArray,
+						initInfo
 					});
 				} catch (err) {
 					console.log(err.stack);
