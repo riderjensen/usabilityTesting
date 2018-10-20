@@ -26,11 +26,11 @@ function router(nav) {
                 testFour,
                 testFive
             } = req.body;
-            const testArray = [testOne, testTwo, testThree, testFour, testFive];
+            const questionArray = [testOne, testTwo, testThree, testFour, testFive];
 
             // this will need to be optimized and fixed
-            while (testArray[testArray.length - 1] === undefined) {
-                testArray.pop();
+            while (questionArray[questionArray.length - 1] === undefined) {
+                questionArray.pop();
             }
             const date = new Date();
             const addedOn = date.getDate();
@@ -43,7 +43,7 @@ function router(nav) {
 
                     const website = new webStorage({
                         webURL,
-                        testArray,
+                        questionArray,
                         addedOn
                     });
                     await col.insertOne(website, (err) => {
@@ -54,7 +54,7 @@ function router(nav) {
                         requestURL(webURL, objectId);
                         req.webNoLogInID = objectId;
                         req.webNoLogInNav = nav;
-                        req.webNoLogInArray = testArray;
+                        req.webNoLogInArray = questionArray;
                         next();
                     });
                 } catch (err) {

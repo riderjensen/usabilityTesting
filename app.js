@@ -13,7 +13,7 @@ dbCon.connectToServer(function (err) {
 	const mongoose = require('mongoose');
 	const request = require('request');
 	const mongoUtil = require('./src/extraScripts/dbConnect');
-
+	const ObjectId = require('mongodb').ObjectID;
 
 	const mongoURI = 'mongodb://localhost/usabilityTesting';
 	const connectOptions = {
@@ -143,8 +143,8 @@ dbCon.connectToServer(function (err) {
 				userWidth: data.windowWidth,
 				userBrowserType: data.browserType,
 				userCookie: data.cookieID
-			}
-			console.log(userInitData);
+			};
+			let docsIns;
 			(async function createNewUserTest() {
 				try {
 					let db = mongoUtil.getDb();
@@ -154,11 +154,42 @@ dbCon.connectToServer(function (err) {
 						initInformation: userInitData,
 						recMoves: []
 					});
-					await col.insertOne(userTestInit);
+					await col.insertOne(userTestInit, (err, docIDInserted) => {
+						docsIns = docIDInserted.insertedId;
+					});
 				} catch (err) {
 					console.log(err);
 				}
-			}());
+			}()).then(
+				(async function addTestToWebsitesDB() {
+					try {
+						let db = mongoUtil.getDb();
+						const col = db.collection('websites');
+						const webTest = await col.findOne({
+							"_id": ObjectId(ourCookie)
+						});
+						const webID = ObjectId(webTest._id);
+						if (webID == ourCookie) {
+							const newVals = {
+								$push: {
+									testArray: docsIns
+								}
+							};
+							col.updateOne(webTest, newVals, (error) => {
+								if (error) {
+									throw error;
+								} else {
+									console.log(`Pushed ${newVals} to the db`);
+								}
+							});
+						} else {
+							console.log('There was a problem finding the website test that this came from');
+						}
+					} catch (err) {
+						console.log(err);
+					}
+				}())
+			);
 		});
 		socket.on('testingInfo', (data) => {
 			let ourCookie = data.userID;

@@ -24,10 +24,7 @@ const websiteStorage = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	questionArray: [{
-		// question that needs to be answered
-		question: String
-	}]
+	questionArray: Array
 });
 module.exports = mongoose.model("webStorage", websiteStorage);
 
