@@ -18,10 +18,14 @@ setInterval(function () {
         ease: Power2.easeNone,
         top: userMoves[i].y + '%'
 	});
+	console.log(userMoves[i]);
 	if (userMoves[i].ev == "clicked") {
 		pointer.style.left = userMoves[i].x+'%';
   		pointer.style.top = (userMoves[i].y + scrollOnPage ) + '%';
 	}
+	// if(userMoves[i].ev != String) {
+	// 	console.log('Object')
+	// }
     if (i === (userMoves.length - 1)) {
         // reset i to repeat the pattern
         i = -1;
