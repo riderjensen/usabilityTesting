@@ -12,6 +12,57 @@ const bcrypt = require('bcrypt');
 const authRouter = express.Router();
 
 function router(nav) {
+    authRouter.route('/')
+        .all((req, res, next) => {
+            if (req.user) {
+                next();
+            } else {
+                res.redirect('/');
+            }
+        })
+        .post((res, req) => {
+            // getting undefined respondes on req.body but not req
+            const {
+                testID,
+                username
+            } = req;
+            (async function storeData() {
+                try {
+                    let db = mongoUtil.getDb();
+                    const col = db.collection('websites');
+
+                    const idFromDB = await col.findOne({
+                        testID
+                    });
+                    if (idFromDB) {
+                        const usercol = db.collection('users');
+
+                        const userFromDB = await usercol.findOne({
+                            username
+                        });
+
+                        const newVals = {
+                            $push: {
+                                projects: testID
+                            }
+                        };
+                        usercol.updateOne(userFromDB, newVals, (error) => {
+                            if (error) {
+                                throw error;
+                            } else {
+                                console.log(`Pushed ${newVals} to the db`);
+                            }
+                        });
+                        res.send('Data posted');
+                    } else {
+                        console.log('No test with this ID can be found.')
+                    }
+
+                } catch (error) {
+                    console.log(error);
+                }
+            }());
+        });
     authRouter.route('/signUp')
         .get((req, res) => {
             res.redirect('/auth/profile');
@@ -91,59 +142,6 @@ function router(nav) {
         .get((req, res) => {
             res.send('This is the stats page');
         });
-    authRouter.route('/addTest')
-        .all((req, res, next) => {
-            if (req.user) {
-                next();
-            } else {
-                res.redirect('/');
-            }
-        })
-        // need to get user ID so that we can attach the test to the user tests in the user db
-        .get((res, req) => {
-            const {
-                username,
-                testID
-            } = req.body;
-            (async function storeData() {
-                try {
-                    let db = mongoUtil.getDb();
-                    const col = db.collection('websites');
-
-                    const idFromDB = await col.findOne({
-                        testID
-                    });
-                    if (idFromDB) {
-                        const usercol = db.collection('users');
-                        const userFromDB = await usercol.findOne({
-                            username
-                        });
-
-                        const newVals = {
-                            $push: {
-                                dataCollection: {
-                                    // Hopefully pushing existing ID into the empty array - UNTESTED
-                                    id: testID
-                                }
-                            }
-                        };
-                        col.update(userFromDB, newVals, (error) => {
-                            if (error) {
-                                throw error;
-                            } else {
-                                console.log(`Pushed ${newVals} to the db`);
-                            }
-                        });
-                        res.send('Data posted');
-                    } else {
-                        console.log('No test with this ID can be found.')
-                    }
-
-                } catch (error) {
-                    console.log(error);
-                }
-            }());
-        })
     return authRouter;
 }
 // exporting out the router

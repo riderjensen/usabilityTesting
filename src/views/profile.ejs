@@ -27,7 +27,7 @@
  aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
-			<form name="addTestForm" action="/auth/addTest" method="GET">
+			<form name="addTestForm" action="/auth/" method="post">
 				<div class="modal-header">
 					<h5 style="color:#000" class="modal-title" id="exampleModalLongTitle">Find A Test</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -41,7 +41,7 @@
 							<p style="color: #000;">Please enter the test ID below. The test ID is the last part of the URL given when you
 								created the test. If you do not have the ID, please contact support for help.</p>
 							<input type="text" name="testID" id="testID" placeholder="Test ID" required>
-							<input type="hidden" value="<%=userData.username%>">
+							<input type="hidden" name="username" id="username" value="<%=userData.username%>">
 
 						</div>
 					</div>
