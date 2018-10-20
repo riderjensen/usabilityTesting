@@ -138,6 +138,7 @@ dbCon.connectToServer(function (err) {
 		socket.on('initInformation', (data) => {
 			// bringing in the init data that should be sent to our db on the first page load
 			let ourCookie = data.cookieID;
+			console.log(ourCookie);
 			let userInitData = {
 				userHeight: data.windowHeight,
 				userWidth: data.windowWidth,
@@ -150,12 +151,12 @@ dbCon.connectToServer(function (err) {
 					let db = mongoUtil.getDb();
 					const col = db.collection('userTracking');
 					const userTestInit = new userTracking({
-						associatedID: ourCookie,
 						initInformation: userInitData,
 						recMoves: []
 					});
 					await col.insertOne(userTestInit, (err, docIDInserted) => {
 						docsIns = docIDInserted.insertedId;
+						socket.emit('testingID', docsIns);
 					});
 				} catch (err) {
 					console.log(err);
@@ -165,9 +166,11 @@ dbCon.connectToServer(function (err) {
 					try {
 						let db = mongoUtil.getDb();
 						const col = db.collection('websites');
+
 						const webTest = await col.findOne({
 							"_id": ObjectId(ourCookie)
 						});
+
 						const webID = ObjectId(webTest._id);
 						if (webID == ourCookie) {
 							const newVals = {
@@ -198,14 +201,12 @@ dbCon.connectToServer(function (err) {
 					let db = mongoUtil.getDb();
 					const col = db.collection('userTracking');
 					const cookieInDB = await col.findOne({
-						associatedID: ourCookie
+						"_id": ObjectId(ourCookie)
 					});
-					if (cookieInDB.associatedID === ourCookie) {
+					const webID = ObjectId(cookieInDB._id);
+					if (webID == ourCookie) {
 						// if we find the ID, we need to $push into the array
-						console.log(`We found it lads ${cookieInDB.associatedID}`);
-						db.collection('userTracking').updateOne({
-							associatedID: cookieInDB.associatedID
-						}, {
+						db.collection('userTracking').updateOne(cookieInDB, {
 							$push: {
 								recMoves: {
 									$each: data.recMoves

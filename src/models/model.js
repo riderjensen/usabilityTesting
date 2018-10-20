@@ -31,7 +31,6 @@ module.exports = mongoose.model("webStorage", websiteStorage);
 
 // associated id connects to projects in userStorage.projects array
 const useTrack = new Schema({
-	associatedID: String,
 	initInformation: Object,
 	// array of objects that we continuously push on to
 	recMoves: Array

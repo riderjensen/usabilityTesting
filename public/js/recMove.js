@@ -5,9 +5,17 @@ const d = new Date();
 // int socket
 let socket = io.connect();
 
+let testingID;
+
+socket.on('testingID', (data) => {
+	testingID = data;
+	cookieTest(testingID);
+	console.log(`Cookie test: ${testingID}`);
+});
+
 
 // for getting and setting a cookie
-function cookieTest() {
+function cookieTest(id) {
 	const name = "usableCookieTracking=";
 	const decodedCookie = decodeURIComponent(document.cookie);
 	const ca = decodedCookie.split(';');
@@ -26,22 +34,17 @@ function cookieTest() {
 	}
 	// didnt find cookie
 	if (cookieIsThere === false) {
-		// setting cookie
-		const pageURL = window.location.href;
-		const pageArray = pageURL.split('/');
-		const pageID = pageArray[pageArray.length - 1];
 
 		d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
 		const expires = "expires=" + d.toUTCString();
-		document.cookie = `usableCookieTracking=${pageID};${expires};path=/`;
+		document.cookie = `usableCookieTracking=${id};${expires};path=/`;
 		// set our cookie to init page ID
-		globalCookie = pageID;
+		globalCookie = id;
 	} else {
 		//found cookie and set it to first page ID
 		globalCookie = ourCookie.substring(name.length, ourCookie.length);
 	}
 }
-cookieTest();
 
 
 
@@ -81,15 +84,20 @@ let browser = function () {
 		"Don't know";
 };
 
-// and then simply check globalCookie against incoming array of information to make sure that the array we are pushing to is the correct one?
+
 // send interval time in initial information ID but then allow for user on backend to change replay information time?
+
+// setting cookie
+const pageURL = window.location.href;
+const pageArray = pageURL.split('/');
+const pageID = pageArray[pageArray.length - 1];
 
 const initInformation = {
 	'browserType': browser(),
 	'windowHeight': window.innerHeight,
 	'windowWidth': window.innerWidth,
 	'intervalTime': 1,
-	'cookieID': globalCookie
+	'cookieID': pageID
 }
 
 socket.emit('initInformation', initInformation);
