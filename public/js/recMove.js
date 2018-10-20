@@ -45,7 +45,7 @@ cookieTest();
 
 
 
-var browser = function () {
+let browser = function () {
 	// Return cached result if avalible, else get result then cache it.
 	if (browser.prototype._cachedResult)
 		return browser.prototype._cachedResult;
