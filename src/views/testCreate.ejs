@@ -55,7 +55,7 @@
 			<div class="row">
 				<div class="col-lg-8 mx-auto">
 					<h2>Link to test site and test parameters</h2>
-					<button class="button button-primary"><a href="<%=webNoLogInURLPull%>" target="_blank">Link to test site</a></button>
+
 					<ul class="list-group">
 						<%for (var i=0; i < webNoLogInArrayPull.length; i++) {%>
 						<li class="list-group-item">
@@ -65,6 +65,13 @@
 						</li>
 						<%}%>
 					</ul>
+
+					<h3>Link to send to users:</h3>
+					<p><a href="<%=webNoLogInURLPull%>" target="_blank">
+							<%=webNoLogInURLPull%></a></p>
+					<h3>Results Page:</h3>
+					<p><a href="<%=mainPage%>" target="_blank">
+							<%=mainPage%></a></p>
 				</div>
 			</div>
 		</div>
