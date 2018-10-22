@@ -21,15 +21,18 @@ function router() {
 					const col = db.collection('userTracking');
 
 					const testFound = await col.findOne({
-						"_id":ObjectId(reqID)
+						"_id": ObjectId(reqID)
 					});
-
-					const userArray = testFound.recMoves;
-					const initInfo = testFound.initInformation;
-					res.render('replay', {
-						userArray,
-						initInfo
-					});
+					if (testFound === null) {
+						console.log('Probably a cookie issue with someone having an old cookie when testing');
+					} else {
+						const userArray = testFound.recMoves;
+						const initInfo = testFound.initInformation;
+						res.render('replay', {
+							userArray,
+							initInfo
+						});
+					}
 				} catch (err) {
 					console.log(err.stack);
 				}
