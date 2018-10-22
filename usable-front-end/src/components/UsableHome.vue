@@ -6,16 +6,16 @@
 
       <v-flex xs12 class="text-sm-center">
         <input 
-          class="mt-4" 
+          class="mt-4 urlInputBox" 
           type="text" 
           placeholder="Enter Site Link..."
           v-model="urlInput">
         <transition name="fade">
-        <v-btn 
-          class="d-block ma-auto mt-3 pl-5 pr-5" 
+        <v-btn
+          class="d-block ma-auto mt-3 pl-5 pr-5 continueBtn" 
           round color="cyan" 
           @click="componentChange"
-          v-if="continueButton">CONTINUE<i class="ml-2 fas fa-chevron-right"></i></v-btn></transition>
+          :disabled="urlCheck">CONTINUE<i class="ml-2 fas fa-chevron-right"></i></v-btn></transition>
         <p class="pt-5">New to <span class=" font-italic font-weight-medium">usable</span>? <span style="text-decoration: underline;" class="learn">Click Here</span> to learn how to use the platform!</p>
       </v-flex>
     </v-layout>
@@ -25,8 +25,8 @@
   export default {
     data() {
       return {
-        continueButton: false,
-        urlInput: ''
+        urlInput: '',
+        urlCheck: true
       }
     },
     props: ['selectedComponent'],
@@ -38,8 +38,14 @@
     },
     watch: {
       urlInput() {
+        let urlInputBox = document.querySelector('.urlInputBox');
+        console.log(urlInputBox.style);
         if(this.urlInput.length > 5) {
-          this.continueButton = true;
+          this.urlCheck = false;
+          urlInputBox.style.borderColor = 'green';
+        } else {
+          this.urlCheck = true;
+          urlInputBox.style.borderColor = 'red';
         }
       }
     }
@@ -59,6 +65,7 @@
     padding: 10px 20px;
     width: 50%;
     background: rgb(14, 18, 20);
+    transition: all 1s;
   }
 
   .learn:hover {
