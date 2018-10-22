@@ -83,9 +83,13 @@ dbCon.connectToServer(function (err) {
 	const requestRouter = require('./src/routes/requestRouter.js')(nav);
 	app.use('/req', requestRouter);
 
-	// any requests pass through this area
+	// any replays pass through this area
 	const replayRouter = require('./src/routes/replayRouter.js')(nav);
 	app.use('/replay', replayRouter);
+
+	// any test main pages pass through this area
+	const resultsRouter = require('./src/routes/resultsRouter.js')(nav);
+	app.use('/results', resultsRouter);
 
 
 	// 404
@@ -180,8 +184,6 @@ dbCon.connectToServer(function (err) {
 							col.updateOne(webTest, newVals, (error) => {
 								if (error) {
 									throw error;
-								} else {
-									console.log(`Pushed ${newVals} to the db`);
 								}
 							});
 						} else {
