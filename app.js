@@ -138,7 +138,6 @@ dbCon.connectToServer(function (err) {
 		socket.on('initInformation', (data) => {
 			// bringing in the init data that should be sent to our db on the first page load
 			let ourCookie = data.cookieID;
-			console.log(ourCookie);
 			let userInitData = {
 				userHeight: data.windowHeight,
 				userWidth: data.windowWidth,

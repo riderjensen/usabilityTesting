@@ -1,6 +1,7 @@
 // required files
 const express = require('express');
 const mongoUtil = require('../extraScripts/dbConnect');
+const ObjectId = require('mongodb').ObjectID;
 
 
 const replayRouter = express.Router();
@@ -13,7 +14,6 @@ function router() {
 		});
 	replayRouter.route('/:id')
 		.get((req, res) => {
-			// grab the id
 			const reqID = req.params.id;
 			(async function mongo() {
 				try {
@@ -21,7 +21,7 @@ function router() {
 					const col = db.collection('userTracking');
 
 					const testFound = await col.findOne({
-						associatedID: reqID
+						"_id":ObjectId(reqID)
 					});
 
 					const userArray = testFound.recMoves;
