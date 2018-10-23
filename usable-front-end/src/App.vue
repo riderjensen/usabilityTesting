@@ -44,6 +44,10 @@ export default {
   background-size: cover;
 }
 
+.container {
+  padding: 0;
+}
+
 .component-fade-enter-active, .component-fade-leave-active {
   transition: opacity .3s ease;
 }

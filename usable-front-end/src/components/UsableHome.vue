@@ -15,8 +15,8 @@
           class="d-block ma-auto mt-3 pl-5 pr-5 continueBtn" 
           round color="cyan" 
           @click="componentChange"
-          :disabled="urlCheck">CONTINUE<i class="ml-2 fas fa-chevron-right"></i></v-btn></transition>
-        <p class="pt-5">New to <span class=" font-italic font-weight-medium">usable</span>? <span style="text-decoration: underline;" class="learn">Click Here</span> to learn how to use the platform!</p>
+          :disabled="false">CONTINUE<i class="ml-2 fas fa-chevron-right"></i></v-btn></transition>
+        <p class="pt-5">New to <span class="font-italic font-weight-medium">usable</span>? <span style="text-decoration: underline;" class="learn">Click Here</span> to learn how to use the platform!</p>
       </v-flex>
     </v-layout>
 </template>
@@ -32,6 +32,10 @@
     props: ['selectedComponent'],
     methods: { 
         componentChange() {
+        document.querySelector('#usable-home').style.backgroundImage = 'none';
+        document.querySelector('#usable-home').style.backgroundColor = '#fff';
+        document.querySelector('.navbar').style.backgroundImage = "url(/img/background.27769967.png)";
+        document.querySelector('.navbar').style.backgroundSize = 'cover';
         this.selectedComponent = 'UsableForm';
         this.$emit('changeComponent', this.selectedComponent);
       }

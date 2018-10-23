@@ -1,5 +1,5 @@
 <template>
-<v-layout align-center>
+<v-layout align-center class="navbar">
   <v-flex xs8>
     <img src="../assets/usable_logo.svg" alt="">
   </v-flex>
@@ -84,6 +84,10 @@ export default {
 </script>
 
 <style scoped>
+  .navbar {
+    padding: 24px;
+  }
+
   .login, .contact {
     cursor: pointer;
   }
