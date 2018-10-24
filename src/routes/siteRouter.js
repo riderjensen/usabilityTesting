@@ -7,6 +7,7 @@ const mongoose = require('../models/model');
 const webStorage = mongoose.model('webStorage');
 const extraScripts = require('../extraScripts/extra');
 const mongoUtil = require('../extraScripts/dbConnect');
+const querystring = require('querystring');
 
 const siteRouter = express.Router();
 
@@ -32,7 +33,7 @@ function router(nav) {
 
 			(async function createTest() {
 				try {
-
+					let objectId;
 					let db = mongoUtil.getDb();
 					const col = db.collection('websites');
 
@@ -42,14 +43,16 @@ function router(nav) {
 						addedOn
 					});
 					await col.insertOne(website, (err) => {
-						var objectId = website._id;
+						objectId = website._id;
 						const {
 							requestURL
 						} = extraScripts;
 						requestURL(webURL, objectId);
-						let encodeID = objectId;
-						let encodeArray = encodeURIComponent(questionArray);
-						res.redirect(`testCreate/?id=${encodeID}&array=${encodeArray}`);
+						let querystring = '/?';
+						for (let i = 0; i < questionArray.length; i++) {
+							querystring += `array=${questionArray[i]}&`
+						}
+						res.redirect("/site/testCreate" + querystring + 'id=' + objectId);
 						if (req.user) {
 							// add objectId into the user array
 							let username = req.user.username;
@@ -79,7 +82,6 @@ function router(nav) {
 						} else {
 							// we should display that they are not logged in and tell them about the benefits to making an account
 						}
-
 					});
 				} catch (err) {
 					console.log(err);
@@ -90,7 +92,7 @@ function router(nav) {
 		.get((req, res) => {
 			let URLPull = `http://localhost:3000/site/${req.query.id}`;
 			let mainPage = `http://localhost:3000/results/${req.query.id}`;
-			let ArrayPull = decodeURI(req.query.array);
+			let ArrayPull = req.query.array;
 			res.render('testCreate', {
 				nav,
 				URLPull,
