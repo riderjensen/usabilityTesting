@@ -10,7 +10,9 @@
           type="text" 
           placeholder="Enter Site Link..."
           v-model="urlInput">
+          <!-- <i class="fas fa-check fa-2x"></i> -->
         <transition name="fade">
+          
         <v-btn
           class="d-block ma-auto mt-3 pl-5 pr-5 continueBtn" 
           round color="cyan" 
@@ -47,6 +49,8 @@
         if(this.urlInput.length > 5) {
           this.urlCheck = false;
           urlInputBox.style.borderColor = 'green';
+          // document.querySelector('.fa-check').style.opacity = '1';
+          // document.querySelector('.fa-check').style.right = '420px';         
         } else {
           this.urlCheck = true;
           urlInputBox.style.borderColor = 'red';
@@ -74,12 +78,22 @@
     width: 50%;
     background: rgb(14, 18, 20);
     transition: all 1s;
+    position: relative;
   }
 
   .learn:hover {
   color: #00bcd4;
   cursor: pointer;
   }
+
+  /* .fa-check {
+    position: absolute;
+    top: 412px;
+    right: 375px;
+    color: green;
+    opacity: .0;
+    transition: all .7s;
+  } */
 
   .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
