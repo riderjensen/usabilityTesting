@@ -35,7 +35,7 @@ function router(nav) {
 			const date = new Date();
 			const addedOn = date.getDate();
 
-			(async function addTest() {
+			(async function createTest() {
 				try {
 
 					let db = mongoUtil.getDb();
@@ -55,6 +55,35 @@ function router(nav) {
 						req.webNoLogInID = objectId;
 						req.webNoLogInNav = nav;
 						req.webNoLogInArray = questionArray;
+						if (req.user) {
+							// add objectId into the user array
+							let username = req.user.username;
+							(async function addTestToUser() {
+								try {
+
+									let db = mongoUtil.getDb();
+									const col = db.collection('users');
+
+									const userFromDB = await col.findOne({
+										username
+									});
+									const newVals = {
+										$push: {
+											projects: objectId
+										}
+									};
+									col.updateOne(userFromDB, newVals, (error) => {
+										if (error) {
+											throw error;
+										}
+									});
+								} catch (err) {
+									console.log(err);
+								}
+							}());
+						} else {
+							// we should display that they are not logged in and tell them about the benefits to making an account
+						}
 						next();
 					});
 				} catch (err) {
