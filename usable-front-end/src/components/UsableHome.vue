@@ -54,6 +54,8 @@
         } else {
           this.urlCheck = true;
           urlInputBox.style.borderColor = 'red';
+          document.querySelector('.fa-check').style.opacity = '0';
+          document.querySelector('.fa-check').style.right = '0px'; 
         }
       }
     }
