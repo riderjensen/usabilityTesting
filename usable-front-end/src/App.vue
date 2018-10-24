@@ -45,7 +45,6 @@ export default {
   display: block;
 }
 
-
 .container {
   padding: 0;
 }

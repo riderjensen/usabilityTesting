@@ -7,15 +7,18 @@
         <hr class="mb-5">
           <v-form class="text-xs-left mb-5">
             <ul>
+              <transition-group name="list" tag="li">
               <li v-for="(task, i) in tasks" :key="i" class="list-item">
                 <h2 class="cyan--text mt-3">Task {{ i + 1 }}</h2>
                 <v-textarea
+                light
                 box
                 color="cyan"
                 name=""
                 placeholder="Enter your task here..."
               ></v-textarea>
               </li>
+              </transition-group>
             </ul>
               <hr>
           <i @click="addTask" class="mt-3 fas fa-plus-circle fa-2x green--text d-block text-xs-center"></i>
@@ -23,6 +26,7 @@
             class="mt-3 black--text"
             :value="alert"
             type="warning"
+            color="yellow"
             transition="scale-transition"
           > You may only have a maximum of <strong>5</strong> tasks.
           </v-alert>
@@ -47,7 +51,7 @@ export default {
     }
   },
   methods: {
-    addTask(i) {
+    addTask() {
       if(this.tasks.length < 5){
         const taskItem = document.querySelector('li')
         let newTaskItem = taskItem.cloneNode(true);
@@ -56,7 +60,7 @@ export default {
         this.alert = true;
         setTimeout(() => {
           this.alert = false;
-        }, 5000);
+        }, 3000);
       }
     }
   }
@@ -68,5 +72,18 @@ export default {
     opacity: .8;
     cursor: pointer;
     transition: opacity .2s;
+  }
+
+  textarea {
+    color: #333!important;
+  }
+
+  .list-enter-active, .list-leave-active {
+    transition: all .5s;
+  }
+
+  .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+    opacity: 0;
+    transform: translateX(-30px);
   }
 </style>
