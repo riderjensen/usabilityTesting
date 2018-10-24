@@ -85,7 +85,14 @@
 					<h2>Welcome to your dashboard,
 						<%=userData.username%>.</h2>
 					<div id="dashboard-content">
-						<p>It looks like you dont have any tests added to your account yet. <br />You can <a class="btn btn-default" href="/#start-test">start
+						<%for (var i=0; i < projects.length; i++) {%>
+						<li>
+							<a href="http://localhost:3000/results/<%=projects[i]%>">
+								<%=projects[i]%>
+							</a>
+						</li>
+						<%}%>
+						<p>You can <a class="btn btn-default" href="/#start-test">start
 								a new test</a> or <a class="btn btn-default" href="#" data-toggle="modal" data-target="#addTestModal">add an
 								old test</a></p>
 					</div>

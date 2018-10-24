@@ -129,23 +129,28 @@ function router(nav) {
 		})
 		.get((req, res) => {
 			// need to retrieve user data and send to screen
-			const userData = req.user;
-			res.render('profile', {
-				userData,
-				nav
-			});
+			let userData = req.user;
+			let username = req.user.username;
+			(async function getData() {
+				try {
+
+					let db = mongoUtil.getDb();
+					const col = db.collection('users');
+					const userFromDB = await col.findOne({
+						username
+					});
+					let projects = userFromDB.projects
+					res.render('profile', {
+						userData,
+						projects,
+						nav
+					});
+				} catch (error) {
+					console.log(error);
+				}
+			}());
+
 		})
-	authRouter.route('/stats')
-		.all((req, res, next) => {
-			if (req.user) {
-				next();
-			} else {
-				res.redirect('/');
-			}
-		})
-		.get((req, res) => {
-			res.send('This is the stats page');
-		});
 	return authRouter;
 }
 // exporting out the router
