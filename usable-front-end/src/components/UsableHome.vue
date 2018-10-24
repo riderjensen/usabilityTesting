@@ -10,7 +10,7 @@
           type="text" 
           placeholder="Enter Site Link..."
           v-model="urlInput">
-          <!-- <i class="fas fa-check fa-2x"></i> -->
+          <i class="fas fa-check fa-2x"></i>
         <transition name="fade">
           
         <v-btn
@@ -49,8 +49,8 @@
         if(this.urlInput.length > 5) {
           this.urlCheck = false;
           urlInputBox.style.borderColor = 'green';
-          // document.querySelector('.fa-check').style.opacity = '1';
-          // document.querySelector('.fa-check').style.right = '420px';         
+          document.querySelector('.fa-check').style.opacity = '1';
+          document.querySelector('.fa-check').style.right = '40px';         
         } else {
           this.urlCheck = true;
           urlInputBox.style.borderColor = 'red';
@@ -86,14 +86,14 @@
   cursor: pointer;
   }
 
-  /* .fa-check {
-    position: absolute;
-    top: 412px;
-    right: 375px;
+  .fa-check {
+    position: relative;
+    right: 0px;
+    top: 5px;
     color: green;
     opacity: .0;
-    transition: all .7s;
-  } */
+    transition: all .5s;
+  }
 
   .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
