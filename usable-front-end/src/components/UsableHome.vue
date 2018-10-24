@@ -60,7 +60,11 @@
 
 <style scoped>
   #main-section {
-    height: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 250px;
+    
   }
 
   input {
