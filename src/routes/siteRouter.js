@@ -11,12 +11,7 @@ const mongoUtil = require('../extraScripts/dbConnect');
 const siteRouter = express.Router();
 
 function router(nav) {
-	siteRouter.route('/testCreate')
-		.get((req, res) => {
-			res.render('testCreate', {
-				nav
-			});
-		})
+	siteRouter.route('/')
 		.post((req, res, next) => {
 			const {
 				webURL,
@@ -52,9 +47,9 @@ function router(nav) {
 							requestURL
 						} = extraScripts;
 						requestURL(webURL, objectId);
-						req.webNoLogInID = objectId;
-						req.webNoLogInNav = nav;
-						req.webNoLogInArray = questionArray;
+						let encodeID = objectId;
+						let encodeArray = encodeURIComponent(questionArray);
+						res.redirect(`testCreate/?id=${encodeID}&array=${encodeArray}`);
 						if (req.user) {
 							// add objectId into the user array
 							let username = req.user.username;
@@ -84,13 +79,26 @@ function router(nav) {
 						} else {
 							// we should display that they are not logged in and tell them about the benefits to making an account
 						}
-						next();
+
 					});
 				} catch (err) {
 					console.log(err);
 				}
 			}());
-		}, siteWithNoLogIn);
+		});
+	siteRouter.route('/testCreate')
+		.get((req, res) => {
+			let URLPull = `http://localhost:3000/site/${req.query.id}`;
+			let mainPage = `http://localhost:3000/results/${req.query.id}`;
+			let ArrayPull = decodeURI(req.query.array);
+			res.render('testCreate', {
+				nav,
+				URLPull,
+				ArrayPull,
+				mainPage
+
+			});
+		});
 	siteRouter.route('/:id')
 		.get((req, res) => {
 			const reqID = req.params.id;
@@ -106,16 +114,3 @@ function router(nav) {
 }
 // exporting out the router
 module.exports = router;
-
-function siteWithNoLogIn(req, res) {
-	let nav = req.webNoLogInNav;
-	let webNoLogInURLPull = `http://localhost:3000/site/${req.webNoLogInID}`;
-	let mainPage = `http://localhost:3000/results/${req.webNoLogInID}`;
-	let webNoLogInArrayPull = req.webNoLogInArray;
-	res.render('testCreate', {
-		nav,
-		webNoLogInURLPull,
-		webNoLogInArrayPull,
-		mainPage
-	});
-}
