@@ -1,7 +1,10 @@
 <template>
 <v-layout align-center class="navbar">
   <v-flex xs8>
-    <img src="../assets/usable_logo.svg" alt="">
+    <img 
+    class="logo"
+    src="../assets/usable_logo.svg" 
+    alt="Usable Logo">
   </v-flex>
 
   <v-flex xs4 class="text-xs-right">
@@ -77,7 +80,7 @@ export default {
   data() {
     return {
       dialog: false,
-      checkbox: false
+      checkbox: false,
     }
   }
 }
@@ -86,6 +89,10 @@ export default {
 <style scoped>
   .navbar {
     padding: 24px;
+  }
+
+  .logo {
+    cursor: pointer;
   }
 
   .login, .contact {

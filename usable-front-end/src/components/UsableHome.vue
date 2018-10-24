@@ -15,7 +15,7 @@
           class="d-block ma-auto mt-3 pl-5 pr-5 continueBtn" 
           round color="cyan" 
           @click="componentChange"
-          :disabled="false">CONTINUE<i class="ml-2 fas fa-chevron-right"></i></v-btn></transition>
+          :disabled="urlCheck">CONTINUE<i class="ml-2 fas fa-chevron-right"></i></v-btn></transition>
         <p class="pt-5">New to <span class="font-italic font-weight-medium">usable</span>? <span style="text-decoration: underline;" class="learn">Click Here</span> to learn how to use the platform!</p>
       </v-flex>
     </v-layout>
@@ -43,7 +43,7 @@
     watch: {
       urlInput() {
         let urlInputBox = document.querySelector('.urlInputBox');
-        console.log(urlInputBox.style);
+        // console.log(urlInputBox.style);
         if(this.urlInput.length > 5) {
           this.urlCheck = false;
           urlInputBox.style.borderColor = 'green';
