@@ -48,7 +48,6 @@ function router(nav) {
 						for (let i = 0; i < questionArray.length; i++) {
 							querystring += `array=${questionArray[i]}&`
 						}
-						res.redirect("/site/testCreate" + querystring + 'id=' + objectId);
 						if (req.user) {
 							// add objectId into the user array
 							let username = req.user.username;
@@ -75,8 +74,10 @@ function router(nav) {
 									console.log(err);
 								}
 							}());
+							res.redirect("/site/testCreate" + querystring + 'id=' + objectId);
 						} else {
 							// we should display that they are not logged in and tell them about the benefits to making an account
+							res.redirect("/site/testCreate" + querystring + "id=" + objectId + "&log=false");
 						}
 					});
 				} catch (err) {
@@ -89,13 +90,27 @@ function router(nav) {
 			let URLPull = `http://localhost:3000/site/${req.query.id}`;
 			let mainPage = `http://localhost:3000/results/${req.query.id}`;
 			let ArrayPull = req.query.array;
-			res.render('testCreate', {
-				nav,
-				URLPull,
-				ArrayPull,
-				mainPage
+			if (req.query.log) {
+				// message to users that are not logged in
+				let noLog = 'You are not currently logged in. Create a free account and add this test so that you can keep track of your results easier.'
+				res.render('testCreate', {
+					nav,
+					URLPull,
+					ArrayPull,
+					mainPage,
+					noLog
 
-			});
+				});
+			} else {
+				res.render('testCreate', {
+					nav,
+					URLPull,
+					ArrayPull,
+					mainPage
+
+				});
+			}
+
 		});
 	siteRouter.route('/:id')
 		.get((req, res) => {
