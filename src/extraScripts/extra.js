@@ -1,8 +1,5 @@
 const request = require('request');
 const fs = require('fs');
-const {
-	MongoClient
-} = require('mongodb');
 const shortid = require('shortid');
 const mongoUtil = require('../extraScripts/dbConnect');
 

@@ -1,8 +1,5 @@
 // required files
 const express = require('express');
-const {
-	MongoClient
-} = require('mongodb');
 const mongoose = require('../models/model');
 const mongoUtil = require('../extraScripts/dbConnect');
 const userStorage = mongoose.model('userStorage');
