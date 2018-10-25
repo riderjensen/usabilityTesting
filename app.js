@@ -9,7 +9,6 @@ dbCon.connectToServer(function (err) {
 	const bodyParser = require('body-parser');
 	const cookieParser = require('cookie-parser');
 	const session = require('express-session');
-	const extraScripts = require('./src/extraScripts/extra');
 	const mongoose = require('mongoose');
 	const request = require('request');
 	const mongoUtil = require('./src/extraScripts/dbConnect');
@@ -106,12 +105,31 @@ dbCon.connectToServer(function (err) {
 
 	// this function checks the files each night at midnight and deletes anything at a month old
 	function midNight() {
-		const {
-			resetAtMidnight
-		} = extraScripts;
-		resetAtMidnight();
+		setInterval(()=>{
+			(async function deleteFromDB() {
+				let now = new Date();
+				let theDate = now.getDate();
+				console.log(theDate);
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('websites');
+					// check the data structure to see if that will work
+					var myquery = {
+						createdAt: theDate
+					};
+					await col.deleteMany(myquery, function (err, obj) {
+						if (err) throw err;
+						console.log(obj.result.n + " document(s) deleted");
+					});
+				} catch (err) {
+					console.log(err);
+				}
+			}());
+		}, 86400000)
 	}
 	midNight();
+
+
 
 	// adding userTracking model for use in tracking
 	const userTracking = mongoose.model('userTracking');

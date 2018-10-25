@@ -1,6 +1,6 @@
 // required files
 const express = require('express');
-const extraScripts = require('../extraScripts/extra');
+const extraScripts = require('../extraScripts/scrapper');
 const shortid = require('shortid');
 
 const reqRouter = express.Router();

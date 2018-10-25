@@ -1,7 +1,6 @@
 const request = require('request');
 const fs = require('fs');
 const shortid = require('shortid');
-const mongoUtil = require('../extraScripts/dbConnect');
 
 
 
@@ -107,35 +106,5 @@ module.exports = {
 		} catch (err) {
 			console.log(`request issue: ${err}`);
 		}
-	},
-	resetAtMidnight() {
-		let now = new Date();
-		let theDate = now.getDate();
-		let night = new Date(
-			now.getFullYear(),
-			now.getMonth(),
-			now.getDate() + 1, // the next day
-			0, 0, 0 // at 00:00:00 hours
-		);
-		let msToMidnight = night.getTime() - now.getTime();
-
-		setTimeout(() => {
-			(async function deleteFromDB(theDate) {
-				try {
-					let db = mongoUtil.getDb();
-					const col = db.collection('websites');
-					var myquery = {
-						createdAt: theDate
-					};
-					await col.deleteMany(myquery, function (err, obj) {
-						if (err) throw err;
-						console.log(obj.result.n + " document(s) deleted");
-					});
-				} catch (err) {
-					console.log(err);
-				}
-			}());
-			resetAtMidnight(); //      Then, reset again next midnight.
-		}, msToMidnight);
 	}
 };
