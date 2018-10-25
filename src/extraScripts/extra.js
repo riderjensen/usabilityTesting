@@ -120,26 +120,22 @@ module.exports = {
 		let msToMidnight = night.getTime() - now.getTime();
 
 		setTimeout(() => {
-			deleteOldFiles(theDate); //      <-- This is the function being called at midnight.
+			(async function deleteFromDB(theDate) {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('websites');
+					var myquery = {
+						createdAt: theDate
+					};
+					await col.deleteMany(myquery, function (err, obj) {
+						if (err) throw err;
+						console.log(obj.result.n + " document(s) deleted");
+					});
+				} catch (err) {
+					console.log(err);
+				}
+			}());
 			resetAtMidnight(); //      Then, reset again next midnight.
 		}, msToMidnight);
-	},
-	// this is called every night at midnight to delete files that are a month old
-	deleteOldFiles(date) {
-		(async function deleteFromDB() {
-			try {
-				let db = mongoUtil.getDb();
-				const col = db.collection('websites');
-				var myquery = {
-					createdAt: date
-				};
-				await col.deleteMany(myquery, function (err, obj) {
-					if (err) throw err;
-					console.log(obj.result.n + " document(s) deleted");
-				});
-			} catch (err) {
-				console.log(err);
-			}
-		}());
 	}
 };
