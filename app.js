@@ -105,17 +105,21 @@ dbCon.connectToServer(function (err) {
 
 	// this function checks the files each night at midnight and deletes anything at a month old
 	function midNight() {
-		setInterval(()=>{
+		setInterval(() => {
 			(async function deleteFromDB() {
-				let now = new Date();
-				let theDate = now.getDate();
-				console.log(theDate);
 				try {
 					let db = mongoUtil.getDb();
 					const col = db.collection('websites');
-					// check the data structure to see if that will work
-					var myquery = {
-						createdAt: theDate
+
+					var date = new Date();
+					var daysToDeletion = 30;
+					var deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
+					console.log(deletionDate);
+
+					let myquery = {
+						createdAt: {
+							$lt: deletionDate
+						}
 					};
 					await col.deleteMany(myquery, function (err, obj) {
 						if (err) throw err;
