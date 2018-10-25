@@ -104,6 +104,7 @@ dbCon.connectToServer(function (err) {
 
 
 	// this function checks the files each night at midnight and deletes anything at a month old
+	// needs tweaking
 	function midNight() {
 		setInterval(() => {
 			(async function deleteFromDB() {
