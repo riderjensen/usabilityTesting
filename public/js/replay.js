@@ -34,8 +34,8 @@ setInterval(function () {
 			// window.scrollTo(0, ourObj.sScroll)
 			TweenLite.to(window, 1, {
 				scrollTo: {
-					y: 0,
-					x: ourObj.sScroll
+					y: ourObj.sScroll,
+					x: 0
 				},
 				ease: Power2.easeInOut
 			});
@@ -43,8 +43,8 @@ setInterval(function () {
 			// window.scrollTo(0, ourObj.eScroll)
 			TweenLite.to(window, 1, {
 				scrollTo: {
-					y: 0,
-					x: ourObj.eScroll
+					y: ourObj.eScroll,
+					x: 0
 				},
 				ease: Power2.easeInOut
 			});
