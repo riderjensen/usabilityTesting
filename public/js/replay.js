@@ -10,25 +10,33 @@ let scrollOnPage = 0;
 
 let i = 0;
 setInterval(function () {
-    TweenLite.to('#box', 1, {
-        ease: Power2.easeNone,
-        left: userMoves[i].x + '%'
-    });
-    TweenLite.to('#box', 1, {
-        ease: Power2.easeNone,
-        top: userMoves[i].y + '%'
+	TweenLite.to('#box', 1, {
+		ease: Power2.easeNone,
+		left: userMoves[i].x + '%'
 	});
-	console.log(userMoves[i]);
+	TweenLite.to('#box', 1, {
+		ease: Power2.easeNone,
+		top: userMoves[i].y + '%'
+	});
+
 	if (userMoves[i].ev == "clicked") {
-		pointer.style.left = userMoves[i].x+'%';
-  		pointer.style.top = (userMoves[i].y + scrollOnPage ) + '%';
+		pointer.style.left = userMoves[i].x + '%';
+		pointer.style.top = (userMoves[i].y + scrollOnPage) + '%';
 	}
-	// if(userMoves[i].ev != String) {
-	// 	console.log('Object')
-	// }
-    if (i === (userMoves.length - 1)) {
-        // reset i to repeat the pattern
-        i = -1;
-    }
-    i++;
+	if (userMoves[i].ev) {
+		let ourObj = userMoves[i].ev;
+		console.log(ourObj);
+		if (ourObj.type == 'start') {
+			window.scrollTo(0, ourObj.sScroll)
+		} else if (ourObj.type == 'end') {
+			window.scrollTo(0, ourObj.eScroll)
+		} else {
+			console.log('missing scroll event');
+		}
+	}
+	if (i >= (userMoves.length - 1)) {
+		// reset i to repeat the pattern
+		i = -1;
+	}
+	i++;
 }, 100);
