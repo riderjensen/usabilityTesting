@@ -5,8 +5,12 @@
 // const getID = location.href.split('/');
 // socket.emit('replayInformationID', getID[getID.length - 1]);
 
+
 const pointer = document.getElementById('pointer');
 let scrollOnPage = 0;
+// 10 every second
+// we need to let the user be able to modify this and change it so that they can replay at their leaisure
+let interval = 100;
 
 let i = 0;
 setInterval(function () {
@@ -27,9 +31,23 @@ setInterval(function () {
 		let ourObj = userMoves[i].ev;
 		console.log(ourObj);
 		if (ourObj.type == 'start') {
-			window.scrollTo(0, ourObj.sScroll)
+			// window.scrollTo(0, ourObj.sScroll)
+			TweenLite.to(window, 1, {
+				scrollTo: {
+					y: 0,
+					x: ourObj.sScroll
+				},
+				ease: Power2.easeInOut
+			});
 		} else if (ourObj.type == 'end') {
-			window.scrollTo(0, ourObj.eScroll)
+			// window.scrollTo(0, ourObj.eScroll)
+			TweenLite.to(window, 1, {
+				scrollTo: {
+					y: 0,
+					x: ourObj.eScroll
+				},
+				ease: Power2.easeInOut
+			});
 		} else {
 			console.log('missing scroll event');
 		}
@@ -39,4 +57,4 @@ setInterval(function () {
 		i = -1;
 	}
 	i++;
-}, 100);
+}, interval);
