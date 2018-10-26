@@ -42,6 +42,11 @@ export default {
 #usable-home {
   background-image: url("./assets/background.png");
   background-size: cover;
+  display: block;
+}
+
+.container {
+  padding: 0;
 }
 
 .component-fade-enter-active, .component-fade-leave-active {

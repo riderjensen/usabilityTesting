@@ -1,137 +1,89 @@
 <template>
-  <v-container style="max-width: 1000px">
-    <v-text-field
-      v-model="task"
-      label="Add your tasks here"
-      solo
-      @keydown.enter="create"
-    >
-      <v-fade-transition slot="append">
-        <v-icon
-          v-if="task"
-          @click="create"
-        >
-          add_circle
-        </v-icon>
-      </v-fade-transition>
-    </v-text-field>
-
-    <h2 class="display-1 success--text pl-3">
-      Tasks:&nbsp;
-      <v-fade-transition leave-absolute>
-        <span :key="`tasks-${tasks.length}`">
-          {{ tasks.length }}
-        </span>
-      </v-fade-transition>
-    </h2>
-
-    <v-divider class="mt-3"></v-divider>
-
-    <v-layout
-      my-1
-      align-center
-    >
-      <strong class="mx-3 info--text text--darken-3">
-        Remaining: {{ remainingTasks }}
-      </strong>
-
-      <v-divider vertical></v-divider>
-
-      <strong class="mx-3 black--text">
-        Completed: {{ completedTasks }}
-      </strong>
-
-      <v-spacer></v-spacer>
-
-      <v-progress-circular
-        :value="progress"
-        class="mr-2"
-      ></v-progress-circular>
+  <v-container>
+    <v-layout class="text-xs-center">
+      <v-flex xs12>
+        <h1 class="grey--text darken-4 display-2 font-weight-light pb-3 pt-5">Create Tasks</h1>
+        <p class="grey--text darken-4">Add custom tasks to have your Testers accomplish to get more data to help you better your sites navigation and usability. Press the (+) icon to add more than one task. <br><strong class="red--text">A MAXIMUM OF 5 TASKS MAY BE USED</strong></p>
+        <hr class="mb-5">
+          <v-form class="text-xs-left mb-5">
+            <ul>
+              <transition-group name="list" tag="li">
+              <li v-for="(task, i) in tasks" :key="i" class="list-item">
+                <h2 class="cyan--text mt-3">Task {{ i + 1 }}</h2>
+                <v-textarea
+                light
+                box
+                color="cyan"
+                name=""
+                placeholder="Enter your task here..."
+              ></v-textarea>
+              </li>
+              </transition-group>
+            </ul>
+              <hr>
+          <i @click="addTask" class="mt-3 fas fa-plus-circle fa-2x green--text d-block text-xs-center"></i>
+          <v-alert
+            class="mt-3 black--text"
+            :value="alert"
+            type="warning"
+            color="yellow"
+            transition="scale-transition"
+          > You may only have a maximum of <strong>5</strong> tasks.
+          </v-alert>
+            <p class="text-xs-center grey--text darken-4 mt-5">Submit tasks then receive a new link that you will send to your testers.</p>
+            <v-btn
+          class="d-block mt-3 ma-auto pl-5 pr-5" 
+          round color="cyan">SUBMIT TASKS</v-btn>
+          </v-form>
+      </v-flex>
     </v-layout>
-
-    <v-divider class="mb-3"></v-divider>
-
-    <v-card v-if="tasks.length > 0">
-      <v-slide-y-transition
-        class="py-0"
-        group
-        tag="v-list"
-      >
-        <template v-for="(task, i) in tasks">
-          <v-divider
-            v-if="i !== 0"
-            :key="`${i}-divider`"
-          ></v-divider>
-
-          <v-list-tile :key="`${i}-${task.text}`">
-            <v-list-tile-action>
-              <v-checkbox
-                v-model="task.done"
-                color="info darken-3"
-              >
-                <div
-                  slot="label"
-                  :class="task.done && 'grey--text' || 'text--primary'"
-                  class="ml-3"
-                  v-text="task.text"
-                ></div>
-              </v-checkbox>
-            </v-list-tile-action>
-
-            <v-spacer></v-spacer>
-
-            <v-scroll-x-transition>
-              <v-icon
-                v-if="task.done"
-                color="success"
-              >
-                check
-              </v-icon>
-            </v-scroll-x-transition>
-          </v-list-tile>
-        </template>
-      </v-slide-y-transition>
-    </v-card>
   </v-container>
 </template>
 
 <script>
-  export default {
-    data: () => ({
+export default {
+  data() {
+    return {
       tasks: [
-        {
-          done: false,
-          text: 'Foobar'
-        },
-        {
-          done: false,
-          text: 'Fizzbuzz'
-        }
+        {}
       ],
-      task: null
-    }),
-
-    computed: {
-      completedTasks () {
-        return this.tasks.filter(task => task.done).length
-      },
-      progress () {
-        return this.completedTasks / this.tasks.length * 100
-      },
-      remainingTasks () {
-        return this.tasks.length - this.completedTasks
-      }
-    },
-
-    methods: {
-      create () {
-        this.tasks.push({
-          done: false,
-          text: this.task
-        })
-
-        this.task = null
+      alert: false
+    }
+  },
+  methods: {
+    addTask() {
+      if(this.tasks.length < 5){
+        const taskItem = document.querySelector('li')
+        let newTaskItem = taskItem.cloneNode(true);
+        this.tasks.push(newTaskItem);
+      } else {
+        this.alert = true;
+        setTimeout(() => {
+          this.alert = false;
+        }, 3000);
       }
     }
   }
+}
 </script>
+
+<style scoped>
+  .fas:hover {
+    opacity: .8;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+
+  textarea {
+    color: #333!important;
+  }
+
+  .list-enter-active, .list-leave-active {
+    transition: all .5s;
+  }
+
+  .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+</style>
