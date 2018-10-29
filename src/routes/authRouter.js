@@ -5,7 +5,7 @@ const mongoUtil = require('../extraScripts/dbConnect');
 const userStorage = mongoose.model('userStorage');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const fs = require('fs');
+const ObjectId = require('mongodb').ObjectID;
 
 const authRouter = express.Router();
 
@@ -18,48 +18,51 @@ function router(nav) {
 				res.redirect('/');
 			}
 		})
-		.get((res, req) => {
+		.post((req, res) => {
 			// getting undefined respondes on req.body but not 
 			const {
 				testID,
-				username
-			} = req;
-			console.log(testID);
-			console.log(req);
+				ourUsername
+			} = req.body;
 			(async function storeData() {
 				try {
 					let db = mongoUtil.getDb();
 					const col = db.collection('websites');
 
 					const idFromDB = await col.findOne({
-						testID
+						"_id": ObjectId(testID)
 					});
 					if (idFromDB) {
 						const usercol = db.collection('users');
 
 						const userFromDB = await usercol.findOne({
-							username
+							"username": ourUsername
 						});
 
-						const newVals = {
-							$push: {
-								projects: testID
-							}
-						};
-						usercol.updateOne(userFromDB, newVals, (error) => {
-							if (error) {
-								throw error;
-							} else {
-								console.log(`Pushed ${newVals} to the db`);
-								res.redirect('/auth/profile');
-							}
-						});
-						res.send('Data posted');
+						if (userFromDB.projects.includes(testID)) {
+							// tell the user that they already have this test added
+							console.log('You already added this test');
+						} else {
+							const newVals = {
+								$push: {
+									projects: testID
+								}
+							};
+							await usercol.updateOne(userFromDB, newVals, (error) => {
+								if (error) {
+									throw error;
+								} else {
+									res.redirect('/profile');
+								}
+							});
+						}
+
 					} else {
+						// send an error to the user
 						console.log('No test with this ID can be found.')
 					}
-
 				} catch (error) {
+					// probably an incorrect testing id passed into mongo, send error to user
 					console.log(error);
 				}
 			}());
@@ -147,7 +150,7 @@ function router(nav) {
 				}
 			}());
 
-		})
+		});
 	return authRouter;
 }
 // exporting out the router
