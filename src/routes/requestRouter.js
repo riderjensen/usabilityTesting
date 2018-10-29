@@ -2,20 +2,29 @@
 const express = require('express');
 const extraScripts = require('../extraScripts/scrapper');
 const shortid = require('shortid');
+const fs = require('fs');
 
 const reqRouter = express.Router();
 
-function router(nav) {
+function router() {
 	reqRouter.route('/')
 		.get((req, res) => {
 			let webURL = req.query.url;
 			webURL = decodeURIComponent(webURL);
+			const newID = shortid.generate();
 			const {
 				requestURL
 			} = extraScripts;
-			let newID = shortid.generate();
 			requestURL(webURL, newID);
-			res.redirect(`/site/${newID}.ejs`)
+			let myTimeOut;
+			fs.watch('files', (eventType) => {
+				if (eventType) {
+					clearTimeout(myTimeOut);
+					myTimeOut = setTimeout(function () {
+						res.redirect(`/site/${newID}.ejs`)
+					}, 100);
+				}
+			});
 		});
 	return reqRouter;
 }

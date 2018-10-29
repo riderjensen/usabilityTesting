@@ -79,15 +79,15 @@ dbCon.connectToServer(function (err) {
 	app.use('/site', siteRouter);
 
 	// any requests pass through this area
-	const requestRouter = require('./src/routes/requestRouter.js')(nav);
+	const requestRouter = require('./src/routes/requestRouter.js')();
 	app.use('/req', requestRouter);
 
 	// any replays pass through this area
-	const replayRouter = require('./src/routes/replayRouter.js')(nav);
+	const replayRouter = require('./src/routes/replayRouter.js')();
 	app.use('/replay', replayRouter);
 
 	// any test main pages pass through this area
-	const resultsRouter = require('./src/routes/resultsRouter.js')(nav);
+	const resultsRouter = require('./src/routes/resultsRouter.js')();
 	app.use('/results', resultsRouter);
 
 
@@ -192,7 +192,7 @@ dbCon.connectToServer(function (err) {
 					try {
 						let db = mongoUtil.getDb();
 						const col = db.collection('websites');
-
+						// secondary pages are passing in url including ejs, need to just send cookie?
 						const webTest = await col.findOne({
 							"_id": ObjectId(ourCookie)
 						});
