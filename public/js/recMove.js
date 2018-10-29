@@ -188,7 +188,7 @@ function usableScrolling() {
 
 setInterval(function () {
 	let object = screenPercents(1);
-	if (objectArray.length > 50) {
+	if (objectArray.length > 10) {
 		let sendObj = {
 			userID: globalCookie,
 			recMoves: objectArray
