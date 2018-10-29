@@ -28,9 +28,11 @@ function router() {
 					} else {
 						const userArray = testFound.recMoves;
 						const initInfo = testFound.initInformation;
+						const ourString = `<iframe src="http://localhost:3000/site/5bd65271703fcb113831d6b6" class="ourContainer" style="position:relative; height: ${initInfo.userHeight}px; width: ${initInfo.userWidth}px">`;
 						res.render('replay', {
 							userArray,
-							initInfo
+							initInfo,
+							ourString
 						});
 					}
 				} catch (err) {
