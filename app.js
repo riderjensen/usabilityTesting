@@ -113,7 +113,7 @@ dbCon.connectToServer(function (err) {
 					const col = db.collection('websites');
 
 					var date = new Date();
-					var daysToDeletion = 30;
+					var daysToDeletion = 1; // 30
 					var deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
 					console.log(deletionDate);
 
@@ -130,7 +130,8 @@ dbCon.connectToServer(function (err) {
 					console.log(err);
 				}
 			}());
-		}, 86400000)
+			//86400000
+		}, 100000)
 	}
 	midNight();
 
