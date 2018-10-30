@@ -12,6 +12,11 @@ let scrollOnPage = 0;
 // we need to let the user be able to modify this and change it so that they can replay at their leaisure
 let interval = 100;
 
+
+const result = userMoves.filter((move, i) => {
+	move.ev ? i : false
+});
+
 let i = 0;
 setInterval(function () {
 	TweenLite.to('#box', 1, {
