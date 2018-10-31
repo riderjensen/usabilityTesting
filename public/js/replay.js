@@ -19,12 +19,16 @@ userMoves.forEach((move, i) => {
 		scrollIndexArray.push(i);
 	}
 });
-console.log(scrollIndexArray);
 // iterator for userMoves
 let i = 0;
 // iterator for scrolling object
 let j = 0;
 setInterval(function () {
+	if (i >= (userMoves.length - 1)) {
+		// reset i and j to repeat the pattern
+		i = 0;
+		j = 0;
+	}
 	TweenLite.to('#box', 1, {
 		ease: Power2.easeNone,
 		left: userMoves[i].x + '%'
@@ -40,25 +44,24 @@ setInterval(function () {
 	}
 	if (typeof userMoves[i].ev === "object") {
 		// if the start scroll is here then do tween otherwise if it is just end scroll then dont do anything?
-		let ourTime = scrollIndexArray[j + 1] - scrollIndexArray[j];
-		console.log(ourTime);
-		// this should get the start usermove object
-		// userMoves[scrollIndexArray[j]]
-		// this should get the end usermove object
-		// userMoves[scrollIndexArray[j+1]]
-		let ourObj = userMoves[scrollIndexArray[j + 1]].ev;
-		console.log(ourObj);
-		TweenLite.to(window, ourTime, {
-			scrollTo: {
-				y: ourObj.eScroll,
-				x: 0
-			},
-			ease: Power2.easeInOut
-		});
-	}
-	if (i >= (userMoves.length - 1)) {
-		// reset i to repeat the pattern
-		i = -1;
+		let ourObject = userMoves[i].ev;
+		if (ourObject.type == 'start') {
+			let ourTime = (scrollIndexArray[j + 1] - scrollIndexArray[j]) / (interval / 10);
+			// this should get the start usermove object
+			// userMoves[scrollIndexArray[j]]
+			// this should get the end usermove object
+			// userMoves[scrollIndexArray[j+1]]
+			let ourObj = userMoves[scrollIndexArray[j + 1]].ev;
+			TweenLite.to(window, ourTime, {
+				scrollTo: {
+					y: ourObj.eScroll,
+					x: 0
+				},
+				ease: Power2.easeInOut
+			});
+			j += 2;
+		}
+
 	}
 	i++;
 
