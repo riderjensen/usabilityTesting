@@ -33,6 +33,10 @@ module.exports = mongoose.model("webStorage", websiteStorage);
 const useTrack = new Schema({
 	initInformation: Object,
 	// array of objects that we continuously push on to
-	recMoves: Array
+	recMoves: Array,
+	createdAt: {
+		type: Date,
+		default: Date.now
+	}
 });
 module.exports = mongoose.model("userTracking", useTrack);

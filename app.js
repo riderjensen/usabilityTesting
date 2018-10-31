@@ -102,20 +102,40 @@ dbCon.connectToServer(function (err) {
 		res.render('index');
 	});
 
-
-	// this function checks the files each night at midnight and deletes anything at a month old
-	// needs tweaking
+	// need to delete website IDs from users collection
+	// delete
 	function midNight() {
 		setInterval(() => {
-			(async function deleteFromDB() {
+			(async function deleteWebsiteFromDB() {
 				try {
 					let db = mongoUtil.getDb();
 					const col = db.collection('websites');
 
 					var date = new Date();
-					var daysToDeletion = 1; // 30
+					var daysToDeletion = 0; // 30
 					var deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
-					console.log(deletionDate);
+
+					let myquery = {
+						createdAt: {
+							$lt: deletionDate
+						}
+					};
+					const ourResults = col.find(myquery);
+					await col.deleteMany(myquery, function (err, obj) {
+						if (err) throw err;
+					});
+				} catch (err) {
+					console.log(err);
+				}
+			}());
+			(async function deleteUsertestFromDB() {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('userTracking');
+
+					var date = new Date();
+					var daysToDeletion = 0; // 30
+					var deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
 
 					let myquery = {
 						createdAt: {
@@ -124,14 +144,13 @@ dbCon.connectToServer(function (err) {
 					};
 					await col.deleteMany(myquery, function (err, obj) {
 						if (err) throw err;
-						console.log(obj.result.n + " document(s) deleted");
 					});
 				} catch (err) {
 					console.log(err);
 				}
 			}());
-			//86400000
-		}, 100000)
+		}, 86400000)
+
 	}
 	midNight();
 
