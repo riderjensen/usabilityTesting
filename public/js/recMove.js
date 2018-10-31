@@ -13,51 +13,6 @@ const pageArray = pageURL.split('/');
 const pageID = pageArray[pageArray.length - 1];
 
 
-// for getting and setting a cookie
-function cookieTest() {
-	const name = "usableCookieTracking=";
-	const decodedCookie = decodeURIComponent(document.cookie);
-	const ca = decodedCookie.split(';');
-	let c;
-	let ourCookie;
-	let cookieIsThere = false;
-	for (let i = 0; i < ca.length; i++) {
-		c = ca[i];
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			cookieIsThere = true;
-			ourCookie = c;
-		}
-	}
-	// didnt find cookie
-	if (cookieIsThere === false) {
-		d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
-		const expires = "expires=" + d.toUTCString();
-		document.cookie = `usableCookieTracking=${id};${expires};path=/`;
-		// set our cookie to init page ID
-		const initInformation = {
-			'browserType': browser(),
-			'windowHeight': window.innerHeight,
-			'windowWidth': window.innerWidth,
-			'intervalTime': 1
-		}
-		socket.emit('initInformation', initInformation);
-	} else {
-		//found cookie and set it to first page ID
-		globalCookie = ourCookie.substring(name.length, ourCookie.length);
-		console.log(`Old Cookie: ${globalCookie}`);
-	}
-}
-
-socket.on('testingID', (data) => {
-	globalCookie = data;
-	console.log(`New cookie set ${globalCookie}`)
-});
-
-
-
 let browser = function () {
 	// Return cached result if avalible, else get result then cache it.
 	if (browser.prototype._cachedResult)
@@ -93,6 +48,52 @@ let browser = function () {
 		isEdge ? 'Edge' :
 		"Don't know";
 };
+
+
+// for getting and setting a cookie
+function cookieTest() {
+	const name = "usableCookieTracking=";
+	const decodedCookie = decodeURIComponent(document.cookie);
+	const ca = decodedCookie.split(';');
+	let c;
+	let ourCookie;
+	let cookieIsThere = false;
+	for (let i = 0; i < ca.length; i++) {
+		c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			cookieIsThere = true;
+			ourCookie = c;
+		}
+	}
+	// didnt find cookie
+	if (cookieIsThere === false) {
+		d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
+		const expires = "expires=" + d.toUTCString();
+		document.cookie = `usableCookieTracking=${pageID};${expires};path=/`;
+		// set our cookie to init page ID
+		const initInformation = {
+			'browserType': browser(),
+			'windowHeight': window.innerHeight,
+			'windowWidth': window.innerWidth,
+			'intervalTime': 1
+		}
+		socket.emit('initInformation', initInformation);
+	} else {
+		//found cookie and set it to first page ID
+		globalCookie = ourCookie.substring(name.length, ourCookie.length);
+		console.log(`Old Cookie: ${globalCookie}`);
+	}
+}
+cookieTest();
+socket.on('testingID', (data) => {
+	globalCookie = data;
+	console.log(`New cookie set ${globalCookie}`)
+});
+
+
 
 
 
@@ -174,7 +175,6 @@ function usableScrolling() {
 // ****** Mouse Moves ******
 
 setInterval(function () {
-	console.log(globalCookie);
 	let object = screenPercents(1);
 	if (objectArray.length > 10) {
 		let sendObj = {
