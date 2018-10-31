@@ -7,12 +7,6 @@ let socket = io.connect();
 
 let testingID;
 
-socket.on('testingID', (data) => {
-	testingID = data;
-	cookieTest(testingID);
-	console.log(`Cookie set ${testingID}`)
-});
-
 // setting cookie
 const pageURL = window.location.href;
 const pageArray = pageURL.split('/');
@@ -20,7 +14,7 @@ const pageID = pageArray[pageArray.length - 1];
 
 
 // for getting and setting a cookie
-function cookieTest(id) {
+function cookieTest() {
 	const name = "usableCookieTracking=";
 	const decodedCookie = decodeURIComponent(document.cookie);
 	const ca = decodedCookie.split(';');
@@ -43,15 +37,12 @@ function cookieTest(id) {
 		const expires = "expires=" + d.toUTCString();
 		document.cookie = `usableCookieTracking=${id};${expires};path=/`;
 		// set our cookie to init page ID
-		globalCookie = id;
 		const initInformation = {
 			'browserType': browser(),
 			'windowHeight': window.innerHeight,
 			'windowWidth': window.innerWidth,
-			'intervalTime': 1,
-			'cookieID': pageID
+			'intervalTime': 1
 		}
-		console.log(`New Cookie: ${globalCookie}`);
 		socket.emit('initInformation', initInformation);
 	} else {
 		//found cookie and set it to first page ID
@@ -59,7 +50,11 @@ function cookieTest(id) {
 		console.log(`Old Cookie: ${globalCookie}`);
 	}
 }
-cookieTest();
+
+socket.on('testingID', (data) => {
+	globalCookie = data;
+	console.log(`New cookie set ${globalCookie}`)
+});
 
 
 
@@ -159,7 +154,6 @@ function usableScrolling() {
 		}
 		// setting event to object on the scroll event
 		objectArray[objectArray.length - 1].ev = scrollObj;
-		console.log(objectArray);
 	}
 
 	// wait a half of a second before resetting so that we can get a new scroll time
