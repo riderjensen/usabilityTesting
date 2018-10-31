@@ -188,8 +188,7 @@ dbCon.connectToServer(function (err) {
 			let userInitData = {
 				userHeight: data.windowHeight,
 				userWidth: data.windowWidth,
-				userBrowserType: data.browserType,
-				userCookie: data.cookieID
+				userBrowserType: data.browserType
 			};
 			let docsIns;
 			(async function createNewUserTest() {
@@ -239,6 +238,7 @@ dbCon.connectToServer(function (err) {
 			);
 		});
 		socket.on('testingInfo', (data) => {
+			
 			let ourCookie = data.userID;
 			(async function addRecMoves() {
 				try {

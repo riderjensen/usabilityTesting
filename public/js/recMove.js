@@ -7,45 +7,10 @@ let socket = io.connect();
 
 let testingID;
 
-socket.on('testingID', (data) => {
-	testingID = data;
-	cookieTest(testingID);
-	console.log(`Cookie test: ${testingID}`);
-});
-
-
-// for getting and setting a cookie
-function cookieTest(id) {
-	const name = "usableCookieTracking=";
-	const decodedCookie = decodeURIComponent(document.cookie);
-	const ca = decodedCookie.split(';');
-	let c;
-	let ourCookie;
-	let cookieIsThere = false;
-	for (let i = 0; i < ca.length; i++) {
-		c = ca[i];
-		while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			cookieIsThere = true;
-			ourCookie = c;
-		}
-	}
-	// didnt find cookie
-	if (cookieIsThere === false) {
-
-		d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
-		const expires = "expires=" + d.toUTCString();
-		document.cookie = `usableCookieTracking=${id};${expires};path=/`;
-		// set our cookie to init page ID
-		globalCookie = id;
-	} else {
-		//found cookie and set it to first page ID
-		globalCookie = ourCookie.substring(name.length, ourCookie.length);
-	}
-}
-
+// setting cookie
+const pageURL = window.location.href;
+const pageArray = pageURL.split('/');
+const pageID = pageArray[pageArray.length - 1];
 
 
 let browser = function () {
@@ -85,22 +50,50 @@ let browser = function () {
 };
 
 
-// send interval time in initial information ID but then allow for user on backend to change replay information time?
-
-// setting cookie
-const pageURL = window.location.href;
-const pageArray = pageURL.split('/');
-const pageID = pageArray[pageArray.length - 1];
-
-const initInformation = {
-	'browserType': browser(),
-	'windowHeight': window.innerHeight,
-	'windowWidth': window.innerWidth,
-	'intervalTime': 1,
-	'cookieID': pageID
+// for getting and setting a cookie
+function cookieTest() {
+	const name = "usableCookieTracking=";
+	const decodedCookie = decodeURIComponent(document.cookie);
+	const ca = decodedCookie.split(';');
+	let c;
+	let ourCookie;
+	let cookieIsThere = false;
+	for (let i = 0; i < ca.length; i++) {
+		c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			cookieIsThere = true;
+			ourCookie = c;
+		}
+	}
+	// didnt find cookie
+	if (cookieIsThere === false) {
+		d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
+		const expires = "expires=" + d.toUTCString();
+		document.cookie = `usableCookieTracking=${pageID};${expires};path=/`;
+		// set our cookie to init page ID
+		const initInformation = {
+			'browserType': browser(),
+			'windowHeight': window.innerHeight,
+			'windowWidth': window.innerWidth,
+			'intervalTime': 1
+		}
+		socket.emit('initInformation', initInformation);
+	} else {
+		//found cookie and set it to first page ID
+		globalCookie = ourCookie.substring(name.length, ourCookie.length);
+		console.log(`Old Cookie: ${globalCookie}`);
+	}
 }
+cookieTest();
+socket.on('testingID', (data) => {
+	globalCookie = data;
+	console.log(`New cookie set ${globalCookie}`)
+});
 
-socket.emit('initInformation', initInformation);
+
 
 
 
@@ -108,10 +101,6 @@ socket.emit('initInformation', initInformation);
 
 // ******************************
 // ****** Tracking Section ******
-// eventKey: 
-// 1 - mouse move(called every 0.1 secs)
-// 2 - click
-// 3 - scroll
 // ******************************
 
 
@@ -166,7 +155,6 @@ function usableScrolling() {
 		}
 		// setting event to object on the scroll event
 		objectArray[objectArray.length - 1].ev = scrollObj;
-		console.log(objectArray);
 	}
 
 	// wait a half of a second before resetting so that we can get a new scroll time
@@ -191,6 +179,7 @@ setInterval(function () {
 	if (objectArray.length > 10) {
 		let sendObj = {
 			userID: globalCookie,
+			pageName: pageID,
 			recMoves: objectArray
 		};
 		// push testArray to the app
