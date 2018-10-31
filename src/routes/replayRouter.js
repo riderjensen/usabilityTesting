@@ -18,28 +18,35 @@ function router() {
 			(async function mongo() {
 				try {
 					let db = mongoUtil.getDb();
-					const col = db.collection('userTracking');
+					let webCol = db.collection('websites');
+					const websiteFind = await webCol.findOne({
+						"testArray": ObjectId(reqID)
+					})
+					const ourWeb = websiteFind;
+					(async function anotherMongo() {
+						try {
+							const ourUpperTestId = ObjectId(ourWeb._id);
+							let col = db.collection('userTracking');
+							const findTracking = await col.findOne({
+								"_id": ObjectId(reqID)
+							});
+							const userArray = findTracking.recMoves;
+							const initInfo = findTracking.initInformation;
+							const ourString = `<iframe src="http://localhost:3000/site/${ourUpperTestId}" class="ourContainer" style="position:relative; height: ${initInfo.userHeight}px; width: ${initInfo.userWidth}px">`;
+							res.render('replay', {
+								userArray,
+								initInfo,
+								ourString
+							});
+						} catch (err) {
+							console.log(err);
+						}
 
-					const testFound = await col.findOne({
-						"_id": ObjectId(reqID)
-					});
-					if (testFound === null) {
-						console.log('Probably a cookie issue with someone having an old cookie when testing');
-					} else {
-						const userArray = testFound.recMoves;
-						const initInfo = testFound.initInformation;
-						const ourString = `<iframe src="http://localhost:3000/site/5bd65271703fcb113831d6b6" class="ourContainer" style="position:relative; height: ${initInfo.userHeight}px; width: ${initInfo.userWidth}px">`;
-						res.render('replay', {
-							userArray,
-							initInfo,
-							ourString
-						});
-					}
+					}());
 				} catch (err) {
 					console.log(err.stack);
 				}
 			}());
-
 		});
 	return replayRouter;
 }
