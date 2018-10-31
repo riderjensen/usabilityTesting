@@ -239,6 +239,7 @@ dbCon.connectToServer(function (err) {
 			);
 		});
 		socket.on('testingInfo', (data) => {
+			console.log(data);
 			let ourCookie = data.userID;
 			(async function addRecMoves() {
 				try {

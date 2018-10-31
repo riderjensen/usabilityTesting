@@ -10,8 +10,13 @@ let testingID;
 socket.on('testingID', (data) => {
 	testingID = data;
 	cookieTest(testingID);
-	console.log(`Cookie test: ${testingID}`);
+	console.log(`Cookie set ${testingID}`)
 });
+
+// setting cookie
+const pageURL = window.location.href;
+const pageArray = pageURL.split('/');
+const pageID = pageArray[pageArray.length - 1];
 
 
 // for getting and setting a cookie
@@ -34,17 +39,27 @@ function cookieTest(id) {
 	}
 	// didnt find cookie
 	if (cookieIsThere === false) {
-
 		d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
 		const expires = "expires=" + d.toUTCString();
 		document.cookie = `usableCookieTracking=${id};${expires};path=/`;
 		// set our cookie to init page ID
 		globalCookie = id;
+		const initInformation = {
+			'browserType': browser(),
+			'windowHeight': window.innerHeight,
+			'windowWidth': window.innerWidth,
+			'intervalTime': 1,
+			'cookieID': pageID
+		}
+		console.log(`New Cookie: ${globalCookie}`);
+		socket.emit('initInformation', initInformation);
 	} else {
 		//found cookie and set it to first page ID
 		globalCookie = ourCookie.substring(name.length, ourCookie.length);
+		console.log(`Old Cookie: ${globalCookie}`);
 	}
 }
+cookieTest();
 
 
 
@@ -85,33 +100,11 @@ let browser = function () {
 };
 
 
-// send interval time in initial information ID but then allow for user on backend to change replay information time?
-
-// setting cookie
-const pageURL = window.location.href;
-const pageArray = pageURL.split('/');
-const pageID = pageArray[pageArray.length - 1];
-
-const initInformation = {
-	'browserType': browser(),
-	'windowHeight': window.innerHeight,
-	'windowWidth': window.innerWidth,
-	'intervalTime': 1,
-	'cookieID': pageID
-}
-
-socket.emit('initInformation', initInformation);
-
-
 
 
 
 // ******************************
 // ****** Tracking Section ******
-// eventKey: 
-// 1 - mouse move(called every 0.1 secs)
-// 2 - click
-// 3 - scroll
 // ******************************
 
 
@@ -187,10 +180,12 @@ function usableScrolling() {
 // ****** Mouse Moves ******
 
 setInterval(function () {
+	console.log(globalCookie);
 	let object = screenPercents(1);
 	if (objectArray.length > 10) {
 		let sendObj = {
 			userID: globalCookie,
+			pageName: pageID,
 			recMoves: objectArray
 		};
 		// push testArray to the app
