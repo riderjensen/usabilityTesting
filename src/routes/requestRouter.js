@@ -22,7 +22,7 @@ function router() {
 					clearTimeout(myTimeOut);
 					myTimeOut = setTimeout(function () {
 						res.redirect(`/site/${newID}.ejs`)
-					}, 100);
+					}, 2000);
 				}
 			});
 		});
