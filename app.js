@@ -109,18 +109,37 @@ dbCon.connectToServer(function (err) {
 			(async function deleteWebsiteFromDB() {
 				try {
 					let db = mongoUtil.getDb();
+
 					const col = db.collection('websites');
-
-					var date = new Date();
-					var daysToDeletion = 0; // 30
-					var deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
-
+					const date = new Date();
+					const daysToDeletion = 0; // 30
+					const deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
 					let myquery = {
 						createdAt: {
 							$lt: deletionDate
 						}
 					};
-					const ourResults = col.find(myquery);
+					// find all the ones made pasts my delettion date
+					const ourList = await col.find(myquery, function (err, obj) {
+						if (err) throw err;
+					});
+					console.log(ourList);
+
+					// for each object in the array, I need to find the user.projects array that it belongs to and $pull
+					// untested
+					let webCol = db.collection('users');
+					ourList.forEach(async (item) => {
+						await webCol.update({
+							$pull: {
+								'user.projects': {
+									projects: 'item'
+								}
+							}
+						})
+					})
+
+
+					// delete all websites ones that are past the date
 					await col.deleteMany(myquery, function (err, obj) {
 						if (err) throw err;
 					});
