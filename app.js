@@ -128,14 +128,11 @@ dbCon.connectToServer(function (err) {
 							try {
 								//2628000000
 								let oneMonth = Date.now() + 1000;
-								console.log(ObjectId(item._id))
 								if ((Date.now() - item.createdAt) >= 1000) {
-									await webCol.updateOne({
-										$unset: {
-											'item.projects': {
-												date: {
-													$gt: oneMonth
-												}
+									await webCol.updateOne({}, {
+										$pull: {
+											'date': {
+												$gt: oneMonth
 											}
 										}
 									})
