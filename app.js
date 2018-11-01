@@ -112,7 +112,7 @@ dbCon.connectToServer(function (err) {
 					const col = db.collection('websites');
 
 					const date = new Date();
-					const daysToDeletion = -30; // 30
+					const daysToDeletion = 30;
 					const deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
 					let myquery = {
 						createdAt: {
@@ -123,35 +123,38 @@ dbCon.connectToServer(function (err) {
 					// find all the ones made pasts my deletion date
 					await col.find(myquery).toArray(function (err, obj) {
 						if (err) throw err;
-						let webCol = db.collection('users');
 						obj.forEach(async (item) => {
 							try {
-								//2628000000
-								let oneMonth = Date.now() + 1000;
-								if ((Date.now() - item.createdAt) >= 1000) {
-									await webCol.updateOne({}, {
-										$pull: {
-											'date': {
-												$gt: oneMonth
-											}
+								let webCol = db.collection('users');
+								let newQuery = {
+									$pull: {
+										projects: {
+											objectId: item._id
 										}
-									})
-								}
+
+									}
+								};
+								// delete from the project array in users
+								await webCol.updateOne({
+									"projects.objectId": ObjectId(item._id)
+								}, newQuery);
+								// delete all websites ones that are past the date
+								await col.deleteMany(myquery, function (err, obj) {
+									if (err) throw err;
+								});
+								// delete all user Tracking that are past the date
+								const usercol = db.collection('userTracking');
+								await usercol.deleteMany(myquery, function (err, obj) {
+									if (err) throw err;
+								});
+
 							} catch (err) {
 								console.log(err)
 							}
 						})
-					});
+					})
 
-					// delete all websites ones that are past the date
-					await col.deleteMany(myquery, function (err, obj) {
-						if (err) throw err;
-					});
-					// delete all user Tracking that are past the date
-					const usercol = db.collection('userTracking');
-					await usercol.deleteMany(myquery, function (err, obj) {
-						if (err) throw err;
-					});
+
 				} catch (err) {
 					console.log(err);
 				}
