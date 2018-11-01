@@ -109,66 +109,58 @@ dbCon.connectToServer(function (err) {
 			(async function deleteWebsiteFromDB() {
 				try {
 					let db = mongoUtil.getDb();
-
 					const col = db.collection('websites');
+
 					const date = new Date();
-					const daysToDeletion = 0; // 30
+					const daysToDeletion = -30; // 30
 					const deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
 					let myquery = {
 						createdAt: {
 							$lt: deletionDate
 						}
 					};
-					// find all the ones made pasts my delettion date
-					const ourList = await col.find(myquery, function (err, obj) {
-						if (err) throw err;
-					});
-					console.log(ourList);
 
-					// for each object in the array, I need to find the user.projects array that it belongs to and $pull
-					// untested
-					let webCol = db.collection('users');
-					ourList.forEach(async (item) => {
-						await webCol.update({
-							$pull: {
-								'user.projects': {
-									projects: 'item'
+					// find all the ones made pasts my deletion date
+					await col.find(myquery).toArray(function (err, obj) {
+						if (err) throw err;
+						let webCol = db.collection('users');
+						obj.forEach(async (item) => {
+							try {
+								//2628000000
+								let oneMonth = Date.now() + 1000;
+								console.log(ObjectId(item._id))
+								if ((Date.now() - item.createdAt) >= 1000) {
+									await webCol.updateOne({
+										$unset: {
+											'item.projects': {
+												date: {
+													$gt: oneMonth
+												}
+											}
+										}
+									})
 								}
+							} catch (err) {
+								console.log(err)
 							}
 						})
-					})
-
+					});
 
 					// delete all websites ones that are past the date
 					await col.deleteMany(myquery, function (err, obj) {
 						if (err) throw err;
 					});
-				} catch (err) {
-					console.log(err);
-				}
-			}());
-			(async function deleteUsertestFromDB() {
-				try {
-					let db = mongoUtil.getDb();
-					const col = db.collection('userTracking');
-
-					var date = new Date();
-					var daysToDeletion = 0; // 30
-					var deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
-
-					let myquery = {
-						createdAt: {
-							$lt: deletionDate
-						}
-					};
-					await col.deleteMany(myquery, function (err, obj) {
+					// delete all user Tracking that are past the date
+					const usercol = db.collection('userTracking');
+					await usercol.deleteMany(myquery, function (err, obj) {
 						if (err) throw err;
 					});
 				} catch (err) {
 					console.log(err);
 				}
 			}());
-		}, 86400000)
+			//86400000
+		}, 10000)
 
 	}
 	midNight();
