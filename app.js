@@ -111,45 +111,56 @@ dbCon.connectToServer(function (err) {
 					let db = mongoUtil.getDb();
 					const col = db.collection('websites');
 
-					var date = new Date();
-					var daysToDeletion = 0; // 30
-					var deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
-
+					const date = new Date();
+					const daysToDeletion = 30;
+					const deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
 					let myquery = {
 						createdAt: {
 							$lt: deletionDate
 						}
 					};
-					const ourResults = col.find(myquery);
-					await col.deleteMany(myquery, function (err, obj) {
+
+					// find all the ones made pasts my deletion date
+					await col.find(myquery).toArray(function (err, obj) {
 						if (err) throw err;
-					});
+						obj.forEach(async (item) => {
+							try {
+								let webCol = db.collection('users');
+								let newQuery = {
+									$pull: {
+										projects: {
+											objectId: item._id
+										}
+
+									}
+								};
+								// delete from the project array in users
+								await webCol.updateOne({
+									"projects.objectId": ObjectId(item._id)
+								}, newQuery);
+								// delete all websites ones that are past the date
+								await col.deleteMany(myquery, function (err, obj) {
+									if (err) throw err;
+								});
+								// delete all user Tracking that are past the date
+								const usercol = db.collection('userTracking');
+								await usercol.deleteMany(myquery, function (err, obj) {
+									if (err) throw err;
+								});
+
+							} catch (err) {
+								console.log(err)
+							}
+						})
+					})
+
+
 				} catch (err) {
 					console.log(err);
 				}
 			}());
-			(async function deleteUsertestFromDB() {
-				try {
-					let db = mongoUtil.getDb();
-					const col = db.collection('userTracking');
-
-					var date = new Date();
-					var daysToDeletion = 0; // 30
-					var deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
-
-					let myquery = {
-						createdAt: {
-							$lt: deletionDate
-						}
-					};
-					await col.deleteMany(myquery, function (err, obj) {
-						if (err) throw err;
-					});
-				} catch (err) {
-					console.log(err);
-				}
-			}());
-		}, 86400000)
+			//86400000
+		}, 10000)
 
 	}
 	midNight();
