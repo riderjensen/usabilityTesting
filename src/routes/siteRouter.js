@@ -123,7 +123,7 @@ function router(nav) {
 			// maybe passing a value from the scrapper function to this function with a boolean?
 
 			setTimeout(function () {
-				res.render(`../../files/${reqID}`);
+				res.render(`files/${reqID}`);
 			}, 2000);
 		});
 	return siteRouter;

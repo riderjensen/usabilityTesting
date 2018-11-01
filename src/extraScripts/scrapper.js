@@ -95,7 +95,7 @@ module.exports = {
 								if (err) throw err;
 							});
 						} else {
-							fs.appendFile(`files/${id}.ejs`, newCombine, (err) => {
+							fs.appendFile(`src/views/files/${id}.ejs`, newCombine, (err) => {
 								if (err) throw err;
 							});
 						}

@@ -33,7 +33,7 @@ function router() {
 							const userArray = findTracking.recMoves;
 							const initInfo = findTracking.initInformation;
 							const ourString = `<iframe src="http://localhost:3000/site/${ourUpperTestId}" class="ourContainer" style="position:relative; height: ${initInfo.userHeight}px; width: ${initInfo.userWidth}px">`;
-							res.render(`../../${reqID}`, {
+							res.render(`files/${reqID}`, {
 								// userArray,
 								// initInfo,
 								// ourString
