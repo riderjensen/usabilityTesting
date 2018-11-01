@@ -62,7 +62,10 @@ function router(nav) {
 									});
 									const newVals = {
 										$push: {
-											projects: objectId
+											projects: {
+												objectId: objectId,
+												date: Date.now()
+											}
 										}
 									};
 									col.updateOne(userFromDB, newVals, (error) => {

@@ -28,31 +28,37 @@ function router(nav) {
 				try {
 					let db = mongoUtil.getDb();
 					const col = db.collection('websites');
-
+					const testIDObj = ObjectId(testID);
 					const idFromDB = await col.findOne({
-						"_id": ObjectId(testID)
+						"_id": testIDObj
 					});
 					if (idFromDB) {
 						const usercol = db.collection('users');
-
 						const userFromDB = await usercol.findOne({
 							"username": ourUsername
 						});
-
-						if (userFromDB.projects.includes(testID)) {
+						let strPrjArry = [];
+						userFromDB.projects.forEach((element) => {
+							strPrjArry.push(element.toString());
+						})
+						if (strPrjArry.includes(testID)) {
 							// tell the user that they already have this test added
-							console.log('You already added this test');
+							let errMsg = 'You already added this test';
+							console.log(errMsg);
 						} else {
 							const newVals = {
 								$push: {
-									projects: testID
+									projects: {
+										objectId: testIDObj,
+										date: Date.now()
+									}
 								}
 							};
 							await usercol.updateOne(userFromDB, newVals, (error) => {
 								if (error) {
 									throw error;
 								} else {
-									res.redirect('/profile');
+									res.redirect('profile');
 								}
 							});
 						}
