@@ -78,7 +78,8 @@ function cookieTest() {
 			'browserType': browser(),
 			'windowHeight': window.innerHeight,
 			'windowWidth': window.innerWidth,
-			'intervalTime': 1
+			'intervalTime': 1,
+			'initPage': pageID
 		}
 		socket.emit('initInformation', initInformation);
 	} else {

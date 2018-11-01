@@ -160,7 +160,7 @@ dbCon.connectToServer(function (err) {
 				}
 			}());
 			//86400000
-		}, 10000)
+		}, 86400000)
 
 	}
 	midNight();
@@ -195,7 +195,7 @@ dbCon.connectToServer(function (err) {
 		});
 		socket.on('initInformation', (data) => {
 			// bringing in the init data that should be sent to our db on the first page load
-			let ourCookie = data.cookieID;
+			let ourCookie = data.initPage;
 			let userInitData = {
 				userHeight: data.windowHeight,
 				userWidth: data.windowWidth,
@@ -249,7 +249,7 @@ dbCon.connectToServer(function (err) {
 			);
 		});
 		socket.on('testingInfo', (data) => {
-			
+
 			let ourCookie = data.userID;
 			(async function addRecMoves() {
 				try {
