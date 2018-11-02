@@ -279,7 +279,22 @@ dbCon.connectToServer(function (err) {
 
 		});
 		socket.on('replayInformationID', (data) => {
-			console.log(data);
+			(async function getOurRecordedMoves() {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('userTracking');
+					// secondary pages are passing in url including ejs, need to just send cookie?
+					const webTest = await col.findOne({
+						"_id": ObjectId(data)
+					});
+
+					if (webTest) {
+						socket.emit('returnMoves', webTest.recMoves);
+					}
+				} catch (err) {
+					console.log(err);
+				}
+			}())
 		});
 		socket.on('disconnect', () => {
 			console.log('Disconnect Event');
