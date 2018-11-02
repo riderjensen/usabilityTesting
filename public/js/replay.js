@@ -1,5 +1,15 @@
-// take in array, screen size, clicks, scrolls, pages navigated to and iterate and move through them
-// get ourIframe ID, pass it width and height, 
+const usableBody = document.getElementById('usableBody');
+
+const box = document.createElement('div');
+box.id = "box";
+box.setAttribute('style', "z-index: 100; position:fixed; top: 200px; left: 200px; width: 10px; height: 10px; background-color: tomato;");
+
+const pointed = document.createElement('div');
+pointed.id = "pointer";
+pointed.setAttribute('style', "z-index: 100; position:absolute; height: 30px; width: 30px; background-color: rgba(255, 0, 0, 0.4); border-radius: 50%; display: inline-block;");
+
+usableBody.insertAdjacentElement('afterbegin', box);
+usableBody.insertAdjacentElement('afterbegin', pointed);
 
 // let socket = io.connect();
 // const getID = location.href.split('/');
