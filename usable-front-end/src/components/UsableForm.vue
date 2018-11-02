@@ -10,6 +10,7 @@
               <transition-group name="list" tag="li">
               <li v-for="(task, i) in tasks" :key="i" class="list-item">
                 <h2 class="cyan--text mt-3">Task {{ i + 1 }}</h2>
+                <i class="fas fa-minus-circle" @click="deleteTask(i)"></i>
                 <v-textarea
                 light
                 box
@@ -55,6 +56,7 @@ export default {
       if(this.tasks.length < 5){
         const taskItem = document.querySelector('li')
         let newTaskItem = taskItem.cloneNode(true);
+        document.querySelector('ul').appendChild(newTaskItem);
         this.tasks.push(newTaskItem);
       } else {
         this.alert = true;
@@ -62,6 +64,10 @@ export default {
           this.alert = false;
         }, 3000);
       }
+    },
+    deleteTask(i) {
+      console.log(this.tasks[i]);
+      // this.tasks[i].splice(i, 1);
     }
   }
 }
@@ -72,6 +78,21 @@ export default {
     opacity: .8;
     cursor: pointer;
     transition: opacity .2s;
+  }
+
+  .fa-minus-circle {
+    color: red;
+    position: relative;
+    z-index: 99;
+    float: right;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .fa-minus-circle:hover {
+    opacity: .8;
   }
 
   textarea {
