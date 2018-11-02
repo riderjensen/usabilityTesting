@@ -32,9 +32,10 @@ function router() {
 							});
 							const userArray = findTracking.recMoves;
 							const initInfo = findTracking.initInformation;
+							console.log(reqID)
 							res.render(`files/${ourUpperTestId}`, {
-								userArray,
-								initInfo
+								initInfo,
+								reqID
 							});
 						} catch (err) {
 							console.log(err);
