@@ -9,7 +9,7 @@
             <ul>
               <transition-group name="list" tag="li">
               <li v-for="(task, i) in tasks" :key="i" class="list-item">
-                <h2 class="cyan--text mt-3">Task {{ i + 1 }}</h2>
+                <h2 class="cyan--text mt-3">Task {{ task.taskNumber }}</h2>
                 <i class="fas fa-minus-circle" @click="deleteTask(i)"></i>
                 <v-textarea
                 light
@@ -47,7 +47,11 @@ export default {
   data() {
     return {
       tasks: [
-        {}
+        {taskNumber: 1},
+        {taskNumber: 2},
+        {taskNumber: 3},
+        {taskNumber: 4},
+        {taskNumber: 5}
       ],
       alert: false
     }
@@ -55,10 +59,10 @@ export default {
   methods: {
     addTask() {
       if(this.tasks.length < 5){
-        const taskItem = document.querySelector('li')
-        let newTaskItem = taskItem.cloneNode(true);
-        // document.querySelector('ul').appendChild(newTaskItem);
-        this.tasks.push(newTaskItem);
+        const taskItem = document.createElement('li');
+        // let newTaskItem = taskItem.cloneNode(true);
+        this.tasks.push(taskItem);
+        console.log(this.tasks);
       } else {
         this.alert = true;
         setTimeout(() => {
@@ -89,7 +93,7 @@ export default {
     position: relative;
     z-index: 99;
     float: right;
-    right: 20px;
+    right: 25px;
     top: 10px;
     cursor: pointer;
     font-size: 16px;
