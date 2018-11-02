@@ -34,7 +34,8 @@
             <p class="text-xs-center grey--text darken-4 mt-5">Submit tasks then receive a new link that you will send to your testers.</p>
             <v-btn
           class="d-block mt-3 ma-auto pl-5 pr-5" 
-          round color="cyan">SUBMIT TASKS</v-btn>
+          round color="cyan"
+          @click="submitForm">SUBMIT TASKS</v-btn>
           </v-form>
       </v-flex>
     </v-layout>
@@ -56,7 +57,7 @@ export default {
       if(this.tasks.length < 5){
         const taskItem = document.querySelector('li')
         let newTaskItem = taskItem.cloneNode(true);
-        document.querySelector('ul').appendChild(newTaskItem);
+        // document.querySelector('ul').appendChild(newTaskItem);
         this.tasks.push(newTaskItem);
       } else {
         this.alert = true;
@@ -64,6 +65,9 @@ export default {
           this.alert = false;
         }, 3000);
       }
+    },
+    submitForm() {
+      console.log(this.tasks);
     },
     deleteTask(i) {
       console.log(this.tasks[i]);
