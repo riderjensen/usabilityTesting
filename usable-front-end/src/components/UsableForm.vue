@@ -9,7 +9,7 @@
             <ul>
               <transition-group name="list" tag="li">
               <li v-for="(task, i) in tasks" :key="i" class="list-item">
-                <h2 class="cyan--text mt-3">Task {{ task.taskNumber }}</h2>
+                <h2 class="cyan--text mt-3">Task {{ i + 1 }}</h2>
                 <i class="fas fa-minus-circle" @click="deleteTask(i)"></i>
                 <v-textarea
                 light
@@ -22,7 +22,7 @@
               </transition-group>
             </ul>
               <hr>
-          <i @click="addTask" class="mt-3 fas fa-plus-circle fa-2x green--text d-block text-xs-center"></i>
+          <i @click="addTask(i)" class="mt-3 fas fa-plus-circle fa-2x green--text d-block text-xs-center"></i>
           <v-alert
             class="mt-3 black--text"
             :value="alert"
@@ -46,21 +46,15 @@
 export default {
   data() {
     return {
-      tasks: [
-        {taskNumber: 1},
-        {taskNumber: 2},
-        {taskNumber: 3},
-        {taskNumber: 4},
-        {taskNumber: 5}
-      ],
+      tasks: [''],
       alert: false
     }
   },
   methods: {
     addTask() {
       if(this.tasks.length < 5){
+        // console.log(this.tasks)
         const taskItem = document.createElement('li');
-        // let newTaskItem = taskItem.cloneNode(true);
         this.tasks.push(taskItem);
         console.log(this.tasks);
       } else {
@@ -70,8 +64,11 @@ export default {
         }, 3000);
       }
     },
-    submitForm() {
-      console.log(this.tasks);
+    submitForm(i) {
+      // console.log(this.tasks[i].input);
+      this.tasks.forEach(task => {
+        console.log(task.input)
+      });
     },
     deleteTask(i) {
       console.log(this.tasks[i]);
