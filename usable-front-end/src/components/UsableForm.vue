@@ -98,7 +98,8 @@ export default {
   }
 
   .fa-minus-circle {
-    color: red;
+    /* color: red; */
+    color: #ccc;
     position: relative;
     z-index: 99;
     float: right;
@@ -110,6 +111,7 @@ export default {
 
   .fa-minus-circle:hover {
     opacity: .8;
+    color: red;
   }
 
   textarea {
