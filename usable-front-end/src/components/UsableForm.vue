@@ -60,8 +60,9 @@ export default {
   methods: {
     addTask() {
       if(this.tasks.length < 5){
-        const listItem = document.querySelector('ul').firstChild;
-        const clonedListItem = listItem.cloneNode(true);
+        // const listItem = document.querySelector('ul').firstChild;
+        // const clonedListItem = listItem.cloneNode(true);
+        const listItem = document.createElement('li');
         this.tasks.push(listItem);
         console.log(this.tasks);
       } else {
