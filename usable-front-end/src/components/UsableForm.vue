@@ -7,8 +7,11 @@
         <hr class="mb-5">
           <v-form class="text-xs-left mb-5">
             <ul>
-              <transition-group name="list" tag="li">
-              <li v-for="(task, i) in tasks" :key="i" class="list-item">
+              <!-- <transition-group name="list" tag="li"> -->
+              <li 
+                v-for="(task, i) in tasks" 
+                :key="i" 
+                class="list-item">
                 <h2 class="cyan--text mt-3">Task {{ i + 1 }}</h2>
                 <i class="fas fa-minus-circle" @click="deleteTask(i)"></i>
                 <v-textarea
@@ -19,10 +22,10 @@
                 placeholder="Enter your task here..."
               ></v-textarea>
               </li>
-              </transition-group>
+              <!-- </transition-group> -->
             </ul>
               <hr>
-          <i @click="addTask(i)" class="mt-3 fas fa-plus-circle fa-2x green--text d-block text-xs-center"></i>
+          <i @click="addTask()" class="mt-3 fas fa-plus-circle fa-2x green--text d-block text-xs-center"></i>
           <v-alert
             class="mt-3 black--text"
             :value="alert"
@@ -39,6 +42,7 @@
           </v-form>
       </v-flex>
     </v-layout>
+
   </v-container>
 </template>
 
@@ -46,16 +50,19 @@
 export default {
   data() {
     return {
-      tasks: [''],
-      alert: false
+      tasks: [
+        {taskNumber: 1},
+      ],
+      alert: false,
+      taskResults: [],
     }
   },
   methods: {
     addTask() {
       if(this.tasks.length < 5){
-        // console.log(this.tasks)
-        const taskItem = document.createElement('li');
-        this.tasks.push(taskItem);
+        const listItem = document.querySelector('ul').firstChild;
+        const clonedListItem = listItem.cloneNode(true);
+        this.tasks.push(listItem);
         console.log(this.tasks);
       } else {
         this.alert = true;
@@ -65,14 +72,18 @@ export default {
       }
     },
     submitForm(i) {
-      // console.log(this.tasks[i].input);
-      this.tasks.forEach(task => {
-        console.log(task.input)
-      });
+      let getTasks = document.querySelectorAll('textarea');
+
+      getTasks.forEach(task => {
+        return this.taskResults.push(task.value);
+      })
+      
+      console.log(this.taskResults);
     },
-    deleteTask(i) {
-      console.log(this.tasks[i]);
-      // this.tasks[i].splice(i, 1);
+    deleteTask(e) {
+      // console.log(this.tasks[i]);
+      this.tasks.splice(e.target, 1);
+      // this.tasks.removeChild(this.tasks[i]);
     }
   }
 }
