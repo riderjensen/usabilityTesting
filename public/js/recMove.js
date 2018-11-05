@@ -176,7 +176,7 @@ function usableScrolling() {
 // ****** Mouse Moves ******
 
 setInterval(function () {
-	let object = screenPercents(1);
+	let object = screenPercents();
 	if (objectArray.length > 10) {
 		let sendObj = {
 			userID: globalCookie,
