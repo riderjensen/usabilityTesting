@@ -249,7 +249,6 @@ dbCon.connectToServer(function (err) {
 			);
 		});
 		socket.on('testingInfo', (data) => {
-
 			let ourCookie = data.userID;
 			(async function addRecMoves() {
 				try {
@@ -260,11 +259,12 @@ dbCon.connectToServer(function (err) {
 					});
 					const webID = ObjectId(cookieInDB._id);
 					if (webID == ourCookie) {
-						// if we find the ID, we need to $push into the array
+						// need to fix recMoves to correctly select the last element in cursorPoint
 						db.collection('userTracking').updateOne(cookieInDB, {
 							$push: {
-								recMoves: {
-									$each: data.recMoves
+								'recMoves.$[].cursorPoint': {
+										$each: data.recMoves
+									
 								}
 							}
 						})
@@ -277,6 +277,36 @@ dbCon.connectToServer(function (err) {
 			}());
 			// may just need to send each data bit every second instead of sending every few seconds so we dont miss anything
 
+		});
+		socket.on('newPageReached', (data) => {
+			console.log(data.cookie);
+			let ourCookie = data.cookie;
+			let ourPage = data.page;
+			(async function createPageObj() {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('userTracking');
+					const cookieInDB = await col.findOne({
+						"_id": ObjectId(ourCookie)
+					});
+					// not sending the correct cookie
+					const webID = ObjectId(cookieInDB._id);
+					if (webID == ourCookie) {
+						db.collection('userTracking').updateOne(cookieInDB, {
+							$push: {
+								recMoves: {
+									pageID: ourPage,
+									cursorPoints: []
+								}
+							}
+						})
+					} else {
+						console.log(`Issue on new page reached`);
+					}
+				} catch (err) {
+					console.log(err);
+				}
+			}());
 		});
 		socket.on('replayInformationID', (data) => {
 			(async function getOurRecordedMoves() {

@@ -86,17 +86,25 @@ function cookieTest() {
 		//found cookie and set it to first page ID
 		globalCookie = ourCookie.substring(name.length, ourCookie.length);
 		console.log(`Old Cookie: ${globalCookie}`);
+		sendOutNewObject();
 	}
 }
 cookieTest();
 socket.on('testingID', (data) => {
 	globalCookie = data;
-	console.log(`New cookie set ${globalCookie}`)
+	console.log(`New cookie set ${globalCookie}`);
+	sendOutNewObject();
 });
 
-let ourArray = [pageID, globalCookie]
-socket.emit('newPageReached', ourArray);
 
+function sendOutNewObject(){
+	// this emits once we find a new page and should push in a new object to our recMoves array
+	let newPageObj = {
+		page: pageID, 
+		cookie: globalCookie
+	}
+	socket.emit('newPageReached', newPageObj);
+}
 
 
 
@@ -180,7 +188,6 @@ setInterval(function () {
 	if (objectArray.length > 10) {
 		let sendObj = {
 			userID: globalCookie,
-			pageName: pageID,
 			recMoves: objectArray
 		};
 		// push testArray to the app
