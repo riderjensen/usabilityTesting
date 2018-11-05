@@ -59,8 +59,7 @@ export default {
         {taskNumber: 1},
       ],
       alert: false,
-      taskResults: [],
-      formTaskName: 1
+      taskResults: []
     }
   },
   methods: {
