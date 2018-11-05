@@ -5,9 +5,13 @@
         <h1 class="grey--text darken-4 display-2 font-weight-light pb-3 pt-5">Create Tasks</h1>
         <p class="grey--text darken-4">Add custom tasks to have your Testers accomplish to get more data to help you better your sites navigation and usability. Press the (+) icon to add more than one task. <br><strong class="red--text">A MAXIMUM OF 5 TASKS MAY BE USED</strong></p>
         <hr class="mb-5">
-          <v-form class="text-xs-left mb-5">
+          <v-form 
+            class="text-xs-left mb-5"
+            name="noLog"
+            action="/site/"
+            method="post">
             <ul>
-              <!-- <transition-group name="list" tag="li"> -->
+              <transition-group name="list" tag="div">
               <li 
                 v-for="(task, i) in tasks" 
                 :key="i" 
@@ -18,11 +22,12 @@
                 light
                 box
                 color="cyan"
-                name=""
+                :name="'task' + i++" 
                 placeholder="Enter your task here..."
+                
               ></v-textarea>
               </li>
-              <!-- </transition-group> -->
+              </transition-group>
             </ul>
               <hr>
           <i @click="addTask()" class="mt-3 fas fa-plus-circle fa-2x green--text d-block text-xs-center"></i>
@@ -55,6 +60,7 @@ export default {
       ],
       alert: false,
       taskResults: [],
+      formTaskName: 1
     }
   },
   methods: {
@@ -91,6 +97,7 @@ export default {
 </script>
 
 <style scoped>
+
   .fas:hover {
     opacity: .8;
     cursor: pointer;
@@ -107,6 +114,7 @@ export default {
     top: 10px;
     cursor: pointer;
     font-size: 16px;
+    transition: all .5s;
   }
 
   .fa-minus-circle:hover {
