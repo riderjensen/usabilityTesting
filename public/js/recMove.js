@@ -94,8 +94,8 @@ socket.on('testingID', (data) => {
 	console.log(`New cookie set ${globalCookie}`)
 });
 
-
-
+let ourArray = [pageID, globalCookie]
+socket.emit('newPageReached', ourArray);
 
 
 
