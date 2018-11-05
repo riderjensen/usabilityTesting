@@ -4,9 +4,10 @@
       <!-- Navbar -->
       <usable-navbar />
       <!-- Main Section  -->
-      <transition name="component-fade" mode="out-in">
+      <router-view></router-view>
+      <!-- <transition name="component-fade" mode="out-in">
       <component :is="selectedComponent" @changeComponent="selectedComponent = $event"></component>
-      </transition>
+      </transition> -->
       <!-- Footer -->
       <usable-footer />
      
