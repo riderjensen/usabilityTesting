@@ -41,7 +41,6 @@ socket.on('returnMoves', (data) => {
 			scrollIndexArray.push(i);
 		}
 	});
-	console.log(userMoves)
 	// iterator for userMoves
 	let i = 0;
 	// iterator for scrolling object
@@ -63,13 +62,15 @@ socket.on('returnMoves', (data) => {
 
 		if (userMoves[i].ev == "clicked") {
 			pointer.style.left = userMoves[i].x + '%';
-			pointer.style.top = (userMoves[i].y + scrollOnPage) + '%';
+			pointer.style.top = userMoves[i].y + '%';
+			pointer.style.transform = `translateY(${scrollOnPage}px)`;
 		}
 		if (typeof userMoves[i].ev === "object") {
 			let ourObject = userMoves[i].ev;
 			if (ourObject.type == 'start') {
 				let ourTime = (scrollIndexArray[j + 1] - scrollIndexArray[j]) / (interval / 10);
 				let ourObj = userMoves[scrollIndexArray[j + 1]].ev;
+				scrollOnPage = ourObj.eScroll;
 				TweenLite.to(window, ourTime, {
 					scrollTo: {
 						y: ourObj.eScroll,
