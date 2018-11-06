@@ -70,10 +70,6 @@ function cookieTest() {
 	}
 	// didnt find cookie
 	if (cookieIsThere === false) {
-		d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
-		const expires = "expires=" + d.toUTCString();
-		document.cookie = `usableCookieTracking=${pageID};${expires};path=/`;
-		// set our cookie to init page ID
 		const initInformation = {
 			'browserType': browser(),
 			'windowHeight': window.innerHeight,
@@ -86,17 +82,28 @@ function cookieTest() {
 		//found cookie and set it to first page ID
 		globalCookie = ourCookie.substring(name.length, ourCookie.length);
 		console.log(`Old Cookie: ${globalCookie}`);
+		sendOutNewObject();
 	}
 }
 cookieTest();
 socket.on('testingID', (data) => {
+	d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
+	const expires = "expires=" + d.toUTCString();
+	document.cookie = `usableCookieTracking=${data};${expires};path=/`;
 	globalCookie = data;
-	console.log(`New cookie set ${globalCookie}`)
+	console.log(`New cookie set ${globalCookie}`);
+	sendOutNewObject();
 });
 
 
-
-
+function sendOutNewObject() {
+	// this emits once we find a new page and should push in a new object to our recMoves array
+	let newPageObj = {
+		page: pageID,
+		cookie: globalCookie
+	}
+	socket.emit('newPageReached', newPageObj);
+}
 
 
 
@@ -170,17 +177,16 @@ function usableScrolling() {
 		}
 		// setting event to object on the scroll event
 		objectArray[objectArray.length - 1].ev = scrollObj;
-	}, 500);
+	}, 100);
 }
 
 // ****** Mouse Moves ******
 
 setInterval(function () {
-	let object = screenPercents(1);
+	let object = screenPercents();
 	if (objectArray.length > 10) {
 		let sendObj = {
 			userID: globalCookie,
-			pageName: pageID,
 			recMoves: objectArray
 		};
 		// push testArray to the app

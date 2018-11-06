@@ -12,13 +12,13 @@ function router(nav) {
 		.post((req, res, next) => {
 			const {
 				webURL,
-				testOne,
-				testTwo,
-				testThree,
-				testFour,
-				testFive
+				task0,
+				task1,
+				task2,
+				task3,
+				task4
 			} = req.body;
-			const questionArray = [testOne, testTwo, testThree, testFour, testFive];
+			const questionArray = [task0, task1, task2, task3, task4];
 
 			// this will need to be optimized and fixed
 			while (questionArray[questionArray.length - 1] === undefined) {

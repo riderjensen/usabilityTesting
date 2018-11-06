@@ -17,11 +17,12 @@ function router() {
 			} = extraScripts;
 			requestURL(webURL, newID);
 			let myTimeOut;
+			res.redirect(`/site/${newID}.ejs`)
 			fs.watch('files', (eventType) => {
 				if (eventType) {
 					clearTimeout(myTimeOut);
 					myTimeOut = setTimeout(function () {
-						res.redirect(`/site/${newID}.ejs`)
+						// this is in infinte loop right now
 					}, 2000);
 				}
 			});
