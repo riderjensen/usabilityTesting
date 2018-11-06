@@ -1,10 +1,13 @@
 <template>
 <v-layout align-center class="navbar">
   <v-flex xs8>
+    <router-link to="/">
     <img 
     class="logo"
+    @click="toHomeStyles"
     src="../assets/usable_logo.svg" 
     alt="Usable Logo">
+    </router-link>
   </v-flex>
 
   <v-flex xs4 class="text-xs-right">
@@ -13,14 +16,16 @@
       @click="dialog=true"
     >LOG IN</span>
     <span class="ml-2 mr-2 title font-weight-light">|</span>
-    <span class="font-weight-bold title contact">CONTACT US</span>
+    <router-link to="/contact-us">
+    <span class="font-weight-bold title contact" @click="leaveHomeStyles">CONTACT US</span>
+    </router-link>
     <v-dialog
       v-model="dialog"
       width="600"
     >
 
       
-
+    <v-form>
       <v-card>
         <v-card-title
           class="headline grey justify-center"
@@ -30,8 +35,18 @@
         </v-card-title>
 
         <v-card-text>
-          <input type="text" placeholder="Email Address">
-          <input type="text" placeholder="Password">
+          <v-text-field 
+            type="text" 
+            required
+            v-model="email"
+            label="Email"
+            color="cyan"></v-text-field>
+          <v-text-field 
+            type="text" 
+            v-model="password"
+            required
+            label="Password"
+            color="cyan"></v-text-field>
           <v-layout row>
             <v-flex xs6>
         <v-checkbox 
@@ -58,6 +73,7 @@
             Log In
           </v-btn>
           <p class="or">or</p>
+          <router-link to="sign-up">
           <v-btn
           style="border-radius: 20px;"
           class="pr-5 pl-5 mb-3"
@@ -66,8 +82,10 @@
           >
           CREATE NEW ACCOUNT
           </v-btn>
+          </router-link>
         </v-card-actions>
       </v-card>
+      </v-form>
     </v-dialog>
 
   </v-flex>
@@ -81,12 +99,30 @@ export default {
     return {
       dialog: false,
       checkbox: false,
+      email: '',
+      password: ''
     }
+  },
+  methods: {
+    toHomeStyles() {
+       document.querySelector('#usable-home').style.backgroundImage = 'url(/img/background.27769967.png)';
+    },
+    leaveHomeStyles() {
+      document.querySelector('#usable-home').style.backgroundImage = 'none';
+      document.querySelector('#usable-home').style.backgroundColor = '#fff';
+      document.querySelector('.navbar').style.backgroundImage = "url(/img/background.27769967.png)";
+      document.querySelector('.navbar').style.backgroundSize = 'cover';
+}
   }
 }
 </script>
 
 <style scoped>
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+
   .navbar {
     padding: 24px;
   }
@@ -104,7 +140,7 @@ export default {
     cursor: pointer;
   }
 
-  input {
+  /* input {
     border: 1px solid white;
     border-radius: 20px;
     color: white;
@@ -112,7 +148,7 @@ export default {
     width: 100%;
     background: #455A64;
     margin: 10px 0px;
-  }
+  } */
 
   ::placeholder {
     color: #fff;

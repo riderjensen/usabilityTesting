@@ -12,12 +12,12 @@
           v-model="urlInput">
           <i class="fas fa-check fa-2x"></i>
         <transition name="fade">
-          
+        <router-link to="/new-test" class="to-form-btn">  
         <v-btn
           class="d-block ma-auto mt-3 pl-5 pr-5 continueBtn" 
           round color="cyan" 
-          @click="componentChange"
-          :disabled="urlCheck">CONTINUE<i class="ml-2 fas fa-chevron-right"></i></v-btn></transition>
+          @click="leaveHomeStyles"
+          :disabled="urlCheck">CONTINUE<i class="ml-2 fas fa-chevron-right"></i></v-btn></router-link></transition>
         <p class="pt-5">New to <span class="font-italic font-weight-medium">usable</span>? <span style="text-decoration: underline;" class="learn">Click Here</span> to learn how to use the platform!</p>
       </v-flex>
     </v-layout>
@@ -31,15 +31,12 @@
         urlCheck: true
       }
     },
-    props: ['selectedComponent'],
     methods: { 
-        componentChange() {
+        leaveHomeStyles() {
         document.querySelector('#usable-home').style.backgroundImage = 'none';
         document.querySelector('#usable-home').style.backgroundColor = '#fff';
         document.querySelector('.navbar').style.backgroundImage = "url(/img/background.27769967.png)";
         document.querySelector('.navbar').style.backgroundSize = 'cover';
-        this.selectedComponent = 'UsableForm';
-        this.$emit('changeComponent', this.selectedComponent);
       }
     },
     watch: {
@@ -50,12 +47,16 @@
           this.urlCheck = false;
           urlInputBox.style.borderColor = 'green';
           document.querySelector('.fa-check').style.opacity = '1';
-          document.querySelector('.fa-check').style.right = '40px';         
+          document.querySelector('.fa-check').style.right = '40px'; 
+          document.querySelector('.fa-chevron-right').style.position = 'relative';
+          document.querySelector('.fa-chevron-right').style.right = '-5px';
+
         } else {
           this.urlCheck = true;
           urlInputBox.style.borderColor = 'red';
           document.querySelector('.fa-check').style.opacity = '0';
           document.querySelector('.fa-check').style.right = '0px'; 
+          document.querySelector('.fa-chevron-right').style.right = '0px';
         }
       }
     }
@@ -70,7 +71,10 @@
     display: flex;
     flex-direction: column;
     padding-top: 250px;
-    
+  }
+
+  a {
+    text-decoration: none;
   }
 
   input {
@@ -86,6 +90,10 @@
   .learn:hover {
   color: #00bcd4;
   cursor: pointer;
+  }
+
+  .fa-chevron-right {
+    transition: right .5s;
   }
 
   .fa-check {

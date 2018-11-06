@@ -4,10 +4,9 @@
       <!-- Navbar -->
       <usable-navbar />
       <!-- Main Section  -->
+      <transition name="component-fade" mode="out-in">
       <router-view></router-view>
-      <!-- <transition name="component-fade" mode="out-in">
-      <component :is="selectedComponent" @changeComponent="selectedComponent = $event"></component>
-      </transition> -->
+      </transition>
       <!-- Footer -->
       <usable-footer />
      
@@ -22,6 +21,7 @@ import UsableHome from "./components/UsableHome";
 import UsableNavbar from "./components/UsableNavbar";
 import UsableFooter from "./components/UsableFooter";
 import UsableForm from "./components/UsableForm";
+import UsableSignUp from "./components/UsableSignUp"
 
 export default {
   name: "App",
@@ -30,11 +30,6 @@ export default {
     UsableNavbar,
     UsableFooter,
     UsableForm
-  },
-  data() {
-    return {
-      selectedComponent: "UsableHome"
-    };
   }
 };
 </script>
