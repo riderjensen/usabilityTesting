@@ -259,12 +259,13 @@ dbCon.connectToServer(function (err) {
 					});
 					const webID = ObjectId(cookieInDB._id);
 					if (webID == ourCookie) {
+
 						// need to fix recMoves to correctly select the last element in cursorPoint
 						db.collection('userTracking').updateOne(cookieInDB, {
 							$push: {
-								'recMoves.$[].cursorPoint': {
-										$each: data.recMoves
-									
+								'recMoves.$[].cursorPoints': {
+									$each: data.recMoves
+
 								}
 							}
 						})
