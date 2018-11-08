@@ -68,22 +68,21 @@
         </v-card-title>
 
         <v-card-text class="text-xs-center">
-          Copy this link and send it to those you want to test your site! 
+          Click the link below to copy it to your clipboard and then send it to your testers! 
         </v-card-text>
 
         <v-textarea
           outline
+          @click="copyURL"
           value="www.kennystephens.com"
           class="ma-3"
-        ></v-textarea><span><i class="fas fa-copy fa-2x ml-3"></i></span>
-
-         <v-card-text class="text-xs-center">
-          www.kennystephens.com<i class="fas fa-copy fa-2x ml-3"></i>
-        </v-card-text>
-
+          color="cyan"
+          rows="0"
+        ></v-textarea>
+        <p v-if="copied" class="text-xs-center title">COPIED!</p>
         <v-divider></v-divider>
 
-        <v-card-actions>
+        <!-- <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
             color="cyan"
@@ -92,7 +91,7 @@
           >
             Got it!
           </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </v-dialog>
   </div>
@@ -110,7 +109,8 @@ export default {
       alert: false,
       taskResults: [],
       iconShow: false,
-      dialog: false
+      dialog: false,
+      copied: false
     }
   },
   methods: {
@@ -130,6 +130,7 @@ export default {
     },
     submitForm(i) {
       this.iconShow = true;
+      this.copied = false;
       document.querySelector('body').style.filter = 'brightness(50%)';
       setTimeout(() => {
         this.iconShow = false;
@@ -148,6 +149,14 @@ export default {
       // console.log(this.tasks[i]);
       this.tasks.splice(e.target, 1);
       // this.tasks.removeChild(this.tasks[i]);
+    },
+    copyURL() {
+      let urlInput = document.querySelector('textarea').select();
+      document.execCommand('copy');
+      this.copied = true;
+      setTimeout(() => {
+        this.dialog = false;
+      },5000)
     }
   }
 }
@@ -173,6 +182,10 @@ export default {
     font-size: 16px;
     transition: all .5s;
   }
+
+  .fa-copy {
+    position: relative;
+  } 
 
   .loading-icon {
     width: 100px;
