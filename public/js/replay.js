@@ -1,3 +1,5 @@
+const ourURL = 'http://localhost:3000/replay/';
+
 function createScript(theURL) {
 	let ourScript = document.createElement('script');
 	ourScript.src = theURL;
@@ -19,22 +21,45 @@ usableBody.insertAdjacentElement('afterbegin', pointed);
 
 
 // get the test id for the user moves
-let relatedTestId = document.getElementById('usableReqID').innerHTML;
+
+let pageNum;
+if (window.location.search == "") {
+	pageNum = 1
+} else {
+	let pageArray = (window.location.search).split('=')
+	let pageNumArray = pageArray[1].split('&');
+	pageNum = parseInt(pageNumArray[0]);
+	pageNum += 1;
+}
+let relatedTestId;
+if (!document.getElementById('usableReqID')) {
+	let pageArray = (window.location.search).split('=')
+	relatedTestId = pageArray[pageArray.length - 1];
+} else {
+	relatedTestId = document.getElementById('usableReqID').innerHTML;
+}
+
+let sendingData = {
+	testID: relatedTestId,
+	pageNum: pageNum - 1
+}
 // send ourRelated Test idea
 let socket = io.connect();
 const getID = location.href.split('/');
-socket.emit('replayInformationID', relatedTestId);
+socket.emit('replayInformationID', sendingData);
 
 // get the moves back and go through them
 socket.on('returnMoves', (data) => {
-	let userMoves = data;
+	let userMoves = data.moves;
 	const pointer = document.getElementById('pointer');
 	let scrollOnPage = 0;
 	// 10 every second
 	// we need to let the user be able to modify this and change it so that they can replay at their leaisure
 	let interval = 100;
 
-	// an array of all the positions where .ev is present. Every other occurance of .ev will be a start or a stop and therefore we can get the time between those and tween the correct amount
+	// an array of all the positions where .ev is present. 
+	// Every other occurance of .ev will be a start or a stop and therefore
+	// we can get the time between those and tween the correct amount
 	let scrollIndexArray = [];
 	userMoves.forEach((move, i) => {
 		if (typeof move.ev === "object") {
@@ -45,11 +70,13 @@ socket.on('returnMoves', (data) => {
 	let i = 0;
 	// iterator for scrolling object
 	let j = 0;
-	setInterval(function () {
+	let intervalFunction = setInterval(replayFunction, interval)
+
+	function replayFunction() {
 		if (i >= (userMoves.length - 1)) {
-			// reset i and j to repeat the pattern
-			i = 0;
-			j = 0;
+			clearInterval(intervalFunction);
+			// move us on to the next url
+			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}&testID=${relatedTestId}`;
 		}
 		TweenLite.to('#box', 1, {
 			ease: Power2.easeNone,
@@ -80,9 +107,7 @@ socket.on('returnMoves', (data) => {
 				});
 				j += 2;
 			}
-
 		}
 		i++;
-
-	}, interval);
+	}
 });

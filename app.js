@@ -310,17 +310,30 @@ dbCon.connectToServer(function (err) {
 			}());
 		});
 		socket.on('replayInformationID', (data) => {
+			let ourID = data.testID;
+			let pageNum = data.pageNum;
 			(async function getOurRecordedMoves() {
 				try {
 					let db = mongoUtil.getDb();
 					const col = db.collection('userTracking');
-					// secondary pages are passing in url including ejs, need to just send cookie?
+					// need to update this function based on new storage schema
 					const webTest = await col.findOne({
-						"_id": ObjectId(data)
+						"_id": ObjectId(ourID)
 					});
-
 					if (webTest) {
-						socket.emit('returnMoves', webTest.recMoves);
+						let nextURL;
+						if (webTest.recMoves[pageNum + 1] == undefined) {
+							nextURL = 'com'
+						} else {
+							nextURL = webTest.recMoves[pageNum + 1].pageID
+						}
+						let sendObj = {
+							moves: webTest.recMoves[pageNum].cursorPoints,
+							nextURL: nextURL
+						}
+						socket.emit('returnMoves', sendObj);
+					} else {
+						console.log('no find')
 					}
 				} catch (err) {
 					console.log(err);
