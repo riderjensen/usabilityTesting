@@ -314,13 +314,25 @@ dbCon.connectToServer(function (err) {
 				try {
 					let db = mongoUtil.getDb();
 					const col = db.collection('userTracking');
-					// secondary pages are passing in url including ejs, need to just send cookie?
+					// need to update this function based on new storage schema
 					const webTest = await col.findOne({
 						"_id": ObjectId(data)
 					});
-
+					// need to make 0 dynamic
 					if (webTest) {
-						socket.emit('returnMoves', webTest.recMoves);
+						let nextURL
+						if (webTest.recMoves[0 + 1] == undefined) {
+							nextURL = 'com'
+						} else {
+							nextURL = webTest.recMoves[0 + 1].pageID
+						}
+						let sendObj = {
+							moves: webTest.recMoves[0].cursorPoints,
+							nextURL: nextURL
+						}
+						socket.emit('returnMoves', sendObj);
+					} else {
+						console.log('no find')
 					}
 				} catch (err) {
 					console.log(err);
