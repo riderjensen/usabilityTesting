@@ -1,11 +1,4 @@
 const ourURL = 'http://localhost:3000/replay/';
-let pageNum;
-if (window.location.search == "") {
-	pageNum = 0
-} else {
-	let pageArray = (window.location.search).split('=')
-	pageNum = pageArray[1];
-}
 
 function createScript(theURL) {
 	let ourScript = document.createElement('script');
@@ -28,10 +21,27 @@ usableBody.insertAdjacentElement('afterbegin', pointed);
 
 
 // get the test id for the user moves
-let relatedTestId = document.getElementById('usableReqID').innerHTML;
+
+let pageNum;
+if (window.location.search == "") {
+	pageNum = 1
+} else {
+	let pageArray = (window.location.search).split('=')
+	let pageNumArray = pageArray[1].split('&');
+	pageNum = parseInt(pageNumArray[0]);
+	pageNum += 1;
+}
+let relatedTestId;
+if (!document.getElementById('usableReqID')) {
+	let pageArray = (window.location.search).split('=')
+	relatedTestId = pageArray[pageArray.length - 1];
+} else {
+	relatedTestId = document.getElementById('usableReqID').innerHTML;
+}
+
 let sendingData = {
 	testID: relatedTestId,
-	pageNum
+	pageNum: pageNum - 1
 }
 // send ourRelated Test idea
 let socket = io.connect();
@@ -66,7 +76,7 @@ socket.on('returnMoves', (data) => {
 		if (i >= (userMoves.length - 1)) {
 			clearInterval(intervalFunction);
 			// move us on to the next url
-			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}`;
+			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}&testID=${relatedTestId}`;
 		}
 		TweenLite.to('#box', 1, {
 			ease: Power2.easeNone,

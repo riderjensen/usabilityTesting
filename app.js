@@ -320,7 +320,6 @@ dbCon.connectToServer(function (err) {
 					const webTest = await col.findOne({
 						"_id": ObjectId(ourID)
 					});
-					// need to make 0 dynamic
 					if (webTest) {
 						let nextURL;
 						if (webTest.recMoves[pageNum + 1] == undefined) {
