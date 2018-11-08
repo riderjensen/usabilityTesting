@@ -12,6 +12,10 @@ function router() {
 		.get((req, res) => {
 			res.redirect('/auth/profile')
 		});
+	replayRouter.route('/com')
+		.get((req, res) => {
+			res.render('replayCom')
+		});
 	replayRouter.route('/:id')
 		.get((req, res) => {
 			const reqID = req.params.id;
