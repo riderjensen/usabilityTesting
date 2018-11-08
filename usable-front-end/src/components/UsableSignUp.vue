@@ -12,7 +12,7 @@
 
         <v-card-text>
           <v-layout>
-            <v-flex xs12 mb-4>
+            <v-flex xs12>
               <v-text-field 
                 type="text" 
                 required
