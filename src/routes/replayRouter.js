@@ -30,7 +30,6 @@ function router() {
 							const findTracking = await col.findOne({
 								"_id": ObjectId(reqID)
 							});
-							const userArray = findTracking.recMoves;
 							const initInfo = findTracking.initInformation;
 							res.render(`files/${ourUpperTestId}`, {
 								initInfo,
