@@ -330,11 +330,6 @@ dbCon.connectToServer(function (err) {
 		socket.on('disconnect', () => {
 			console.log('Disconnect Event');
 		});
-		socket.on('newPageReached', (data) => {
-			// data[0] is is the page URL and data[1] is the ID to attach it to
-			// we can simply look for data[1], put data[0] in its own object in the array and then attach recmoves to that page
-		});
-
 	});
 
 
