@@ -1,6 +1,11 @@
 <template>
   <v-container>
     <v-layout class="text-xs-center">
+      <img 
+        src="../assets/loading-gif.gif" 
+        alt="Loading Icon"
+        class="loading-icon"
+        v-if="iconShow">
       <v-flex xs12>
         <h1 class="grey--text darken-4 display-2 font-weight-light pb-3 pt-5">Create Tasks</h1>
         <p class="grey--text darken-4">Add custom tasks to have your Testers accomplish to get more data to help you better your sites navigation and usability. Press the (+) icon to add more than one task. <br><strong class="red--text">A MAXIMUM OF 5 TASKS MAY BE USED</strong></p>
@@ -41,13 +46,57 @@
           </v-alert>
             <p class="text-xs-center grey--text darken-4 mt-5">Submit tasks then receive a new link that you will send to your testers.</p>
             <v-btn
-          class="d-block mt-3 ma-auto pl-5 pr-5" 
-          round color="cyan"
-          @click="submitForm">SUBMIT TASKS</v-btn>
+              class="d-block mt-3 ma-auto pl-5 pr-5" 
+              round color="cyan"
+              @click="submitForm"
+            >SUBMIT TASKS</v-btn>
           </v-form>
       </v-flex>
-    </v-layout>
+      <!-- URL Modal -->
+      <div class="text-xs-center">
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <v-card>
+        <v-card-title
+          class="headline grey"
+          primary-title
+          style="display: flex; align-items: center; justify-content: center;"
+        >
+          Your <span><img class="ml-2 mr-2" src="../assets/usable_logo.svg" alt=""></span>URL
+        </v-card-title>
 
+        <v-card-text class="text-xs-center">
+          Copy this link and send it to those you want to test your site! 
+        </v-card-text>
+
+        <v-textarea
+          outline
+          value="www.kennystephens.com"
+          class="ma-3"
+        ></v-textarea><span><i class="fas fa-copy fa-2x ml-3"></i></span>
+
+         <v-card-text class="text-xs-center">
+          www.kennystephens.com<i class="fas fa-copy fa-2x ml-3"></i>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="cyan"
+            flat
+            @click="dialog = false"
+          >
+            Got it!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
+    </v-layout>
   </v-container>
 </template>
 
@@ -59,7 +108,9 @@ export default {
         {taskNumber: 1},
       ],
       alert: false,
-      taskResults: []
+      taskResults: [],
+      iconShow: false,
+      dialog: false
     }
   },
   methods: {
@@ -78,6 +129,13 @@ export default {
       }
     },
     submitForm(i) {
+      this.iconShow = true;
+      document.querySelector('body').style.filter = 'brightness(50%)';
+      setTimeout(() => {
+        this.iconShow = false;
+        document.querySelector('body').style.filter = 'brightness(100%)';
+        this.dialog = true;
+      }, 3000);
       let getTasks = document.querySelectorAll('textarea');
 
       getTasks.forEach(task => {
@@ -114,6 +172,16 @@ export default {
     cursor: pointer;
     font-size: 16px;
     transition: all .5s;
+  }
+
+  .loading-icon {
+    width: 100px;
+    height: auto;
+    position: fixed;
+    z-index: 99;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .fa-minus-circle:hover {
