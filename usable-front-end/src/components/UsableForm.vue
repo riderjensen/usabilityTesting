@@ -120,7 +120,6 @@ export default {
         // const clonedListItem = listItem.cloneNode(true);
         const listItem = document.createElement('li');
         this.tasks.push(listItem);
-        console.log(this.tasks);
       } else {
         this.alert = true;
         setTimeout(() => {
@@ -128,13 +127,13 @@ export default {
         }, 3000);
       }
     },
-    submitForm(i) {
+    submitForm() {
       this.iconShow = true;
       this.copied = false;
-      document.querySelector('body').style.filter = 'brightness(50%)';
+      document.querySelector('#usable-home').style.filter = 'brightness(50%)';
       setTimeout(() => {
         this.iconShow = false;
-        document.querySelector('body').style.filter = 'brightness(100%)';
+        document.querySelector('#usable-home').style.filter = 'brightness(100%)';
         this.dialog = true;
       }, 3000);
       let getTasks = document.querySelectorAll('textarea');
@@ -142,8 +141,6 @@ export default {
       getTasks.forEach(task => {
         return this.taskResults.push(task.value);
       })
-      
-      console.log(this.taskResults);
     },
     deleteTask(e) {
       // console.log(this.tasks[i]);
@@ -151,7 +148,7 @@ export default {
       // this.tasks.removeChild(this.tasks[i]);
     },
     copyURL() {
-      let urlInput = document.querySelector('textarea').select();
+      document.querySelector('textarea').select();
       document.execCommand('copy');
       this.copied = true;
       setTimeout(() => {
