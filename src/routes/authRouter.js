@@ -4,7 +4,7 @@ const mongoose = require('../models/model');
 const mongoUtil = require('../extraScripts/dbConnect');
 const userStorage = mongoose.model('userStorage');
 const passport = require('passport');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const ObjectId = require('mongodb').ObjectID;
 
 const authRouter = express.Router();

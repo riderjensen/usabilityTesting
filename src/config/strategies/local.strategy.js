@@ -2,7 +2,7 @@ const passport = require('passport');
 const {
 	Strategy
 } = require('passport-local');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const mongoUtil = require('../../extraScripts/dbConnect');
 
 // this is for cookies
