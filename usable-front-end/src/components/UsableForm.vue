@@ -71,15 +71,13 @@
           Click the link below to copy it to your clipboard and then send it to your testers! 
         </v-card-text>
 
-        <v-textarea
-          outline
+        <v-text-field
           @click="copyURL"
           value="www.kennystephens.com"
           class="ma-3"
           color="cyan"
-          rows="0"
-        ></v-textarea>
-        <p v-if="copied" class="text-xs-center title">COPIED!</p>
+        ></v-text-field>
+        <p v-if="copied" class="text-xs-center title pb-4">COPIED!</p>
         <v-divider></v-divider>
 
         <!-- <v-card-actions>
@@ -148,7 +146,7 @@ export default {
       // this.tasks.removeChild(this.tasks[i]);
     },
     copyURL() {
-      document.querySelector('textarea').select();
+      document.querySelector('input').select();
       document.execCommand('copy');
       this.copied = true;
       setTimeout(() => {
