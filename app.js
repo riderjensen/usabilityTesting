@@ -13,6 +13,7 @@ dbCon.connectToServer(function (err) {
 	const request = require('request');
 	const mongoUtil = require('./src/extraScripts/dbConnect');
 	const ObjectId = require('mongodb').ObjectID;
+	const shortid = require('shortid');
 
 	const mongoURI = 'mongodb://localhost/usabilityTesting';
 	const connectOptions = {
@@ -249,6 +250,8 @@ dbCon.connectToServer(function (err) {
 			);
 		});
 		socket.on('testingInfo', (data) => {
+			console.log('recMov');
+			console.log(data);
 			let ourCookie = data.userID;
 			(async function addRecMoves() {
 				try {
@@ -269,7 +272,7 @@ dbCon.connectToServer(function (err) {
 							}
 						}, {
 							arrayFilters: [{
-								"i.pageID": data.page
+								"i.secretID": data.secret
 							}]
 						})
 					} else {
@@ -285,6 +288,7 @@ dbCon.connectToServer(function (err) {
 		socket.on('newPageReached', (data) => {
 			let ourCookie = data.cookie;
 			let ourPage = data.page;
+			let newID = shortid.generate();
 			(async function createPageObj() {
 				try {
 					let db = mongoUtil.getDb();
@@ -295,14 +299,16 @@ dbCon.connectToServer(function (err) {
 					// not sending the correct cookie
 					const webID = ObjectId(cookieInDB._id);
 					if (webID == ourCookie) {
-						db.collection('userTracking').updateOne(cookieInDB, {
+						await db.collection('userTracking').updateOne(cookieInDB, {
 							$push: {
 								recMoves: {
 									pageID: ourPage,
+									secretID: newID,
 									cursorPoints: []
 								}
 							}
 						})
+						socket.emit('returnSecret', newID);
 					} else {
 						console.log(`Issue on new page reached`);
 					}

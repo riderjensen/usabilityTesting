@@ -5,7 +5,7 @@ const d = new Date();
 // int socket
 let socket = io.connect();
 
-let testingID;
+let testingID, secretID;
 
 // setting cookie
 const pageURL = window.location.href;
@@ -105,6 +105,9 @@ function sendOutNewObject() {
 	socket.emit('newPageReached', newPageObj);
 }
 
+socket.on('returnSecret', (data) => {
+	secretID = data
+});
 
 
 // ******************************
@@ -188,7 +191,8 @@ setInterval(function () {
 		let sendObj = {
 			userID: globalCookie,
 			recMoves: objectArray,
-			page: pageID
+			page: pageID,
+			secret: secretID
 		};
 		// push testArray to the app
 		socket.emit('testingInfo', sendObj);
