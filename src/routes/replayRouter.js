@@ -16,39 +16,44 @@ function router() {
 		.get((req, res) => {
 			res.render('replayCom')
 		});
+	replayRouter.route('/first/:id')
+		.get((req, res) => {
+			const reqID = req.params.id;
+			(async function mongo() {
+				try {
+					let db = mongoUtil.getDb();
+					let webCol = db.collection('websites');
+					const websiteFind = await webCol.findOne({
+						"testArray": ObjectId(reqID)
+					})
+					const ourWeb = websiteFind;
+					(async function anotherMongo() {
+						try {
+							const ourUpperTestId = ObjectId(ourWeb._id);
+							let col = db.collection('userTracking');
+							const findTracking = await col.findOne({
+								"_id": ObjectId(reqID)
+							});
+							const initInfo = findTracking.initInformation;
+							res.render(`files/${ourUpperTestId}`, {
+								initInfo,
+								reqID
+							});
+						} catch (err) {
+							console.log(err);
+						}
+
+					}());
+				} catch (err) {
+					console.log(err.stack);
+				}
+			}());
+		});
 	replayRouter.route('/:id')
 		.get((req, res) => {
 			const reqID = req.params.id;
 			if (reqID.length > 23) {
-				(async function mongo() {
-					try {
-						let db = mongoUtil.getDb();
-						let webCol = db.collection('websites');
-						const websiteFind = await webCol.findOne({
-							"testArray": ObjectId(reqID)
-						})
-						const ourWeb = websiteFind;
-						(async function anotherMongo() {
-							try {
-								const ourUpperTestId = ObjectId(ourWeb._id);
-								let col = db.collection('userTracking');
-								const findTracking = await col.findOne({
-									"_id": ObjectId(reqID)
-								});
-								const initInfo = findTracking.initInformation;
-								res.render(`files/${ourUpperTestId}`, {
-									initInfo,
-									reqID
-								});
-							} catch (err) {
-								console.log(err);
-							}
-
-						}());
-					} catch (err) {
-						console.log(err.stack);
-					}
-				}());
+				res.render(`files/${reqID}`);
 			} else {
 				res.render(`files/${reqID}`)
 			};

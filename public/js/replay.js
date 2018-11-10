@@ -67,13 +67,15 @@ socket.on('returnMoves', (data) => {
 		}
 	});
 	// iterator for userMoves
-	let i = 0;
+	let i = -1;
 	// iterator for scrolling object
 	let j = 0;
 	let intervalFunction = setInterval(replayFunction, interval)
 
 	function replayFunction() {
+		i++;
 		if (i >= (userMoves.length - 1)) {
+
 			clearInterval(intervalFunction);
 			// move us on to the next url
 			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}&testID=${relatedTestId}`;
@@ -86,7 +88,6 @@ socket.on('returnMoves', (data) => {
 			ease: Power2.easeNone,
 			top: userMoves[i].y + '%'
 		});
-
 		if (userMoves[i].ev == "clicked") {
 			pointer.style.left = userMoves[i].x + '%';
 			pointer.style.top = userMoves[i].y + '%';
@@ -97,6 +98,7 @@ socket.on('returnMoves', (data) => {
 			if (ourObject.type == 'start') {
 				let ourTime = (scrollIndexArray[j + 1] - scrollIndexArray[j]) / (interval / 10);
 				let ourObj = userMoves[scrollIndexArray[j + 1]].ev;
+
 				scrollOnPage = ourObj.eScroll;
 				TweenLite.to(window, ourTime, {
 					scrollTo: {
@@ -107,7 +109,7 @@ socket.on('returnMoves', (data) => {
 				});
 				j += 2;
 			}
+
 		}
-		i++;
 	}
 });
