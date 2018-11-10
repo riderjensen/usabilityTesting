@@ -9,12 +9,3 @@ User should be able to do the following:
 ## Codepen links
 
 * [mouse tracking](https://codepen.io/riderjensen/pen/xaRNEy)
-
-
-## CDN Tracker Alternative
-
-* Create a script that people put on just one page
-* We pull the page once
-* Then anyone who goes on there just simply gets tracked and only the data is sent
-* Most of this code is already written in our recMove.js
-* On an exit event, we send information over to DB so that we know when they left the page and what they did before they left
