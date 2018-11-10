@@ -263,11 +263,14 @@ dbCon.connectToServer(function (err) {
 						// need to fix recMoves to correctly select the last element in cursorPoint
 						db.collection('userTracking').updateOne(cookieInDB, {
 							$push: {
-								'recMoves.$[].cursorPoints': {
+								'recMoves.$[i].cursorPoints': {
 									$each: data.recMoves
-
 								}
 							}
+						}, {
+							arrayFilters: [{
+								"i.pageID": data.page
+							}]
 						})
 					} else {
 						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
@@ -280,7 +283,6 @@ dbCon.connectToServer(function (err) {
 
 		});
 		socket.on('newPageReached', (data) => {
-			console.log(data.cookie);
 			let ourCookie = data.cookie;
 			let ourPage = data.page;
 			(async function createPageObj() {
