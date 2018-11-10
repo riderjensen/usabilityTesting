@@ -187,7 +187,8 @@ setInterval(function () {
 	if (objectArray.length > 10) {
 		let sendObj = {
 			userID: globalCookie,
-			recMoves: objectArray
+			recMoves: objectArray,
+			page: pageID
 		};
 		// push testArray to the app
 		socket.emit('testingInfo', sendObj);
