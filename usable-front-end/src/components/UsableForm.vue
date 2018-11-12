@@ -71,15 +71,13 @@
           Click the link below to copy it to your clipboard and then send it to your testers! 
         </v-card-text>
 
-        <v-textarea
-          outline
+        <v-text-field
           @click="copyURL"
           value="www.kennystephens.com"
           class="ma-3"
           color="cyan"
-          rows="0"
-        ></v-textarea>
-        <p v-if="copied" class="text-xs-center title">COPIED!</p>
+        ></v-text-field>
+        <p v-if="copied" class="text-xs-center title pb-4">COPIED!</p>
         <v-divider></v-divider>
 
         <!-- <v-card-actions>
@@ -120,7 +118,6 @@ export default {
         // const clonedListItem = listItem.cloneNode(true);
         const listItem = document.createElement('li');
         this.tasks.push(listItem);
-        console.log(this.tasks);
       } else {
         this.alert = true;
         setTimeout(() => {
@@ -128,13 +125,13 @@ export default {
         }, 3000);
       }
     },
-    submitForm(i) {
+    submitForm() {
       this.iconShow = true;
       this.copied = false;
-      document.querySelector('body').style.filter = 'brightness(50%)';
+      document.querySelector('#usable-home').style.filter = 'brightness(50%)';
       setTimeout(() => {
         this.iconShow = false;
-        document.querySelector('body').style.filter = 'brightness(100%)';
+        document.querySelector('#usable-home').style.filter = 'brightness(100%)';
         this.dialog = true;
       }, 3000);
       let getTasks = document.querySelectorAll('textarea');
@@ -142,8 +139,6 @@ export default {
       getTasks.forEach(task => {
         return this.taskResults.push(task.value);
       })
-      
-      console.log(this.taskResults);
     },
     deleteTask(e) {
       // console.log(this.tasks[i]);
@@ -151,7 +146,7 @@ export default {
       // this.tasks.removeChild(this.tasks[i]);
     },
     copyURL() {
-      let urlInput = document.querySelector('textarea').select();
+      document.querySelector('input').select();
       document.execCommand('copy');
       this.copied = true;
       setTimeout(() => {
