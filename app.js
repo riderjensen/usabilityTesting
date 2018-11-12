@@ -250,8 +250,6 @@ dbCon.connectToServer(function (err) {
 			);
 		});
 		socket.on('testingInfo', (data) => {
-			console.log('recMov');
-			console.log(data);
 			let ourCookie = data.userID;
 			(async function addRecMoves() {
 				try {
