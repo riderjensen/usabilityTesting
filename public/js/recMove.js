@@ -225,45 +225,44 @@ function getTimeElapsed() {
 
 // Trying to change scripts when they are loaded after everything else has loaded
 
-// const rootURL = document.getElementById('usableRootURL').innerHTML;
+const rootURL = document.getElementById('usableRootURL').innerHTML;
 
-// window.addEventListener("load", function () {
-// 	console.log('---------------------------')
-// 	let linkArray = document.getElementsByTagName('link');
-// 	let scriptArray = document.getElementsByTagName('script');
+window.addEventListener("load", () => {
+	console.log('---------------------------')
+	setTimeout(() => {
+		let linkArray = document.getElementsByTagName('link');
+		let scriptArray = document.getElementsByTagName('script');
 
 
-// 	Array.prototype.forEach.call(linkArray, element => {
-// 		let elHREF = element.href;
-// 		let test = elHREF.split('');
-// 		if (test[0] === '/') {
-// 			element.href = rootURL + element.href;
-// 			// console.log(element.href);
-// 		}
-// 	});
-// 	Array.prototype.forEach.call(scriptArray, element => {
-// 		if (element.src === '') {
-// 			// src is null, dont do anything
-// 		} else {
-// 			let elHREF = element.src;
-// 			let test = elHREF.split('');
-// 			let firstPart = test[0] + test[1] + test[2] + test[3] + test[4] + test[5] + test[6] + test[7] + test[8] + test[9] + test[10];
-// 			if (firstPart === 'http://loca') {
-// 				let splitnewURL = elHREF.split('/');
-// 				newURL = rootURL;
-// 				for (let i = 4; i < splitnewURL.length; i++) {
-// 					newURL += '/' + splitnewURL[i];
-// 				}
-// 				console.log(newURL);
+		Array.prototype.forEach.call(linkArray, element => {
+			let elHREF = element.href;
+			let test = elHREF.split('');
+			if (test[0] === '/') {
+				element.href = rootURL + element.href;
+				// console.log(element.href);
+			}
+		});
+		Array.prototype.forEach.call(scriptArray, element => {
+			if (element.src === '') {
+				// src is null, dont do anything
+			} else {
+				let elHREF = element.src;
+				let test = elHREF.split('');
+				let firstPart = test[0] + test[1] + test[2] + test[3] + test[4] + test[5] + test[6] + test[7] + test[8] + test[9] + test[10];
+				if (firstPart === 'http://loca') {
+					let splitnewURL = elHREF.split('/');
+					newURL = rootURL;
+					for (let i = 3; i < splitnewURL.length; i++) {
+						newURL += '/' + splitnewURL[i];
+					}
 
-// 			}
-// 		}
+					let ourScript = document.createElement('script');
+					ourScript.setAttribute('src', newURL);
+					document.getElementById('usableBody').appendChild(ourScript);
+					console.log(ourScript);
+				}
+			}
 
-// 	});
-// 	let my_script = document.createElement('script');
-
-// 	my_script.setAttribute('src','http://localhost:3000/recMove.js');
-
-// 	document.head.appendChild(my_script);
-
-// });
+		});
+	}, 2000)
+});
