@@ -322,7 +322,6 @@ dbCon.connectToServer(function (err) {
 				try {
 					let db = mongoUtil.getDb();
 					const col = db.collection('userTracking');
-					// need to update this function based on new storage schema
 					const webTest = await col.findOne({
 						"_id": ObjectId(ourID)
 					});
