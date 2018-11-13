@@ -228,7 +228,6 @@ function getTimeElapsed() {
 const rootURL = document.getElementById('usableRootURL').innerHTML;
 
 window.addEventListener("load", () => {
-	console.log('---------------------------')
 	setTimeout(() => {
 		let linkArray = document.getElementsByTagName('link');
 		let scriptArray = document.getElementsByTagName('script');
@@ -239,7 +238,6 @@ window.addEventListener("load", () => {
 			let test = elHREF.split('');
 			if (test[0] === '/') {
 				element.href = rootURL + element.href;
-				// console.log(element.href);
 			}
 		});
 		Array.prototype.forEach.call(scriptArray, element => {
@@ -259,7 +257,6 @@ window.addEventListener("load", () => {
 					let ourScript = document.createElement('script');
 					ourScript.setAttribute('src', newURL);
 					document.getElementById('usableBody').appendChild(ourScript);
-					console.log(ourScript);
 				}
 			}
 
