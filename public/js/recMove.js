@@ -145,7 +145,7 @@ function cookieTest() {
 			userInformationInit.age = document.getElementById(inputIDArray[1]).value;
 			userInformationInit.race = document.getElementById(inputIDArray[2]).value;
 			// send user information to back
-			console.log(userInformationInit)
+			socket.emit('userInitInformation', userInformationInit);
 		}
 
 
