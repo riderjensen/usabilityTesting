@@ -203,6 +203,16 @@ setInterval(function () {
 	objectArray.push(object);
 }, 100);
 
+// get final information before page is taken away
+window.addEventListener('unload', () => {
+	let sendObj = {
+		userID: globalCookie,
+		recMoves: objectArray,
+		page: pageID,
+		secret: secretID
+	};
+	socket.emit('testingInfo', sendObj);
+});
 
 
 
