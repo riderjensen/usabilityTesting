@@ -154,22 +154,17 @@ dbCon.connectToServer(function (err) {
 							}
 						})
 					})
-
-
 				} catch (err) {
 					console.log(err);
 				}
 			}());
-			//86400000
 		}, 86400000)
-
 	}
 	midNight();
 
 
 
-	// adding userTracking model for use in tracking
-	const userTracking = mongoose.model('userTracking');
+
 
 	// socket.io
 	io.on('connection', (socket) => {
@@ -203,6 +198,8 @@ dbCon.connectToServer(function (err) {
 				userBrowserType: data.browserType
 			};
 			let docsIns;
+			// adding userTracking model for use in tracking
+			const userTracking = mongoose.model('userTracking');
 			(async function createNewUserTest() {
 				try {
 					let db = mongoUtil.getDb();
@@ -260,8 +257,6 @@ dbCon.connectToServer(function (err) {
 					});
 					const webID = ObjectId(cookieInDB._id);
 					if (webID == ourCookie) {
-
-						// need to fix recMoves to correctly select the last element in cursorPoint
 						db.collection('userTracking').updateOne(cookieInDB, {
 							$push: {
 								'recMoves.$[i].cursorPoints': {
@@ -280,8 +275,6 @@ dbCon.connectToServer(function (err) {
 					console.log(err);
 				}
 			}());
-			// may just need to send each data bit every second instead of sending every few seconds so we dont miss anything
-
 		});
 		socket.on('newPageReached', (data) => {
 			let ourCookie = data.cookie;
