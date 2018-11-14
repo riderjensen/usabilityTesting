@@ -78,6 +78,46 @@ function cookieTest() {
 			'initPage': pageID
 		}
 		socket.emit('initInformation', initInformation);
+
+		// creating a modal for first time users to fill out
+		// create modal
+		let usableModalDiv = document.createElement('div');
+		usableModalDiv.id = 'usableStartModal';
+		usableModalDiv.style.cssText = 'display: block; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);'
+
+		// content in modal
+		let usableModalDivContent = document.createElement('div');
+		usableModalDivContent.id = 'usableStartModalContent';
+		usableModalDivContent.style.cssText = 'background-color: #fefefe;    margin: 15% auto; padding: 20px; width: 60%; box-shadow: 0 2px 5px rgba(0,0,0,.2);';
+		usableModalDiv.appendChild(usableModalDivContent);
+
+		//heading text
+		let usableModalHeading = document.createElement('h2');
+		usableModalHeading.innerHTML = 'Testing Agreement';
+		usableModalHeading.style.cssText = 'color: rebeccapurple; text-align: center;';
+		usableModalDivContent.appendChild(usableModalHeading);
+		// paragraph text
+		let usableModalParagraph = document.createElement('p');
+		usableModalParagraph.innerHTML = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius ante aliquet mauris mattis congue. Etiam tincidunt ut sem non vulputate. Nullam sit amet nisl eget ante fringilla pulvinar. Etiam bibendum cursus tortor at semper. Nullam tristique est vitae tellus commodo convallis. In congue aliquam nisi, non mollis arcu ultrices ac. Pellentesque vitae diam vulputate, semper turpis quis, venenatis metus. Quisque diam turpis, scelerisque ut tincidunt id, mollis et sem.'
+		usableModalDivContent.appendChild(usableModalParagraph);
+
+		// acknowledge button
+		let usableModalDivButton = document.createElement('button');
+		usableModalDivButton.id = 'usableModalDivButton';
+		usableModalDivButton.innerHTML = 'I accept';
+		usableModalDivButton.style.cssText = 'background-color: rebeccapurple;  border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: block; font-size: 16px; margin: auto; margin-top: 20px; border-radius: 4px; ';
+		usableModalDivContent.appendChild(usableModalDivButton);
+
+		// add to body
+		let body = document.getElementsByTagName('body')[0];
+		body.appendChild(usableModalDiv);
+
+
+		// close modal
+		usableModalDivButton.onclick = function () {
+			usableModalDiv.style.display = "none";
+		}
+
 	} else {
 		//found cookie and set it to first page ID
 		globalCookie = ourCookie.substring(name.length, ourCookie.length);
