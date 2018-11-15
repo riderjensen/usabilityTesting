@@ -6,6 +6,7 @@ const d = new Date();
 let socket = io.connect();
 
 let testingID, secretID;
+let acceptTerms = false;
 
 // setting cookie
 const pageURL = window.location.href;
@@ -146,6 +147,8 @@ function cookieTest() {
 			userInformationInit.race = document.getElementById(inputIDArray[2]).value;
 			// send user information to back
 			socket.emit('userInitInformation', userInformationInit);
+			// start recording moves now
+			acceptTerms = true;
 		}
 
 
@@ -169,6 +172,7 @@ function cookieTest() {
 		globalCookie = ourCookie.substring(name.length, ourCookie.length);
 		console.log(`Old Cookie: ${globalCookie}`);
 		sendOutNewObject();
+		acceptTerms = true;
 	}
 }
 cookieTest();
@@ -272,21 +276,24 @@ function usableScrolling() {
 // ****** Mouse Moves ******
 
 setInterval(function () {
-	let object = screenPercents();
-	if (objectArray.length > 10) {
-		let sendObj = {
-			userID: globalCookie,
-			recMoves: objectArray,
-			page: pageID,
-			secret: secretID
-		};
-		// push testArray to the app
-		socket.emit('testingInfo', sendObj);
-		// empty object array and begin again
-		objectArray = [];
+	// start recording after modal is closed
+	if (acceptTerms) {
+		let object = screenPercents();
+		if (objectArray.length > 10) {
+			let sendObj = {
+				userID: globalCookie,
+				recMoves: objectArray,
+				page: pageID,
+				secret: secretID
+			};
+			// push testArray to the app
+			socket.emit('testingInfo', sendObj);
+			// empty object array and begin again
+			objectArray = [];
+		}
+		// push object to object array
+		objectArray.push(object);
 	}
-	// push object to object array
-	objectArray.push(object);
 }, 100);
 
 // get final information before page is taken away
