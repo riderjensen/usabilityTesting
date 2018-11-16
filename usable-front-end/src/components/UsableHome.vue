@@ -9,7 +9,8 @@
           class="mt-4 urlInputBox" 
           type="text" 
           placeholder="Enter Site Link..."
-          v-model="urlInput">
+          v-model="urlInput"
+          id="webURL">
           <i class="fas fa-check fa-2x"></i>
         <transition name="fade">
         <router-link to="/new-test" class="to-form-btn">  
@@ -39,27 +40,27 @@
         document.querySelector('.navbar').style.backgroundSize = 'cover';
       }
     },
-    watch: {
-      urlInput() {
-        let urlInputBox = document.querySelector('.urlInputBox');
-        // console.log(urlInputBox.style);
-        if(this.urlInput.length > 5) {
-          this.urlCheck = false;
-          urlInputBox.style.borderColor = 'green';
-          document.querySelector('.fa-check').style.opacity = '1';
-          document.querySelector('.fa-check').style.right = '40px'; 
-          document.querySelector('.fa-chevron-right').style.position = 'relative';
-          document.querySelector('.fa-chevron-right').style.right = '-5px';
+    // watch: {
+    //   urlInput() {
+    //     let urlInputBox = document.querySelector('.urlInputBox');
+    //     // console.log(urlInputBox.style);
+    //     if(this.urlInput.length > 5) {
+    //       this.urlCheck = false;
+    //       urlInputBox.style.borderColor = 'green';
+    //       document.querySelector('.fa-check').style.opacity = '1';
+    //       document.querySelector('.fa-check').style.right = '40px'; 
+    //       document.querySelector('.fa-chevron-right').style.position = 'relative';
+    //       document.querySelector('.fa-chevron-right').style.right = '-5px';
 
-        } else {
-          this.urlCheck = true;
-          urlInputBox.style.borderColor = 'red';
-          document.querySelector('.fa-check').style.opacity = '0';
-          document.querySelector('.fa-check').style.right = '0px'; 
-          document.querySelector('.fa-chevron-right').style.right = '0px';
-        }
-      }
-    }
+    //     } else {
+    //       this.urlCheck = true;
+    //       urlInputBox.style.borderColor = 'red';
+    //       document.querySelector('.fa-check').style.opacity = '0';
+    //       document.querySelector('.fa-check').style.right = '0px'; 
+    //       document.querySelector('.fa-chevron-right').style.right = '0px';
+    //     }
+    //   }
+    // }
   }
 
 
