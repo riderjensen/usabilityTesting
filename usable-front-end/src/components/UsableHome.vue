@@ -25,6 +25,27 @@
 </template>
 
 <script>
+let socket = io.connect();
+
+// good URL entered
+socket.on('goodURL', () => {
+  this.urlCheck = false;
+  urlInputBox.style.borderColor = 'green';
+  document.querySelector('.fa-check').style.opacity = '1';
+  document.querySelector('.fa-check').style.right = '40px'; 
+  document.querySelector('.fa-chevron-right').style.position = 'relative';
+  document.querySelector('.fa-chevron-right').style.right = '-5px';
+});
+
+// bad URL entered
+socket.on('badURL', () => {
+  this.urlCheck = true;
+  urlInputBox.style.borderColor = 'red';
+  document.querySelector('.fa-check').style.opacity = '0';
+  document.querySelector('.fa-check').style.right = '0px'; 
+  document.querySelector('.fa-chevron-right').style.right = '0px';
+});
+
   export default {
     data() {
       return {
@@ -40,9 +61,14 @@
         document.querySelector('.navbar').style.backgroundSize = 'cover';
       }
     },
-    // watch: {
-    //   urlInput() {
-    //     let urlInputBox = document.querySelector('.urlInputBox');
+    watch: {
+      urlInput() {
+        let urlInputBox = document.querySelector('.urlInputBox');
+        if ((urlInputBox.value != '')) {
+          timeout = setTimeout(() => {
+            socket.emit('website', urlInputBox.value);
+          }, 500);
+        }
     //     // console.log(urlInputBox.style);
     //     if(this.urlInput.length > 5) {
     //       this.urlCheck = false;
@@ -59,8 +85,8 @@
     //       document.querySelector('.fa-check').style.right = '0px'; 
     //       document.querySelector('.fa-chevron-right').style.right = '0px';
     //     }
-    //   }
-    // }
+     }
+    }
   }
 
 
