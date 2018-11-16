@@ -65,9 +65,7 @@ socket.on('badURL', () => {
       urlInput() {
         let urlInputBox = document.querySelector('.urlInputBox');
         if ((urlInputBox.value != '')) {
-          timeout = setTimeout(() => {
             socket.emit('website', urlInputBox.value);
-          }, 500);
         }
     //     // console.log(urlInputBox.style);
     //     if(this.urlInput.length > 5) {
