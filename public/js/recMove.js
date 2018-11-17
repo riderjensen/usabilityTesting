@@ -271,7 +271,7 @@ function usableScrolling() {
 		}
 		// setting event to object on the scroll event
 		objectArray[objectArray.length - 1].ev = scrollObj;
-	}, 10);
+	}, 100);
 }
 
 // ****** Mouse Moves ******
