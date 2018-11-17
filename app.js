@@ -247,7 +247,23 @@ dbCon.connectToServer(function (err) {
 			);
 		});
 		socket.on('userInitInformation', (data) => {
-			console.log(data);
+			let theCookie = data.initID;
+			(async function addRecMoves() {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('userTracking');
+					const cookieInDB = await col.findOne({
+						"_id": ObjectId(theCookie)
+					});
+					db.collection('userTracking').updateOne(cookieInDB, {
+						$push: {
+							userData: data
+						}
+					})
+				} catch (err) {
+					console.log(err);
+				}
+			}());
 		});
 		socket.on('testingInfo', (data) => {
 			let ourCookie = data.userID;
