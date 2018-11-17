@@ -16,6 +16,9 @@ function router() {
 	resultsRouter.route('/:id')
 		.get((req, res) => {
 			const reqID = req.params.id;
+			let testArray, questionArray, webURL, createdDate;
+			let ourUserInfoArray = [];
+			let ourUserStatesArray = [];
 			(async function mongo() {
 				try {
 					let db = mongoUtil.getDb();
@@ -27,21 +30,50 @@ function router() {
 					if (testFound.testArray == null) {
 						console.log('Probably a cookie issue with someone having an old cookie when testing');
 					} else {
-						const testArray = testFound.testArray;
-						const questionArray = testFound.questionArray;
-						const webURL = testFound.webURL;
-						const createdDate = testFound.createdAt;
-						res.render('resultsPage', {
-							testArray,
-							questionArray,
-							webURL,
-							createdDate
-						});
+						testArray = testFound.testArray;
+						questionArray = testFound.questionArray;
+						webURL = testFound.webURL;
+						createdDate = testFound.createdAt;
 					}
 				} catch (err) {
 					console.log(err.stack);
 				}
-			}());
+			}()).then(() => {
+				(async function innerMongo() {
+					for (let i = 0; i < testArray.length; i++) {
+						try {
+							let db = mongoUtil.getDb();
+							const userTrackCol = db.collection('userTracking');
+							const testFound = await userTrackCol.findOne({
+								"_id": ObjectId(testArray[i])
+							});
+							ourUserInfoArray.push(testFound.userData);
+							ourUserStatesArray.push(testFound.initInformation);
+						} catch (err) {
+							console.log(err);
+						}
+					}
+				}()).then(() => {
+					const newDate = new Date(createdDate);
+					const ourCreated = newDate.getTime();
+
+					const deletionDate = new Date(newDate.setDate(newDate.getDate() + 30));
+					const ourDeleted = deletionDate.getTime();
+
+					const testTimeRemaining = (ourDeleted - ourCreated) / 86400000;
+					const testTimePercentage = (testTimeRemaining / 30) * 100;
+
+					res.render('resultsPage', {
+						ourUserInfoArray,
+						ourUserStatesArray,
+						questionArray,
+						webURL,
+						createdDate,
+						testTimeRemaining,
+						testTimePercentage
+					});
+				});
+			});
 
 		});
 	return resultsRouter;
