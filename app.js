@@ -256,7 +256,7 @@ dbCon.connectToServer(function (err) {
 						"_id": ObjectId(theCookie)
 					});
 					db.collection('userTracking').updateOne(cookieInDB, {
-						$push: {
+						$set: {
 							userData: data
 						}
 					})
