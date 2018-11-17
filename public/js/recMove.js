@@ -145,6 +145,7 @@ function cookieTest() {
 			userInformationInit.name = document.getElementById(inputIDArray[0]).value;
 			userInformationInit.age = document.getElementById(inputIDArray[1]).value;
 			userInformationInit.race = document.getElementById(inputIDArray[2]).value;
+			userInformationInit.initID = globalCookie;
 			// send user information to back
 			socket.emit('userInitInformation', userInformationInit);
 			// start recording moves now

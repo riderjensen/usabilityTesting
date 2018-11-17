@@ -35,6 +35,7 @@ const useTrack = new Schema({
 	// array of objects that we continuously push on to
 	recMoves: Array,
 	pageName: String,
+	userData: Object,
 	createdAt: {
 		type: Date,
 		default: Date.now
