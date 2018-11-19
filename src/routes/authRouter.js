@@ -107,7 +107,7 @@ function router(nav) {
 								emptyArray,
 								addedOn
 							});
-							col.insertOne(user)
+							await col.insertOne(user)
 							res.redirect('/auth/profile');
 								// body is being sent undefined so no user is there on signup
 							
