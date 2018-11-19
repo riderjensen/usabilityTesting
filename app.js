@@ -168,8 +168,6 @@ dbCon.connectToServer(function (err) {
 
 	// socket.io
 	io.on('connection', (socket) => {
-		console.log('Connected');
-
 		socket.on('website', (data) => {
 			const splitURL = data.split("");
 			// check to see if they added http
@@ -358,7 +356,7 @@ dbCon.connectToServer(function (err) {
 			}())
 		});
 		socket.on('disconnect', () => {
-			console.log('Disconnect Event');
+			// any events we need to fire on disconnection of a socket
 		});
 	});
 
