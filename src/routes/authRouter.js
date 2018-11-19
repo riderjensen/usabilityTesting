@@ -19,7 +19,6 @@ function router(nav) {
 			}
 		})
 		.post((req, res) => {
-			// getting undefined respondes on req.body but not 
 			const {
 				testID,
 				ourUsername
@@ -108,8 +107,10 @@ function router(nav) {
 								emptyArray,
 								addedOn
 							});
-							await col.insertOne(user);
+							col.insertOne(user)
 							res.redirect('/auth/profile');
+								// body is being sent undefined so no user is there on signup
+							
 						}
 					} catch (error) {
 						console.log(error);
@@ -134,6 +135,7 @@ function router(nav) {
 			}
 		})
 		.get((req, res) => {
+			
 			// need to retrieve user data and send to screen
 			let userData = req.user;
 			let username = req.user.username;
