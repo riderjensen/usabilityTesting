@@ -4,6 +4,7 @@ const mongoose = require('../models/model');
 const webStorage = mongoose.model('webStorage');
 const extraScripts = require('../extraScripts/scrapper');
 const mongoUtil = require('../extraScripts/dbConnect');
+const fs = require('fs');
 
 const siteRouter = express.Router();
 
@@ -118,13 +119,7 @@ function router(nav) {
 	siteRouter.route('/:id')
 		.get((req, res) => {
 			const reqID = req.params.id;
-
-			// setting timeout for slower loading pages -- need to fix so that we only render once we have the whole body
-			// maybe passing a value from the scrapper function to this function with a boolean?
-
-			setTimeout(function () {
-				res.render(`files/${reqID}`);
-			}, 2000);
+			res.render(`files/${reqID}`);
 		});
 	return siteRouter;
 }
