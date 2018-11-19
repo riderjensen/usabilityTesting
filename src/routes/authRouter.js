@@ -82,7 +82,7 @@ function router(nav) {
 				username,
 				password
 			} = req.body;
-			bcrypt.hash(password, 10, (err, hash) => {
+			bcrypt.hash(password, null, null, (err, hash) => {
 				(async function addUser() {
 					try {
 
