@@ -4,7 +4,6 @@ const mongoose = require('../models/model');
 const webStorage = mongoose.model('webStorage');
 const extraScripts = require('../extraScripts/scrapper');
 const mongoUtil = require('../extraScripts/dbConnect');
-const fs = require('fs');
 
 const siteRouter = express.Router();
 
