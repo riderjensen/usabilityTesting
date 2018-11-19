@@ -91,7 +91,7 @@ module.exports = {
 						if (id === null) {
 							// this should never be called but just in case, we create a new id for it so the page doesnt crash
 							let newID = shortid.generate();
-							fs.appendFile(`files/${newID}.ejs`, newCombine, (err) => {
+							fs.appendFile(`src/views/files/${newID}.ejs`, newCombine, (err) => {
 								if (err) throw err;
 							});
 						} else {

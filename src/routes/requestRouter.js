@@ -2,7 +2,6 @@
 const express = require('express');
 const extraScripts = require('../extraScripts/scrapper');
 const shortid = require('shortid');
-const fs = require('fs');
 
 const reqRouter = express.Router();
 
@@ -16,16 +15,7 @@ function router() {
 				requestURL
 			} = extraScripts;
 			requestURL(webURL, newID);
-			let myTimeOut;
-			res.redirect(`/site/${newID}.ejs`)
-			fs.watch('files', (eventType) => {
-				if (eventType) {
-					clearTimeout(myTimeOut);
-					myTimeOut = setTimeout(function () {
-						// this is in infinte loop right now
-					}, 2000);
-				}
-			});
+			res.redirect(`/site/${newID}.ejs`);
 		});
 	return reqRouter;
 }
