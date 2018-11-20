@@ -25,10 +25,10 @@ module.exports = function localStrategy() {
 				} else if (user != null) {
 					bcrypt.compare(password, user.password, (err, res) => {
 						if (res === true) {
-							// good user good password
 							done(null, user);
 						} else {
-							// bad password
+							console.log('bad pass')
+							// Return something that says bad pass
 							done(null, false);
 						}
 					});
