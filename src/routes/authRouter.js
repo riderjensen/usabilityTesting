@@ -19,7 +19,6 @@ function router(nav) {
 			}
 		})
 		.post((req, res) => {
-			// getting undefined respondes on req.body but not 
 			const {
 				testID,
 				ourUsername
@@ -77,7 +76,7 @@ function router(nav) {
 		.get((req, res) => {
 			res.redirect('/auth/profile');
 		})
-		.post((req, res) => {
+		.post((req, res, next) => {
 			const {
 				username,
 				password
@@ -109,24 +108,28 @@ function router(nav) {
 								addedOn
 							});
 							await col.insertOne(user);
-							res.redirect('/auth/profile');
+							next();
 						}
 					} catch (error) {
 						console.log(error);
 					}
 				}());
 			});
-		});
+		}, passport.authenticate('local', {
+			successRedirect: '/auth/profile',
+			failureRedirect: '/'
+		}));
 	authRouter.route('/signIn')
 		.post(passport.authenticate('local', {
 			successRedirect: '/auth/profile',
 			failureRedirect: '/'
 		}))
 		.get((req, res) => {
-			res.redirect('auth/profile');
+			res.redirect('/auth/profile');
 		});
 	authRouter.route('/profile')
 		.all((req, res, next) => {
+			console.log(req.user);
 			if (req.user) {
 				next();
 			} else {
@@ -134,6 +137,7 @@ function router(nav) {
 			}
 		})
 		.get((req, res) => {
+
 			// need to retrieve user data and send to screen
 			let userData = req.user;
 			let username = req.user.username;
