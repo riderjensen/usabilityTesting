@@ -27,7 +27,6 @@ module.exports = function localStrategy() {
 						if (res === true) {
 							done(null, user);
 						} else {
-							console.log('bad pass')
 							// Return something that says bad pass
 							done(null, false);
 						}

@@ -14,6 +14,7 @@ dbCon.connectToServer(function (err) {
 	const mongoUtil = require('./src/extraScripts/dbConnect');
 	const ObjectId = require('mongodb').ObjectID;
 	const shortid = require('shortid');
+	const flash = require('connect-flash');
 
 	const mongoURI = 'mongodb://localhost/usabilityTesting';
 	const connectOptions = {
@@ -66,6 +67,7 @@ dbCon.connectToServer(function (err) {
 	require('./src/config/strategies/local.strategy')(passport);
 	// Correcting all CSS and JS file areas
 	app.use(express.static(`${__dirname}/public/`));
+	app.use(flash());
 
 	// setting the view engine and where the views are stored
 	app.set('views', './src/views');
@@ -91,7 +93,6 @@ dbCon.connectToServer(function (err) {
 	const resultsRouter = require('./src/routes/resultsRouter.js')();
 	app.use('/results', resultsRouter);
 
-
 	// 404
 	app.use(function (err, req, res, next) {
 		console.log(err);
@@ -100,7 +101,11 @@ dbCon.connectToServer(function (err) {
 
 	// getting our index served
 	app.get('/', (req, res) => {
-		res.render('index');
+		// flash for sign in errors
+		let ourmsg = req.flash('error')
+		res.render('index', {
+			message: ourmsg
+		});
 	});
 
 	// need to delete website IDs from users collection

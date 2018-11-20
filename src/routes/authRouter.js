@@ -122,7 +122,8 @@ function router(nav) {
 	authRouter.route('/signIn')
 		.post(passport.authenticate('local', {
 			successRedirect: '/auth/profile',
-			failureRedirect: '/'
+			failureRedirect: '/',
+			failureFlash: 'Incorrect username or password'
 		}))
 		.get((req, res) => {
 			res.redirect('/auth/profile');
