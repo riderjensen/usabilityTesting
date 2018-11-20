@@ -159,14 +159,9 @@ dbCon.connectToServer(function (err) {
 											if (pageID.length >= 15) {
 												pageID = pageID + '.ejs';
 											}
-											try {
-												fs.unlink(`src/views/files/${pageID}`, (err) => {
-													if (err) throw err;
-												});
-											} catch (err) {
-												console.log(err);
-											}
-
+											fs.unlink(`src/views/files/${pageID}`, (err) => {
+												if (err) throw err;
+											});
 										});
 									})
 								});
