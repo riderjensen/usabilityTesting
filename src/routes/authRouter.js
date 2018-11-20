@@ -129,7 +129,6 @@ function router(nav) {
 		});
 	authRouter.route('/profile')
 		.all((req, res, next) => {
-			console.log(req.user);
 			if (req.user) {
 				next();
 			} else {
