@@ -162,7 +162,6 @@ dbCon.connectToServer(function (err) {
 											try {
 												fs.unlink(`src/views/files/${pageID}`, (err) => {
 													if (err) throw err;
-													console.log(`${pageID} deleted`);
 												});
 											} catch (err) {
 												console.log(err);
@@ -171,7 +170,6 @@ dbCon.connectToServer(function (err) {
 										});
 									})
 								});
-
 								// delete all user Tracking that are past the date
 								await usercol.deleteMany(myquery, function (err, obj) {
 									if (err) throw err;
