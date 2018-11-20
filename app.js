@@ -15,6 +15,7 @@ dbCon.connectToServer(function (err) {
 	const ObjectId = require('mongodb').ObjectID;
 	const shortid = require('shortid');
 	const flash = require('connect-flash');
+	const fs = require('fs');
 
 	const mongoURI = 'mongodb://localhost/usabilityTesting';
 	const connectOptions = {
@@ -148,8 +149,30 @@ dbCon.connectToServer(function (err) {
 								await col.deleteMany(myquery, function (err, obj) {
 									if (err) throw err;
 								});
-								// delete all user Tracking that are past the date
+
+								// delete all associated files
 								const usercol = db.collection('userTracking');
+								await usercol.find(myquery, (err, obj) => {
+									obj.forEach((item) => {
+										item.recMoves.forEach((page) => {
+											let pageID = page.pageID;
+											if (pageID.length >= 15) {
+												pageID = pageID + '.ejs';
+											}
+											try {
+												fs.unlink(`src/views/files/${pageID}`, (err) => {
+													if (err) throw err;
+													console.log(`${pageID} deleted`);
+												});
+											} catch (err) {
+												console.log(err);
+											}
+
+										});
+									})
+								});
+
+								// delete all user Tracking that are past the date
 								await usercol.deleteMany(myquery, function (err, obj) {
 									if (err) throw err;
 								});
