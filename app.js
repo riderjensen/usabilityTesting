@@ -160,7 +160,7 @@ dbCon.connectToServer(function (err) {
 												pageID = pageID + '.ejs';
 											}
 											fs.unlink(`src/views/files/${pageID}`, (err) => {
-												if (err) throw err;
+												if (err) console.log(err);
 											});
 										});
 									})
