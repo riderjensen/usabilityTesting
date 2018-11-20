@@ -22,7 +22,6 @@
 	<link href="css/grayscale.css" rel="stylesheet">
 
 </head>
-
 <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
  aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
@@ -77,6 +76,12 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-lg-12 pt-2">
+							<% if (typeof message != 'undefined' && message) { %>
+							<p style="color: red">
+
+								<%=message%>
+							</p>
+							<% } %>
 							<p style="color:#000">Username:</p>
 							<div class="popup">
 								<input type="text" name="username" id="username" pattern="[A-Za-z0-9]{5,20}" placeholder="Username" required>
