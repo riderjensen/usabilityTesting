@@ -101,7 +101,7 @@ dbCon.connectToServer(function (err) {
 
 	// getting our index served
 	app.get('/', (req, res) => {
-		// req.flash('message', 'test')
+		// flash for sign in errors
 		let ourmsg = req.flash('error')
 		res.render('index', {
 			message: ourmsg
