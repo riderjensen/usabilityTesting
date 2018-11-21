@@ -27,8 +27,10 @@ function router() {
 					const testFound = await col.findOne({
 						"_id": ObjectId(reqID)
 					});
-					if (testFound.testArray == null) {
-						console.log('Probably a cookie issue with someone having an old cookie when testing');
+					if (testFound == null || testFound.testArray == null) {
+						res.render(404, {
+							errMsg: 'Your results page cannot be found. This is usually a cookie error on your browser.'
+						})
 					} else {
 						testArray = testFound.testArray;
 						questionArray = testFound.questionArray;
@@ -36,7 +38,9 @@ function router() {
 						createdDate = testFound.createdAt;
 					}
 				} catch (err) {
-					console.log(err.stack);
+					res.render('404', {
+						errMsg: `Your results page cannot be found. Please refer to the error message:${err.stack}`
+					})
 				}
 			}()).then(() => {
 				(async function innerMongo() {
@@ -80,5 +84,4 @@ function router() {
 		});
 	return resultsRouter;
 }
-// exporting out the router
 module.exports = router;
