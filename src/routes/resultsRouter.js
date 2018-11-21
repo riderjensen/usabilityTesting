@@ -27,8 +27,10 @@ function router() {
 					const testFound = await col.findOne({
 						"_id": ObjectId(reqID)
 					});
-					if (testFound.testArray == null) {
-						console.log('Probably a cookie issue with someone having an old cookie when testing');
+					if (testFound == null || testFound.testArray == null) {
+						res.render('404', {
+							errMsg: 'Your results page cannot be found. This is usually a cookie error on your browser.'
+						});
 					} else {
 						testArray = testFound.testArray;
 						questionArray = testFound.questionArray;
@@ -36,23 +38,32 @@ function router() {
 						createdDate = testFound.createdAt;
 					}
 				} catch (err) {
-					console.log(err.stack);
+					res.render('404', {
+						errMsg: `Your results page cannot be found. Please refer to the error message:${err.stack}`
+					})
 				}
 			}()).then(() => {
 				(async function innerMongo() {
-					for (let i = 0; i < testArray.length; i++) {
-						try {
-							let db = mongoUtil.getDb();
-							const userTrackCol = db.collection('userTracking');
-							const testFound = await userTrackCol.findOne({
-								"_id": ObjectId(testArray[i])
-							});
-							ourUserInfoArray.push(testFound.userData);
-							ourUserStatesArray.push(testFound.initInformation);
-						} catch (err) {
-							console.log(err);
+					try {
+						if (testArray == null) {
+							throw 'Test array is null, we cant find the test'
+						} else {
+							for (let i = 0; i < testArray.length; i++) {
+								let db = mongoUtil.getDb();
+								const userTrackCol = db.collection('userTracking');
+								const testFound = await userTrackCol.findOne({
+									"_id": ObjectId(testArray[i])
+								});
+								ourUserInfoArray.push(testFound.userData);
+								ourUserStatesArray.push(testFound.initInformation);
+							}
 						}
+					} catch (err) {
+						res.render('404', {
+							errMsg: `We experienced and error within our code. Please refer to the error message:${err}`
+						})
 					}
+
 				}()).then(() => {
 					const newDate = new Date(createdDate);
 
@@ -76,9 +87,7 @@ function router() {
 					});
 				});
 			});
-
 		});
 	return resultsRouter;
 }
-// exporting out the router
 module.exports = router;
