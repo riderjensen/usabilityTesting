@@ -120,11 +120,16 @@ function router(nav) {
 		.get((req, res) => {
 			const reqID = req.params.id;
 
-
+			let myAmountOfTimes = 0;
 			let myTimeOut;
 			myTimeOut = setInterval(function () {
 				fs.access(`src/views/files/${reqID}`, fs.constants.F_OK, (err) => {
 					if (err) {
+						myAmountOfTimes += 1;
+						if (myAmountOfTimes > 50) {
+							res.render(`404`);
+							clearInterval(myTimeOut);
+						}
 						// does not exist yet
 					} else {
 						res.render(`files/${reqID}`);
