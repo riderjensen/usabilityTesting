@@ -4,6 +4,7 @@ const mongoose = require('../models/model');
 const webStorage = mongoose.model('webStorage');
 const extraScripts = require('../extraScripts/scrapper');
 const mongoUtil = require('../extraScripts/dbConnect');
+const fs = require('fs');
 
 const siteRouter = express.Router();
 
@@ -118,7 +119,21 @@ function router(nav) {
 	siteRouter.route('/:id')
 		.get((req, res) => {
 			const reqID = req.params.id;
-			res.render(`files/${reqID}`);
+
+
+			let myTimeOut;
+			myTimeOut = setInterval(function () {
+				fs.access(`src/views/files/${reqID}`, fs.constants.F_OK, (err) => {
+					if (err) {
+						// does not exist yet
+					} else {
+						res.render(`files/${reqID}`);
+						clearInterval(myTimeOut);
+					}
+				});
+			}, 100);
+
+
 		});
 	return siteRouter;
 }
