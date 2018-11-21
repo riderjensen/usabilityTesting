@@ -60,8 +60,11 @@ function router() {
 					const deletionDate = new Date(newDate.setDate(newDate.getDate() + 30));
 					const ourDeleted = deletionDate.getTime();
 
-					const testTimeRemaining = (ourDeleted - ourCreated) / 86400000;
-					const testTimePercentage = (testTimeRemaining / 30) * 100;
+					const currentDate = new Date();
+					const currentTime = currentDate.getTime();
+
+					const testTimeRemaining = Math.ceil((ourDeleted - currentTime) / 86400000);
+					const testTimePercentage = Math.ceil((testTimeRemaining / 30) * 100);
 
 					res.render('resultsPage', {
 						ourUserInfoArray,
