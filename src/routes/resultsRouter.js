@@ -55,7 +55,6 @@ function router() {
 					}
 				}()).then(() => {
 					const newDate = new Date(createdDate);
-					const ourCreated = newDate.getTime();
 
 					const deletionDate = new Date(newDate.setDate(newDate.getDate() + 30));
 					const ourDeleted = deletionDate.getTime();
