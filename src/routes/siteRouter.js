@@ -116,10 +116,13 @@ function router(nav) {
 		});
 	siteRouter.route('/:id')
 		.get((req, res) => {
-			const reqID = req.params.id;
-
+			let reqID = req.params.id;
+			if (reqID.length > 12) {
+				reqID = reqID + '.ejs'
+			}
 			let myAmountOfTimes = 0;
 			let myTimeOut;
+			console.log(reqID);
 			myTimeOut = setInterval(function () {
 				fs.access(`src/views/files/${reqID}`, fs.constants.F_OK, (err) => {
 					if (err) {
