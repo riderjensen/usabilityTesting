@@ -80,7 +80,6 @@ function router(nav) {
 							}());
 							res.redirect("/site/testCreate" + querystring + 'id=' + objectId);
 						} else {
-							// we should display that they are not logged in and tell them about the benefits to making an account
 							res.redirect("/site/testCreate" + querystring + "id=" + objectId + "&log=false");
 						}
 					});
@@ -114,7 +113,6 @@ function router(nav) {
 
 				});
 			}
-
 		});
 	siteRouter.route('/:id')
 		.get((req, res) => {
@@ -127,10 +125,11 @@ function router(nav) {
 					if (err) {
 						myAmountOfTimes += 1;
 						if (myAmountOfTimes > 50) {
-							res.render(`404`);
+							res.render(`404`, {
+								errMsg: `Your page could not be found. Either it has been deleted or there was an error in creating it.`
+							});
 							clearInterval(myTimeOut);
 						}
-						// does not exist yet
 					} else {
 						res.render(`files/${reqID}`);
 						clearInterval(myTimeOut);
@@ -142,5 +141,4 @@ function router(nav) {
 		});
 	return siteRouter;
 }
-// exporting out the router
 module.exports = router;
