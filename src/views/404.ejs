@@ -133,8 +133,12 @@
 				<div class="row">
 					<div class="col-lg-8 mx-auto">
 						<h1>This is a 404 page</h1>
-						<h3>Your page cannot be found. Either it has been deleted or there is an error in creating it. You are welcome to
-							go back to the previous page. This is most likely a fault of the usable programming.</h3>
+						<% if (typeof errMsg != 'undefined' && errMsg) { %>
+						<p>
+
+							<%=errMsg%>
+						</p>
+						<% } %>
 					</div>
 				</div>
 			</div>
