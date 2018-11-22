@@ -1,4 +1,5 @@
 const ourURL = 'http://localhost:3000/replay/';
+let prevScrollPx = 0;
 
 function createScript(theURL) {
 	let ourScript = document.createElement('script');
@@ -78,7 +79,7 @@ socket.on('returnMoves', (data) => {
 
 			clearInterval(intervalFunction);
 			// move us on to the next url
-			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}&testID=${relatedTestId}`;
+			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}&testID=${relatedTestId}?prevScroll=${prevScrollPx}`;
 		}
 		TweenLite.to('#box', 1, {
 			ease: Power2.easeNone,
@@ -113,3 +114,7 @@ socket.on('returnMoves', (data) => {
 		}
 	}
 });
+
+window.addEventListener('unload', () => {
+	document.cookie = `pageScroll = ${window.scrollY}`;
+})
