@@ -76,7 +76,7 @@ socket.on('returnMoves', (data) => {
 	function replayFunction() {
 		i++;
 		if (i >= (userMoves.length - 1)) {
-
+			prevScrollPx = data.endingScroll;
 			clearInterval(intervalFunction);
 			// move us on to the next url
 			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}&testID=${relatedTestId}?prevScroll=${prevScrollPx}`;

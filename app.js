@@ -377,7 +377,8 @@ dbCon.connectToServer(function (err) {
 						}
 						let sendObj = {
 							moves: webTest.recMoves[pageNum].cursorPoints,
-							nextURL: nextURL
+							nextURL: nextURL,
+							endingScroll: webTest.recMoves[pageNum].endingScroll
 						}
 						socket.emit('returnMoves', sendObj);
 					} else {
