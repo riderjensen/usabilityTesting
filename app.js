@@ -306,6 +306,18 @@ dbCon.connectToServer(function (err) {
 								"i.secretID": data.secret
 							}]
 						})
+						if(data.endingScroll){
+							db.collection('userTracking').updateOne(cookieInDB, {
+								$set: {
+									'recMoves.$[i].endingScroll': data.endingScroll
+								}
+							}, {
+								arrayFilters: [{
+									"i.secretID": data.secret
+								}]
+							})
+						}
+						
 					} else {
 						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
 					}
@@ -365,7 +377,8 @@ dbCon.connectToServer(function (err) {
 						}
 						let sendObj = {
 							moves: webTest.recMoves[pageNum].cursorPoints,
-							nextURL: nextURL
+							nextURL: nextURL,
+							endingScroll: webTest.recMoves[pageNum].endingScroll
 						}
 						socket.emit('returnMoves', sendObj);
 					} else {

@@ -1,4 +1,6 @@
 const ourURL = 'http://localhost:3000/replay/';
+let prevScrollPx = 0;
+let scrollAmountFromURL = 0;
 
 function createScript(theURL) {
 	let ourScript = document.createElement('script');
@@ -34,7 +36,8 @@ if (window.location.search == "") {
 let relatedTestId;
 if (!document.getElementById('usableReqID')) {
 	let pageArray = (window.location.search).split('=')
-	relatedTestId = pageArray[pageArray.length - 1];
+	relatedTestId = pageArray[pageArray.length - 3];
+	scrollAmountFromURL = pageArray[pageArray.length - 1];
 } else {
 	relatedTestId = document.getElementById('usableReqID').innerHTML;
 }
@@ -75,10 +78,11 @@ socket.on('returnMoves', (data) => {
 	function replayFunction() {
 		i++;
 		if (i >= (userMoves.length - 1)) {
-
+			prevScrollPx = data.endingScroll;
+			document.cookie = `previousScrollPX=${scrollAmountFromURL}; path=/`;
 			clearInterval(intervalFunction);
 			// move us on to the next url
-			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}&testID=${relatedTestId}`;
+			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}&testID=${relatedTestId}?prevScroll=${prevScrollPx}`;
 		}
 		TweenLite.to('#box', 1, {
 			ease: Power2.easeNone,
@@ -113,3 +117,21 @@ socket.on('returnMoves', (data) => {
 		}
 	}
 });
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+window.scrollTo(getCookie(scrollAmountFromURL));
