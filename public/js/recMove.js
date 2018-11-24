@@ -303,7 +303,8 @@ window.addEventListener('unload', () => {
 		userID: globalCookie,
 		recMoves: objectArray,
 		page: pageID,
-		secret: secretID
+		secret: secretID,
+		endingScroll: window.scrollY
 	};
 	socket.emit('testingInfo', sendObj);
 });
