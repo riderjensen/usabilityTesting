@@ -142,11 +142,13 @@ let splitURL = window.location.href.split('/');
 let ourPage = splitURL[splitURL.length - 1].split('?')[0]
 
 // broken---------------- this if isnt firing because our /first/ route is storing the test number instead of the page served 
-console.log('our page ' + ourPage)
-console.log('Cookie ' + getCookie('secondPage'))
+if(document.getElementById('firstPageID')){
+	ourPage = document.getElementById('firstPageID').innerHTML;
+}
+
 if (scrollAmountFromURL != undefined && getCookie('secondPage') == ourPage) {
-	console.log('same page');
-	window.scrollTo(getCookie('previousScrollPX'), 0);
+	let ourX = getCookie('previousScrollPX');
+	window.scrollTo(0, ourX);
 }
 
 document.cookie = `secondPage=${getCookie('firstPage')}; path=/`;
