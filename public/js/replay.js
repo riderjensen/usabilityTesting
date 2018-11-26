@@ -36,7 +36,7 @@ if (window.location.search == "") {
 let relatedTestId;
 if (!document.getElementById('usableReqID')) {
 	let pageArray = (window.location.search).split('=')
-	relatedTestId = pageArray[pageArray.length - 3];
+	relatedTestId = pageArray[pageArray.length - 2].split('?')[0];
 	scrollAmountFromURL = pageArray[pageArray.length - 1];
 } else {
 	relatedTestId = document.getElementById('usableReqID').innerHTML;
@@ -78,7 +78,11 @@ socket.on('returnMoves', (data) => {
 	function replayFunction() {
 		i++;
 		if (i >= (userMoves.length - 1)) {
-			prevScrollPx = data.endingScroll;
+			if (data.endingScroll == undefined) {
+				prevScrollPx = 0;
+			} else {
+				prevScrollPx = data.endingScroll;
+			}
 			document.cookie = `previousScrollPX=${scrollAmountFromURL}; path=/`;
 			clearInterval(intervalFunction);
 			// move us on to the next url
@@ -119,19 +123,28 @@ socket.on('returnMoves', (data) => {
 });
 
 function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
 }
 
-window.scrollTo(getCookie(scrollAmountFromURL));
+let ourPage = window.location.href.split('/')[4].split('?')[0]
+
+// broken----------------
+if (scrollAmountFromURL != undefined && getCookie('secondPage') == ourPage) {
+	console.log('same page');
+	window.scrollTo(getCookie('previousScrollPX'), 0);
+}
+
+document.cookie = `secondPage=${getCookie('firstPage')}; path=/`;
+document.cookie = `firstPage=${ourPage}; path=/`;
