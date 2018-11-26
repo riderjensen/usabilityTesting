@@ -34,10 +34,12 @@ function router() {
 							const findTracking = await col.findOne({
 								"_id": ObjectId(reqID)
 							});
+							let firstPageID = ourWeb._id;
 							const initInfo = findTracking.initInformation;
 							res.render(`files/${ourUpperTestId}`, {
 								initInfo,
-								reqID
+								reqID,
+								firstPageID
 							});
 						} catch (err) {
 							console.log(err);
