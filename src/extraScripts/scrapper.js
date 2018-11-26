@@ -56,7 +56,7 @@ module.exports = {
 						const changeStyleBack = replaceStyleURL.replace(/URL\(HTTP/g, 'url(http');
 
 						// add our JS script to the end of the file, name is at top of file to change
-						const addOurScript = changeStyleBack.replace(/<\/body>/, `<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script><span style="display: none;" id="usableRootURL">${rootURL}</span>${ourScript}<\/body>`);
+						const addOurScript = changeStyleBack.replace(/<\/body>/, `<% if (typeof firstPageID != "undefined" && firstPageID) { %><p style="display: none;" id="firstPageID"><%=firstPageID%></p><% } %><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script><span style="display: none;" id="usableRootURL">${rootURL}</span>${ourScript}<\/body>`);
 
 						// split HTML into two parts, body and not body
 						const newSplit = addOurScript.split('<body');
@@ -82,7 +82,6 @@ module.exports = {
 
 						// fix quote issue throughout the page
 						newRequest = newRequest.replace(/"href=/gi, 'href=');
-
 
 						// combine the two parts of the HTML and adding our script listeners
 						const newCombine = newSplit[0] + '<body id="usableBody" ' + newRequest;

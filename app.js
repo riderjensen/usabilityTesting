@@ -306,7 +306,7 @@ dbCon.connectToServer(function (err) {
 								"i.secretID": data.secret
 							}]
 						})
-						if(data.endingScroll){
+						if (data.endingScroll) {
 							db.collection('userTracking').updateOne(cookieInDB, {
 								$set: {
 									'recMoves.$[i].endingScroll': data.endingScroll
@@ -317,7 +317,6 @@ dbCon.connectToServer(function (err) {
 								}]
 							})
 						}
-						
 					} else {
 						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
 					}
