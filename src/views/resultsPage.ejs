@@ -20,7 +20,6 @@
 
 	<!-- Custom styles for this template -->
 	<link href="../css/grayscale.css" rel="stylesheet">
-
 </head>
 
 
@@ -82,7 +81,27 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 mx-auto">
-					<h2>Watch replays</h2>
+					<h2>Change replay colors</h2>
+					<div class="row">
+						<div class="col-sm-6">
+							<p style="margin: 0">Change the mouse outline color</p>
+							<input class="form-control" id="changeMouseColor" placeholder="#fff" />
+						</div>
+						<div class="col-sm-6">
+							<p style="margin: 0">Change the mouse pointer color</p>
+							<input class="form-control" id="changeMouseOutlineColor" placeholder="#fff" />
+						</div>
+					</div>
+					<div id="mouseSVG" style="max-width: 15px; margin: auto;"></div>
+
+					<p style="margin: 0">Change the clicking circle color</p>
+					<input class="form-control" id="changeClickingColor" placeholder="rebeccapurple" />
+					<div id="clickColorTest" style="z-index: 100; position:absolute; height: 30px; width: 30px; background-color: rebeccapurple; border-radius: 50%; display: inline-block;"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 mx-auto">
+					<h2 style="margin-top: 35px">Watch replays</h2>
 					<%for (var i=0; i < ourUserInfoArray.length; i++) {%>
 					<div class="card" style="width: 50%; margin: auto; color: #000; margin-top: 40px;">
 						<div class="card-body">
@@ -139,7 +158,7 @@
 	<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
 	<!-- Custom scripts for this template -->
-	<script src="js/grayscale.js"></script>
+	<script src="../js/changeColor.js"></script>
 
 </body>
 
