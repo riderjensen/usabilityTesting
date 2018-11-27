@@ -48,6 +48,12 @@ taskParagraph.setAttribute('id', 'taskItem');
 taskParagraph.style.cssText = 'line-height: 21px; padding: 15px; font-family: sans-serif;'
 outerDiv.appendChild(taskParagraph);
 
+// Input Box
+const feedback = document.createElement('textarea');
+feedback.style.cssText = 'padding: 15px; width: 75%; display: block; margin: 25px auto; border-radius: 3px;'
+feedback.setAttribute('placeholder', 'Give us some feedback about this task!');
+outerDiv.appendChild(feedback);
+
 // Create Bottom Section
 const bottomSection = document.createElement('div');
 bottomSection.style.cssText = 'display: flex; border-top: 1px solid #aaa';
@@ -67,7 +73,7 @@ bottomSection.appendChild(taskDiv);
 
 // Create Next Button
 const nextButton = document.createElement('div');
-nextButton.textContent = 'Next';
+nextButton.textContent = 'NEXT';
 nextButton.style.cssText = 'flex-grow: 1; padding: 10px; text-decoration: none; font-family: sans-serif; text-align: center; background: cyan; color: #fff; border-radius: 0 0 10px 0;';
 
 bottomSection.appendChild(nextButton);
@@ -84,6 +90,7 @@ const taskList = ['Please locate the section dedicated to pricing and features.'
 
 let taskCounter = 0;
 let headingTaskCounter = 1;
+let feedbackArray = [];
 
 // Minimize and Maximize Modal
 const minMaxButtonEvent = document.getElementById('minMaxButton');
@@ -111,14 +118,27 @@ nextButton.addEventListener('mouseover', (e) => {
 });
 
 nextButton.addEventListener('click', () => {
+  let feedbackGet = document.querySelector('textarea').value;
+  feedbackArray.splice(taskCounter, 1, feedbackGet);
+  // console.log(feedbackGet);
+
   if (taskCounter <= taskList.length - 2) {
     taskCounter++
+    document.querySelector('textarea').value = '';
     taskParagraph.textContent = taskList[taskCounter]; 
     headingTaskCounter++;
     heading1.textContent = 'Task ' + headingTaskCounter;
     taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
-    // console.log(taskCounter);
+    console.log(taskCounter);
+    // console.log(taskList.length);
   }
+
+  if(taskCounter === taskList.length - 1) {
+    nextButton.textContent = 'FINISH';
+    console.log('finished');
+  } 
+
+  // console.log(feedbackArray);
 });
 
 // Back Button
@@ -134,6 +154,11 @@ backButton.addEventListener('click', () => {
     heading1.textContent = 'Task ' + headingTaskCounter;
     taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
     // console.log(taskCounter);
+  }
+
+  if(taskCounter < taskList.length - 1) {
+    nextButton.textContent = 'NEXT';
+    console.log('not finished');
   }
 });
 
