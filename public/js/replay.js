@@ -12,9 +12,11 @@ createScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"
 
 // creating pointer and clicker
 const usableBody = document.getElementById('usableBody');
-const box = document.createElement('div');
+const box = document.createElement('img');
 box.id = "box";
-box.setAttribute('style', "z-index: 100; position:fixed; top: 200px; left: 200px; width: 10px; height: 10px; background-color: tomato;");
+box.setAttribute('style', "z-index: 100; position:fixed; top: 0px; left: 0px; width: 20px; height: 20px;");
+box.setAttribute('src', "../../img/mouse.svg");
+
 const pointed = document.createElement('div');
 pointed.id = "pointer";
 pointed.setAttribute('style', "z-index: 100; position:absolute; height: 30px; width: 30px; background-color: rgba(255, 0, 0, 0.4); border-radius: 50%; display: inline-block;");
@@ -142,7 +144,7 @@ let splitURL = window.location.href.split('/');
 let ourPage = splitURL[splitURL.length - 1].split('?')[0]
 
 // broken---------------- this if isnt firing because our /first/ route is storing the test number instead of the page served 
-if(document.getElementById('firstPageID')){
+if (document.getElementById('firstPageID')) {
 	ourPage = document.getElementById('firstPageID').innerHTML;
 }
 
