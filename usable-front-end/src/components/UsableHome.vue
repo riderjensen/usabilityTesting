@@ -25,27 +25,6 @@
 </template>
 
 <script>
-let socket = io.connect();
-
-// good URL entered
-socket.on('goodURL', () => {
-  this.urlCheck = false;
-  urlInputBox.style.borderColor = 'green';
-  document.querySelector('.fa-check').style.opacity = '1';
-  document.querySelector('.fa-check').style.right = '40px'; 
-  document.querySelector('.fa-chevron-right').style.position = 'relative';
-  document.querySelector('.fa-chevron-right').style.right = '-5px';
-});
-
-// bad URL entered
-socket.on('badURL', () => {
-  this.urlCheck = true;
-  urlInputBox.style.borderColor = 'red';
-  document.querySelector('.fa-check').style.opacity = '0';
-  document.querySelector('.fa-check').style.right = '0px'; 
-  document.querySelector('.fa-chevron-right').style.right = '0px';
-});
-
   export default {
     data() {
       return {
@@ -63,10 +42,33 @@ socket.on('badURL', () => {
     },
     watch: {
       urlInput() {
-        let urlInputBox = document.querySelector('.urlInputBox');
-        if ((urlInputBox.value != '')) {
-            socket.emit('website', urlInputBox.value);
-        }
+        const urlInputBox = document.querySelector('.urlInputBox');
+        this.urlCheck = newUrlCheck;
+        fetch(this.urlInput, {'mode': 'no-cors'})
+          .then(function(data) {
+            console.log(data);
+            setTimeout(()=> {
+                if(data.type === 'opaque') {
+                newUrlCheck = false;
+                urlInputBox.style.borderColor = 'green';
+                document.querySelector('.fa-check').style.opacity = '1';
+                document.querySelector('.fa-check').style.right = '40px'; 
+                document.querySelector('.fa-chevron-right').style.position = 'relative';
+                document.querySelector('.fa-chevron-right').style.right = '-5px';
+              } else {
+                urlCheck = false;
+                urlInputBox.style.borderColor = 'red';
+                document.querySelector('.fa-check').style.opacity = '0';
+                document.querySelector('.fa-check').style.right = '0px'; 
+                document.querySelector('.fa-chevron-right').style.right = '0px';
+              }
+            }, 3000);
+
+          })
+          .catch(function(error) {
+            // this.urlCheck = true;
+          });   
+
     //     // console.log(urlInputBox.style);
     //     if(this.urlInput.length > 5) {
     //       this.urlCheck = false;
