@@ -149,11 +149,17 @@ function router(nav) {
 						}
 					} else {
 						// send front end the testing array questions
-						let questions = ourReturn.questionArray;
-						res.render(`files/${reqID}`, {
-							questions
-						});
-						clearInterval(myTimeOut);
+						if (ourReturn == undefined) {
+							res.render(`files/${reqID}`);
+							clearInterval(myTimeOut);
+						} else {
+							let questions = ourReturn.questionArray;
+							res.render(`files/${reqID}`, {
+								questions
+							});
+							clearInterval(myTimeOut);
+						}
+
 					}
 				});
 			}, 100);
