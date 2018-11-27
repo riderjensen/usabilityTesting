@@ -105,7 +105,6 @@ function getCookie(cname) {
 
 // Array of Tasks
 let taskList;
-
 if (getCookie('userTestingArray')) {
 	let string = getCookie('userTestingArray');
 	taskList = JSON.parse(string);
@@ -114,6 +113,18 @@ if (getCookie('userTestingArray')) {
 	const stringTaskList = JSON.stringify(taskList);
 	document.cookie = `userTestingArray=${stringTaskList}; path=/`;
 }
+
+let userAnswerArray;
+if (getCookie('userAnswerArray')) {
+	let string = getCookie('userAnswerArray');
+	userAnswerArray = JSON.parse(string);
+} else {
+	userAnswerArray = [];
+}
+window.addEventListener('unload', () => {
+	const userArray = JSON.stringify(userAnswerArray);
+	document.cookie = `userAnswerArray=${userArray}; path=/`;
+});
 
 let taskCounter = 0;
 let headingTaskCounter = 1;
@@ -163,6 +174,7 @@ nextButton.addEventListener('click', () => {
 	if (taskCounter === taskList.length - 1) {
 		nextButton.textContent = 'FINISH';
 		console.log('finished');
+		// send out array information to the backend - userAnswerArray
 	}
 
 	// console.log(feedbackArray);
