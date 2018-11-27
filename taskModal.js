@@ -48,6 +48,12 @@ taskParagraph.setAttribute('id', 'taskItem');
 taskParagraph.style.cssText = 'line-height: 21px; padding: 15px; font-family: sans-serif;'
 outerDiv.appendChild(taskParagraph);
 
+// Input Box
+const feedback = document.createElement('textarea');
+feedback.style.cssText = 'padding: 15px; width: 75%; display: block; margin: 25px auto; border-radius: 3px;'
+feedback.setAttribute('placeholder', 'Give us some feedback about this task!');
+outerDiv.appendChild(feedback);
+
 // Create Bottom Section
 const bottomSection = document.createElement('div');
 bottomSection.style.cssText = 'display: flex; border-top: 1px solid #aaa';
