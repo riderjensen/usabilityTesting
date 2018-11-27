@@ -4,6 +4,7 @@ const mongoose = require('../models/model');
 const webStorage = mongoose.model('webStorage');
 const extraScripts = require('../extraScripts/scrapper');
 const mongoUtil = require('../extraScripts/dbConnect');
+const ObjectId = require('mongodb').ObjectID;
 const fs = require('fs');
 
 const siteRouter = express.Router();
@@ -117,11 +118,25 @@ function router(nav) {
 	siteRouter.route('/:id')
 		.get((req, res) => {
 			let reqID = req.params.id;
+			let ourReturn;
 			if (reqID.length > 15) {
+				(async function getTestArray() {
+					try {
+						let db = mongoUtil.getDb();
+						const col = db.collection('websites');
+
+						ourReturn = await col.findOne({
+							"_id": ObjectId(reqID)
+						});
+					} catch (err) {
+						console.log(err);
+					}
+				}());
 				reqID = reqID + '.ejs'
 			}
 			let myAmountOfTimes = 0;
 			let myTimeOut;
+
 			myTimeOut = setInterval(function () {
 				fs.access(`src/views/files/${reqID}`, fs.constants.F_OK, (err) => {
 					if (err) {
@@ -133,7 +148,11 @@ function router(nav) {
 							clearInterval(myTimeOut);
 						}
 					} else {
-						res.render(`files/${reqID}`);
+						// send front end the testing array questions
+						let questions = ourReturn.questionArray;
+						res.render(`files/${reqID}`, {
+							questions
+						});
 						clearInterval(myTimeOut);
 					}
 				});
