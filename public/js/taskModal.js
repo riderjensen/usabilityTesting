@@ -35,7 +35,7 @@ minMaxSpan.style.cssText = 'color: #fff; font-size: 2rem; display: inline-block;
 minMaxButton.appendChild(minMaxSpan);
 
 
-outerDiv.appendChild(minMax); 
+outerDiv.appendChild(minMax);
 
 // Create H1
 const heading1 = document.createElement('h1');
@@ -85,8 +85,35 @@ document.querySelector('body').appendChild(outerDiv);
 
 /* =======================================*/
 
+
+function getCookie(cname) {
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return false;
+}
+
+
 // Array of Tasks
-const taskList = ['Please locate the section dedicated to pricing and features.', 'Test full site navigation and document any inconsitencies.', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt atque architecto distinctio, hic eos optio?', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt atque architecto distinctio, hic eos optio? Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt atque architecto distinctio, hic eos optio?', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt atque architecto distinctio, hic eos optio?'];
+let taskList;
+
+if (getCookie('userTestingArray')) {
+	let string = getCookie('userTestingArray');
+	taskList = JSON.parse(string);
+} else {
+	taskList = document.getElementById('ourTestArray').innerHTML.split(',');
+	const stringTaskList = JSON.stringify(taskList);
+	document.cookie = `userTestingArray=${stringTaskList}; path=/`;
+}
 
 let taskCounter = 0;
 let headingTaskCounter = 1;
@@ -95,78 +122,77 @@ let feedbackArray = [];
 // Minimize and Maximize Modal
 const minMaxButtonEvent = document.getElementById('minMaxButton');
 minMaxButtonEvent.addEventListener('click', () => {
-  if(minMaxSpan.textContent === '-') {
-    outerDiv.style.cssText = 'width: 500px; height: auto; border: 1px solid #ccc; box-sizing: border-box; border-radius: 10px; position: fixed; bottom: 40px; transition: .3s linear; z-index: 99; left: -502px; background: #fff;';
-    minMaxSpan.textContent = '+';
-  } else {
-    outerDiv.style.cssText = 'width: 500px; height: auto; border: 1px solid #ccc; box-sizing: border-box; border-radius: 10px; position: fixed; bottom: 40px; transition: .3s linear; z-index: 99; left: 0; background: #fff;';
-    minMaxSpan.textContent = '-';
-  }
+	if (minMaxSpan.textContent === '-') {
+		outerDiv.style.cssText = 'width: 500px; height: auto; border: 1px solid #ccc; box-sizing: border-box; border-radius: 10px; position: fixed; bottom: 40px; transition: .3s linear; z-index: 99; left: -502px; background: #fff;';
+		minMaxSpan.textContent = '+';
+	} else {
+		outerDiv.style.cssText = 'width: 500px; height: auto; border: 1px solid #ccc; box-sizing: border-box; border-radius: 10px; position: fixed; bottom: 40px; transition: .3s linear; z-index: 99; left: 0; background: #fff;';
+		minMaxSpan.textContent = '-';
+	}
 });
 
 minMaxButtonEvent.onmouseover = () => {
-  minMaxButtonEvent.style.cssText = 'background: cyan; height: 100%; width: 100%; border-radius: 50px; display: flex; justify-content: center; align-items: center; transform: scale(1.1); transition: .2s; cursor: pointer;';
+	minMaxButtonEvent.style.cssText = 'background: cyan; height: 100%; width: 100%; border-radius: 50px; display: flex; justify-content: center; align-items: center; transform: scale(1.1); transition: .2s; cursor: pointer;';
 };
 
 minMaxButtonEvent.onmouseleave = () => {
-  minMaxButtonEvent.style.cssText = 'background: cyan; height: 100%; width: 100%; border-radius: 50px; display: flex; justify-content: center; align-items: center; transform: scale(1); transition: .2s;';
+	minMaxButtonEvent.style.cssText = 'background: cyan; height: 100%; width: 100%; border-radius: 50px; display: flex; justify-content: center; align-items: center; transform: scale(1); transition: .2s;';
 };
 
 // Next Button
 nextButton.addEventListener('mouseover', (e) => {
-  e.target.style.cssText = 'flex-grow: 1; padding: 10px; text-decoration: none; font-family: sans-serif; text-align: center; background: cyan; color: #fff; border-radius: 0 0 10px 0; cursor: pointer;';
+	e.target.style.cssText = 'flex-grow: 1; padding: 10px; text-decoration: none; font-family: sans-serif; text-align: center; background: cyan; color: #fff; border-radius: 0 0 10px 0; cursor: pointer;';
 });
 
 nextButton.addEventListener('click', () => {
-  let feedbackGet = document.querySelector('textarea').value;
-  feedbackArray.splice(taskCounter, 1, feedbackGet);
-  // console.log(feedbackGet);
+	let feedbackGet = document.querySelector('textarea').value;
+	feedbackArray.splice(taskCounter, 1, feedbackGet);
+	// console.log(feedbackGet);
 
-  if (taskCounter <= taskList.length - 2) {
-    taskCounter++
-    document.querySelector('textarea').value = '';
-    taskParagraph.textContent = taskList[taskCounter]; 
-    headingTaskCounter++;
-    heading1.textContent = 'Task ' + headingTaskCounter;
-    taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
-    console.log(taskCounter);
-    // console.log(taskList.length);
-  }
+	if (taskCounter <= taskList.length - 2) {
+		taskCounter++
+		document.querySelector('textarea').value = '';
+		taskParagraph.textContent = taskList[taskCounter];
+		headingTaskCounter++;
+		heading1.textContent = 'Task ' + headingTaskCounter;
+		taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
+		console.log(taskCounter);
+		// console.log(taskList.length);
+	}
 
-  if(taskCounter === taskList.length - 1) {
-    nextButton.textContent = 'FINISH';
-    console.log('finished');
-  } 
+	if (taskCounter === taskList.length - 1) {
+		nextButton.textContent = 'FINISH';
+		console.log('finished');
+	}
 
-  // console.log(feedbackArray);
+	// console.log(feedbackArray);
 });
 
 // Back Button
 backButton.addEventListener('mouseover', (e) => {
-  e.target.style.cssText = 'flex-grow: 1; padding: 10px; text-decoration: none; font-family: sans-serif; text-align: center; background: #aaa; color: #fff; border-radius: 0 0 0 10px; cursor: pointer;';
+	e.target.style.cssText = 'flex-grow: 1; padding: 10px; text-decoration: none; font-family: sans-serif; text-align: center; background: #aaa; color: #fff; border-radius: 0 0 0 10px; cursor: pointer;';
 });
 
 backButton.addEventListener('click', () => {
-  if (taskCounter >= 1) {
-    taskCounter--;
-    taskParagraph.textContent = taskList[taskCounter]; 
-    headingTaskCounter--;
-    heading1.textContent = 'Task ' + headingTaskCounter;
-    taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
-    // console.log(taskCounter);
-  }
+	if (taskCounter >= 1) {
+		taskCounter--;
+		taskParagraph.textContent = taskList[taskCounter];
+		headingTaskCounter--;
+		heading1.textContent = 'Task ' + headingTaskCounter;
+		taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
+		// console.log(taskCounter);
+	}
 
-  if(taskCounter < taskList.length - 1) {
-    nextButton.textContent = 'NEXT';
-    console.log('not finished');
-  }
+	if (taskCounter < taskList.length - 1) {
+		nextButton.textContent = 'NEXT';
+		console.log('not finished');
+	}
 });
 
 // Initiate Test
 function startTest() {
-  document.getElementById('taskItem').textContent = taskList[0];
-  heading1.textContent = 'Task ' + headingTaskCounter;
-  taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
+	document.getElementById('taskItem').textContent = taskList[0];
+	heading1.textContent = 'Task ' + headingTaskCounter;
+	taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
 };
 startTest();
-
