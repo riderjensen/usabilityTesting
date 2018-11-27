@@ -46,10 +46,15 @@ function createPath(ourClass, ourD, ourTransform) {
 	return ourPath;
 }
 
-
+let ourColor = '';
+if (getCookie('pointerColor') != '') {
+	ourColor = getCookie('pointerColor')
+} else {
+	ourColor = 'red'
+}
 const pointed = document.createElement('div');
 pointed.id = "pointer";
-pointed.setAttribute('style', "z-index: 100; position:absolute; height: 30px; width: 30px; background-color: rgba(255, 0, 0, 0.4); border-radius: 50%; display: inline-block;");
+pointed.setAttribute('style', `z-index: 100; position:absolute; height: 30px; width: 30px; background-color: ${ourColor}; border-radius: 50%; display: inline-block;`);
 usableBody.insertAdjacentElement('afterbegin', svg);
 usableBody.insertAdjacentElement('afterbegin', pointed);
 
