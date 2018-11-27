@@ -43,49 +43,30 @@
     watch: {
       urlInput() {
         const urlInputBox = document.querySelector('.urlInputBox');
-        this.urlCheck = newUrlCheck;
+        
         fetch(this.urlInput, {'mode': 'no-cors'})
           .then(function(data) {
             console.log(data);
-            setTimeout(()=> {
                 if(data.type === 'opaque') {
-                newUrlCheck = false;
+                setTimeout(()=> {
+                // console.log(this.urlCheck);
                 urlInputBox.style.borderColor = 'green';
                 document.querySelector('.fa-check').style.opacity = '1';
                 document.querySelector('.fa-check').style.right = '40px'; 
                 document.querySelector('.fa-chevron-right').style.position = 'relative';
                 document.querySelector('.fa-chevron-right').style.right = '-5px';
+                 }, 3000); 
               } else {
-                urlCheck = false;
                 urlInputBox.style.borderColor = 'red';
                 document.querySelector('.fa-check').style.opacity = '0';
                 document.querySelector('.fa-check').style.right = '0px'; 
                 document.querySelector('.fa-chevron-right').style.right = '0px';
               }
-            }, 3000);
-
           })
           .catch(function(error) {
             // this.urlCheck = true;
-          });   
-
-    //     // console.log(urlInputBox.style);
-    //     if(this.urlInput.length > 5) {
-    //       this.urlCheck = false;
-    //       urlInputBox.style.borderColor = 'green';
-    //       document.querySelector('.fa-check').style.opacity = '1';
-    //       document.querySelector('.fa-check').style.right = '40px'; 
-    //       document.querySelector('.fa-chevron-right').style.position = 'relative';
-    //       document.querySelector('.fa-chevron-right').style.right = '-5px';
-
-    //     } else {
-    //       this.urlCheck = true;
-    //       urlInputBox.style.borderColor = 'red';
-    //       document.querySelector('.fa-check').style.opacity = '0';
-    //       document.querySelector('.fa-check').style.right = '0px'; 
-    //       document.querySelector('.fa-chevron-right').style.right = '0px';
-    //     }
-     }
+          });  
+      }
     }
   }
 
