@@ -25,6 +25,14 @@
 </template>
 
 <script>
+
+// const splitURL = data.split("");
+// 			// check to see if they added http
+// 			const addedItems = splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
+// 			if (addedItems != 'http') {
+// 				data = 'http://' + data;
+// 			}
+
   export default {
     data() {
       return {
