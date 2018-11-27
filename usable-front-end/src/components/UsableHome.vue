@@ -43,28 +43,27 @@
     watch: {
       urlInput() {
         const urlInputBox = document.querySelector('.urlInputBox');
-        
+        let vm = this
         fetch(this.urlInput, {'mode': 'no-cors'})
           .then(function(data) {
             console.log(data);
+            setTimeout(()=> {
                 if(data.type === 'opaque') {
-                setTimeout(()=> {
-                // console.log(this.urlCheck);
+                vm.urlCheck = false;
                 urlInputBox.style.borderColor = 'green';
                 document.querySelector('.fa-check').style.opacity = '1';
                 document.querySelector('.fa-check').style.right = '40px'; 
                 document.querySelector('.fa-chevron-right').style.position = 'relative';
-                document.querySelector('.fa-chevron-right').style.right = '-5px';
-                 }, 3000); 
-              } else {
-                urlInputBox.style.borderColor = 'red';
-                document.querySelector('.fa-check').style.opacity = '0';
-                document.querySelector('.fa-check').style.right = '0px'; 
-                document.querySelector('.fa-chevron-right').style.right = '0px';
+                document.querySelector('.fa-chevron-right').style.right = '-5px';   
               }
+            }, 3000);
           })
           .catch(function(error) {
-            // this.urlCheck = true;
+            vm.urlCheck = true;
+            urlInputBox.style.borderColor = 'red';
+            document.querySelector('.fa-check').style.opacity = '0';
+            document.querySelector('.fa-check').style.right = '0px'; 
+            document.querySelector('.fa-chevron-right').style.right = '0px'; 
           });  
       }
     }
