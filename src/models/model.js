@@ -24,6 +24,7 @@ const websiteStorage = new Schema({
 		type: Date,
 		default: Date.now
 	},
+	testName: String,
 	questionArray: Array
 });
 module.exports = mongoose.model("webStorage", websiteStorage);
@@ -35,7 +36,15 @@ const useTrack = new Schema({
 	// array of objects that we continuously push on to
 	recMoves: Array,
 	pageName: String,
-	userData: Object,
+	userData: {
+		type: Object,
+		default: {
+			name: 'None given',
+			age: 'None given',
+			race: 'None given',
+			initID: -1
+		}
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now
