@@ -11,7 +11,7 @@ const siteRouter = express.Router();
 
 function router(nav) {
 	siteRouter.route('/')
-		.post((req, res, next) => {
+		.post((req, res) => {
 			const {
 				webURL,
 				task0,
@@ -23,7 +23,6 @@ function router(nav) {
 			} = req.body;
 			const questionArray = [task0, task1, task2, task3, task4];
 
-			// this will need to be optimized and fixed
 			while (questionArray[questionArray.length - 1] === undefined) {
 				questionArray.pop();
 			}
