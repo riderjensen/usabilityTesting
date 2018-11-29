@@ -193,6 +193,34 @@ function router(nav) {
 			}());
 
 		});
+	authRouter.route('/copy')
+		.all((req, res, next) => {
+			if (req.user) {
+				next();
+			} else {
+				res.redirect('/');
+			}
+		})
+		.post((req, res) => {
+			const copyID = req.body.copyTestID;
+			const copyName = req.body.copyTestName;
+			(async function copyData() {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('websites');
+					let newDoc = await col.findOne({
+						'_id': ObjectId(copyID)
+					});
+					newDoc.testName = copyName;
+					res.render('copy', {
+						newDoc
+					});
+				} catch (error) {
+					console.log(error);
+				}
+			}());
+
+		});
 	return authRouter;
 }
 // exporting out the router
