@@ -116,25 +116,6 @@ dbCon.connectToServer(function (err) {
 	
 	// socket.io
 	io.on('connection', (socket) => {
-		socket.on('website', (data) => {
-			const splitURL = data.split("");
-			// check to see if they added http
-			const addedItems = splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
-			if (addedItems != 'http') {
-				data = 'http://' + data;
-			}
-			try {
-				request(data, (error, response) => {
-					if (error != null) {
-						socket.emit('badURL');
-					} else {
-						socket.emit('goodURL');
-					}
-				});
-			} catch (err) {
-				console.log(err);
-			}
-		});
 		socket.on('initInformation', (data) => {
 			// bringing in the init data that should be sent to our db on the first page load
 			let ourCookie = data.initPage;
