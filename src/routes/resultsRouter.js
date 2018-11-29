@@ -65,25 +65,12 @@ function router() {
 					}
 
 				}()).then(() => {
-					const newDate = new Date(createdDate);
-
-					const deletionDate = new Date(newDate.setDate(newDate.getDate() + 30));
-					const ourDeleted = deletionDate.getTime();
-
-					const currentDate = new Date();
-					const currentTime = currentDate.getTime();
-
-					const testTimeRemaining = Math.ceil((ourDeleted - currentTime) / 86400000);
-					const testTimePercentage = Math.ceil((testTimeRemaining / 30) * 100);
-
 					res.render('resultsPage', {
 						ourUserInfoArray,
 						ourUserStatesArray,
 						questionArray,
 						webURL,
-						createdDate,
-						testTimeRemaining,
-						testTimePercentage
+						createdDate
 					});
 				});
 			});
