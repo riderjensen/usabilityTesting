@@ -161,6 +161,40 @@ function router(nav) {
 			}());
 
 		});
+		authRouter.route('/delete')
+		.all((req, res, next) => {
+			if (req.user) {
+				next();
+			} else {
+				res.redirect('/');
+			}
+		})
+		.post((req, res) => {
+			// need to retrieve user data and send to screen
+			const testToDelete = req.body.deleteTestID;
+			const d = new Date('1/1/2000');
+			(async function getData() {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('websites');
+					await col.updateOne({
+						'_id': ObjectId(testToDelete)
+					},{
+						$set: {
+							createdAt: d
+						}
+					});
+					// delete the test since the time is set to be older than the 30 days
+					const deleteAtMidnight = require('../extraScripts/deleteOldTests');
+					deleteAtMidnight.midNight();
+					
+					res.redirect('/auth/profile');
+				} catch (error) {
+					console.log(error);
+				}
+			}());
+
+		});
 	return authRouter;
 }
 // exporting out the router
