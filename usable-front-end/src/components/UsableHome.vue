@@ -37,12 +37,6 @@
 </template>
 
 <script>
-// const splitURL = data.split("");
-// 			// check to see if they added http
-// 			const addedItems = splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
-// 			if (addedItems != 'http') {
-// 				data = 'http://' + data;
-// 			}
 
 export default {
   data() {
@@ -64,17 +58,18 @@ export default {
     urlInput() {
       const urlInputBox = document.querySelector(".urlInputBox");
       let vm = this;
-      fetch(this.urlInput, { mode: "no-cors" })
-        .then(function(data) {
-          console.log(data);
-          setTimeout(() => {
-            const splitURL = vm.urlInput.split("");
+       const splitURL = vm.urlInput.split("");
             // check to see if they added http
             const addedItems =
               splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
             if (addedItems != "http") {
               vm.urlInput = "http://" + vm.urlInput;
             }
+      fetch(this.urlInput, { mode: "no-cors" })
+        .then(function(data) {
+          console.log(data);
+          setTimeout(() => {
+           
             if (data.type === "opaque") {
               vm.urlCheck = false;
               urlInputBox.style.borderColor = "green";
@@ -84,7 +79,7 @@ export default {
                 "relative";
               document.querySelector(".fa-chevron-right").style.right = "-5px";
             }
-          }, 3000);
+          }, 1500);
         })
         .catch(function(error) {
           vm.urlCheck = true;
