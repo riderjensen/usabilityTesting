@@ -86,8 +86,7 @@
 	</div>
 </div>
 
-<div class="modal fade" id="copyTest" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
- aria-hidden="true">
+<div class="modal fade" id="copyTest" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<form name="addTestForm" action="/auth/copy" method="post">
@@ -101,10 +100,10 @@
 
 					<div class="row">
 						<div class="col-lg-12 pt-2">
-								<input type="text" name="copyTestID" id="copyTestID" required>
-								<input type="text" name="copyTestName" id="copyTestName" required>
+							<input type="text" name="copyTestID" id="copyTestID" required>
+							<input type="text" name="copyTestName" id="copyTestName" required>
 							<p style="color: #000;">Do you really want to copy the test listed below?</p>
-							
+
 						</div>
 					</div>
 
@@ -147,16 +146,17 @@
 				<div class="col-lg-12 mx-auto">
 					<h2>Welcome to your dashboard,
 						<%=userData.username%>.</h2>
-						<div id="dashboard-content">
-							<ul>
-						<%for (var i=0; i < projects.length; i++) {%>
-						<li>
-							<a href="http://localhost:3000/results/<%=projects[i].objectId%>">
-								<%=projects[i].objectId%>
-							</a> - <a href="#" data-toggle="modal" data-target="#deleteTest">Delete test</a> - <a href="#" data-toggle="modal" data-target="#copyTest">Copy test</a>
-						</li>
-						<%}%>
-					</ul>
+					<div id="dashboard-content">
+						<ul>
+							<%for (var i=0; i < projects.length; i++) {%>
+							<li>
+								<a href="http://localhost:3000/results/<%=projects[i].objectId%>">
+									<%=projects[i].testName%>
+								</a> - <a href="#" data-toggle="modal" data-target="#deleteTest">Delete test</a> - <a href="#" data-toggle="modal"
+								 data-target="#copyTest">Copy test</a>
+							</li>
+							<%}%>
+						</ul>
 						<p>You can <a class="btn btn-default" href="/#start-test">start
 								a new test</a> or <a class="btn btn-default" href="#" data-toggle="modal" data-target="#addTestModal">add an
 								old test</a></p>
