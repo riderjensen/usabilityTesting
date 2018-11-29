@@ -18,7 +18,8 @@ function router(nav) {
 				task1,
 				task2,
 				task3,
-				task4
+				task4,
+				testName
 			} = req.body;
 			const questionArray = [task0, task1, task2, task3, task4];
 
@@ -38,7 +39,8 @@ function router(nav) {
 					const website = new webStorage({
 						webURL,
 						questionArray,
-						addedOn
+						addedOn,
+						testName
 					});
 					await col.insertOne(website, (err) => {
 						objectId = website._id;
@@ -50,6 +52,7 @@ function router(nav) {
 						for (let i = 0; i < questionArray.length; i++) {
 							querystring += `array=${questionArray[i]}&`
 						}
+						querystring += `testName=${testName}&`;
 						if (req.user) {
 							// add objectId into the user array
 							let username = req.user.username;
@@ -66,7 +69,8 @@ function router(nav) {
 										$push: {
 											projects: {
 												objectId: objectId,
-												date: Date.now()
+												date: Date.now(),
+												testName
 											}
 										}
 									};
@@ -94,6 +98,7 @@ function router(nav) {
 			let URLPull = `http://localhost:3000/site/${req.query.id}`;
 			let mainPage = `http://localhost:3000/results/${req.query.id}`;
 			let ArrayPull = req.query.array;
+			let testName = req.query.testName;
 			if (req.query.log) {
 				// message to users that are not logged in
 				let noLog = 'You are not currently logged in. Create a free account and add this test so that you can keep track of your results easier.'
@@ -102,7 +107,8 @@ function router(nav) {
 					URLPull,
 					ArrayPull,
 					mainPage,
-					noLog
+					noLog,
+					testName
 
 				});
 			} else {
@@ -110,8 +116,8 @@ function router(nav) {
 					nav,
 					URLPull,
 					ArrayPull,
-					mainPage
-
+					mainPage,
+					testName
 				});
 			}
 		});

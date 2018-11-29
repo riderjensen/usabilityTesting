@@ -16,7 +16,7 @@ function router() {
 	resultsRouter.route('/:id')
 		.get((req, res) => {
 			const reqID = req.params.id;
-			let testArray, questionArray, webURL, createdDate;
+			let testArray, questionArray, webURL, createdDate, testName;
 			let ourUserInfoArray = [];
 			let ourUserStatesArray = [];
 			(async function mongo() {
@@ -36,6 +36,7 @@ function router() {
 						questionArray = testFound.questionArray;
 						webURL = testFound.webURL;
 						createdDate = testFound.createdAt;
+						testName = testFound.testName;
 					}
 				} catch (err) {
 					res.render('404', {
@@ -70,7 +71,8 @@ function router() {
 						ourUserStatesArray,
 						questionArray,
 						webURL,
-						createdDate
+						createdDate,
+						testName
 					});
 				});
 			});

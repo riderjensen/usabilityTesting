@@ -137,8 +137,6 @@ function router(nav) {
 			}
 		})
 		.get((req, res) => {
-
-			// need to retrieve user data and send to screen
 			let userData = req.user;
 			let username = req.user.username;
 			(async function getData() {
@@ -161,7 +159,7 @@ function router(nav) {
 			}());
 
 		});
-		authRouter.route('/delete')
+	authRouter.route('/delete')
 		.all((req, res, next) => {
 			if (req.user) {
 				next();
@@ -179,7 +177,7 @@ function router(nav) {
 					const col = db.collection('websites');
 					await col.updateOne({
 						'_id': ObjectId(testToDelete)
-					},{
+					}, {
 						$set: {
 							createdAt: d
 						}
@@ -187,7 +185,7 @@ function router(nav) {
 					// delete the test since the time is set to be older than the 30 days
 					const deleteAtMidnight = require('../extraScripts/deleteOldTests');
 					deleteAtMidnight.midNight();
-					
+
 					res.redirect('/auth/profile');
 				} catch (error) {
 					console.log(error);
