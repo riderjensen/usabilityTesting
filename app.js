@@ -103,7 +103,12 @@ dbCon.connectToServer(function (err) {
 	// getting our index served
 	app.get('/', (req, res) => {
 		// flash for sign in errors
-		let ourmsg = req.flash('error')
+		let ourmsg;
+		if(req.query.duplicateUser){
+			ourmsg = 'Duplicate user, please choose a new username';
+		} else{
+			ourmsg = req.flash('error')
+		}
 		res.render('index', {
 			message: ourmsg
 		});
