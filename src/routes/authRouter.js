@@ -99,7 +99,7 @@ function router(nav) {
 							username
 						});
 						if (userFromDB) {
-							console.log('Duplicate User');
+							res.redirect('/?duplicateUser=true')
 						} else {
 							const user = new userStorage({
 								username,
