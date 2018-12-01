@@ -29,7 +29,7 @@ function router() {
 					});
 					if (testFound == null || testFound.testArray == null) {
 						res.render('404', {
-							errMsg: 'Your results page cannot be found. This is usually a cookie error on your browser.'
+							errMsg: 'Your results page cannot be found. This is usually a cookie error on your browser. Try deleteing all your cookies and returning to this page.'
 						});
 					} else {
 						testArray = testFound.testArray;
