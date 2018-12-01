@@ -1,5 +1,4 @@
 const ourURL = 'http://localhost:3000/replay/';
-let prevScrollPx = 0;
 let scrollAmountFromURL = 0;
 
 function createScript(theURL) {
@@ -73,8 +72,7 @@ if (window.location.search == "") {
 let relatedTestId;
 if (!document.getElementById('usableReqID')) {
 	let pageArray = (window.location.search).split('=')
-	relatedTestId = pageArray[pageArray.length - 2].split('?')[0];
-	scrollAmountFromURL = pageArray[pageArray.length - 1];
+	relatedTestId = pageArray[pageArray.length - 1].split('?')[0];
 } else {
 	relatedTestId = document.getElementById('usableReqID').innerHTML;
 }
@@ -115,15 +113,9 @@ socket.on('returnMoves', (data) => {
 	function replayFunction() {
 		i++;
 		if (i >= (userMoves.length - 1)) {
-			if (data.endingScroll == undefined) {
-				prevScrollPx = 0;
-			} else {
-				prevScrollPx = data.endingScroll;
-			}
-			document.cookie = `previousScrollPX=${scrollAmountFromURL}; path=/`;
 			clearInterval(intervalFunction);
 			// move us on to the next url
-			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}&testID=${relatedTestId}?prevScroll=${prevScrollPx}`;
+			window.location.href = `${ourURL}${data.nextURL}?pagenum=${pageNum}&testID=${relatedTestId}`;
 		}
 		TweenLite.to('#box', 1, {
 			ease: Power2.easeNone,
@@ -182,11 +174,3 @@ let ourPage = splitURL[splitURL.length - 1].split('?')[0]
 if (document.getElementById('firstPageID')) {
 	ourPage = document.getElementById('firstPageID').innerHTML;
 }
-
-if (scrollAmountFromURL != undefined && getCookie('secondPage') == ourPage) {
-	let ourX = getCookie('previousScrollPX');
-	window.scrollTo(0, ourX);
-}
-
-document.cookie = `secondPage=${getCookie('firstPage')}; path=/`;
-document.cookie = `firstPage=${ourPage}; path=/`;
