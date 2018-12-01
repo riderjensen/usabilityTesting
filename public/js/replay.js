@@ -88,6 +88,15 @@ socket.emit('replayInformationID', sendingData);
 
 // get the moves back and go through them
 socket.on('returnMoves', (data) => {
+	let ourPreviousArray = data.prevArray.reverse();
+	ourPreviousArray.forEach((element) => {
+		let href = window.location.href.split('/');
+		let theID = href[href.length - 1].split('?')[0];
+		// working on the first one
+		if (element.pageID == theID) {
+			window.scrollTo(0, element.endingScroll)
+		}
+	})
 	let userMoves = data.moves;
 	const pointer = document.getElementById('pointer');
 	let scrollOnPage = 0;
