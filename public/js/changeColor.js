@@ -1,10 +1,14 @@
-let HTMLClickInput = document.getElementById('changeClickingColor')
+let HTMLClickInput = document.getElementById('changeClickingColor');
+let speedChanger = document.getElementById('changeReplaySpeed');
 
 HTMLClickInput.addEventListener('keyup', () => {
 	document.getElementById('clickColorTest').style.backgroundColor = HTMLClickInput.value;
 	document.cookie = `pointerColor=${HTMLClickInput.value}; path=/`;
 })
 
+speedChanger.addEventListener('keyup', () => {
+	document.cookie = `replaySpeed=${speedChanger.value}; path=/`;
+})
 
 // setting percentages
 
