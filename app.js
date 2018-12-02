@@ -104,9 +104,9 @@ dbCon.connectToServer(function (err) {
 	app.get('/', (req, res) => {
 		// flash for sign in errors
 		let ourmsg;
-		if(req.query.duplicateUser){
+		if (req.query.duplicateUser) {
 			ourmsg = 'Duplicate user, please choose a new username';
-		} else{
+		} else {
 			ourmsg = req.flash('error')
 		}
 		res.render('index', {
@@ -118,7 +118,7 @@ dbCon.connectToServer(function (err) {
 	setInterval(() => {
 		deleteAtMidnight.midNight();
 	}, 86400000)
-	
+
 	// socket.io
 	io.on('connection', (socket) => {
 		socket.on('initInformation', (data) => {
@@ -229,6 +229,16 @@ dbCon.connectToServer(function (err) {
 									"i.secretID": data.secret
 								}]
 							})
+						} else {
+							db.collection('userTracking').updateOne(cookieInDB, {
+								$set: {
+									'recMoves.$[i].endingScroll': 0
+								}
+							}, {
+								arrayFilters: [{
+									"i.secretID": data.secret
+								}]
+							})
 						}
 					} else {
 						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
@@ -282,15 +292,21 @@ dbCon.connectToServer(function (err) {
 					});
 					if (webTest) {
 						let nextURL;
+						let prevArray = [];
 						if (webTest.recMoves[pageNum + 1] == undefined) {
 							nextURL = 'com'
 						} else {
 							nextURL = webTest.recMoves[pageNum + 1].pageID
+							for (let i = 0; i <= pageNum; i++) {
+								// prev array is supposed to get every single page before this page
+								prevArray.push(webTest.recMoves[i]);
+							}
 						}
 						let sendObj = {
 							moves: webTest.recMoves[pageNum].cursorPoints,
 							nextURL: nextURL,
-							endingScroll: webTest.recMoves[pageNum].endingScroll
+							endingScroll: webTest.recMoves[pageNum].endingScroll,
+							prevArray
 						}
 						socket.emit('returnMoves', sendObj);
 					} else {

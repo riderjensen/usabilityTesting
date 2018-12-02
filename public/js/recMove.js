@@ -304,7 +304,7 @@ window.addEventListener('unload', () => {
 		recMoves: objectArray,
 		page: pageID,
 		secret: secretID,
-		endingScroll: window.scrollY
+		endingScroll: window.pageYOffset
 	};
 	socket.emit('testingInfo', sendObj);
 });
