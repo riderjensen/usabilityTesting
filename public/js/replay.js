@@ -57,7 +57,13 @@ pointed.setAttribute('style', `z-index: 100; position:absolute; height: 30px; wi
 usableBody.insertAdjacentElement('afterbegin', svg);
 usableBody.insertAdjacentElement('afterbegin', pointed);
 
-
+let ourSpeed;
+if (getCookie('replaySpeed') != '') {
+	ourSpeed = getCookie('replaySpeed')
+} else {
+	ourSpeed = 1;
+}
+console.log(getCookie('replaySpeed'));
 // get the test id for the user moves
 
 let pageNum;
@@ -102,7 +108,7 @@ socket.on('returnMoves', (data) => {
 	let scrollOnPage = 0;
 	// 10 every second
 	// we need to let the user be able to modify this and change it so that they can replay at their leaisure
-	let interval = 100;
+	let interval = 100 / ourSpeed;
 
 	// an array of all the positions where .ev is present. 
 	// Every other occurance of .ev will be a start or a stop and therefore
