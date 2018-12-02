@@ -229,6 +229,16 @@ dbCon.connectToServer(function (err) {
 									"i.secretID": data.secret
 								}]
 							})
+						} else {
+							db.collection('userTracking').updateOne(cookieInDB, {
+								$set: {
+									'recMoves.$[i].endingScroll': 0
+								}
+							}, {
+								arrayFilters: [{
+									"i.secretID": data.secret
+								}]
+							})
 						}
 					} else {
 						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
