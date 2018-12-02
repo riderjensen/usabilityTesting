@@ -63,9 +63,9 @@ if (getCookie('replaySpeed') != '') {
 } else {
 	ourSpeed = 1;
 }
-console.log(getCookie('replaySpeed'));
-// get the test id for the user moves
 
+
+// get the test id for the user moves
 let pageNum;
 if (window.location.search == "") {
 	pageNum = 1
