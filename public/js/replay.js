@@ -145,6 +145,22 @@ socket.on('returnMoves', (data) => {
 			pointer.style.top = userMoves[i].y + '%';
 			pointer.style.transform = `translateY(${scrollOnPage}px)`;
 		}
+		if (userMoves[i].ev == "blur") {
+			let blurDiv = document.createElement('div');
+			blurDiv.style.cssText = 'position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; background-color: rgba(0,0,0,0.8)';
+			let ourH1 = document.createElement('h1');
+			ourH1.style.cssText = 'top: 30vh; text-align: center; color: #fff; z-index: 100;';
+			ourH1.innerText = 'The user window has lost focus';
+			blurDiv.appendChild(ourH1);
+			blurDiv.id = 'ourBlurDiv';
+			usableBody.appendChild(blurDiv);
+		}
+		if (userMoves[i].ev == "focus") {
+			let checkBlurDiv = document.getElementById('ourBlurDiv');
+			if (checkBlurDiv) {
+				checkBlurDiv.parentNode.removeChild(checkBlurDiv);
+			}
+		}
 		if (typeof userMoves[i].ev === "object") {
 			let ourObject = userMoves[i].ev;
 			if (ourObject.type == 'start') {
