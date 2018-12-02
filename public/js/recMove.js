@@ -108,6 +108,7 @@ function cookieTest() {
 		let usableModalInput1 = createElement('input');
 		usableModalForm.appendChild(usableModalInput1);
 		usableModalInput1.placeholder = "Name";
+		usableModalInput1.setAttribute('required', true);
 		inputBoxStyles(usableModalInput1);
 		giveID(usableModalInput1, 'usableModalOne');
 
@@ -214,6 +215,8 @@ let h = window.innerHeight;
 
 // these are our event listeners for things we want to track
 window.addEventListener("scroll", usableScrolling);
+window.addEventListener("blur", usabelBlur);
+window.addEventListener("focus", usabelFocus);
 document.getElementById("usableBody").addEventListener("mouseup", usabelClicked);
 document.getElementById("usableBody").addEventListener("mousemove", usableShowCoords);
 
@@ -232,11 +235,28 @@ function screenPercents() {
 }
 
 
+// ****** Blur ******
+
+function usabelBlur() {
+	if (objectArray[objectArray.length - 1] != undefined) {
+		objectArray[objectArray.length - 1].ev = 'blur';
+	}
+}
+// ****** Focus ******
+
+function usabelFocus() {
+	if (objectArray[objectArray.length - 1] != undefined) {
+		objectArray[objectArray.length - 1].ev = 'focus';
+	}
+}
+
 // ****** Click ******
 
 function usabelClicked() {
 	// setting event to clicked on the current arrayObj
-	objectArray[objectArray.length - 1].ev = 'clicked';
+	if (objectArray[objectArray.length - 1] != undefined) {
+		objectArray[objectArray.length - 1].ev = 'clicked';
+	}
 }
 
 // ****** Scroll ******
@@ -256,7 +276,9 @@ function usableScrolling() {
 			sScroll: scrollOnPage
 		}
 		// setting event to object on the scroll event
-		objectArray[objectArray.length - 1].ev = scrollObj;
+		if (objectArray[objectArray.length - 1] != undefined) {
+			objectArray[objectArray.length - 1].ev = scrollObj;
+		}
 	}
 
 	// wait a half of a second before resetting so that we can get a new scroll time
