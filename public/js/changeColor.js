@@ -6,7 +6,7 @@ HTMLClickInput.addEventListener('keyup', () => {
 	document.cookie = `pointerColor=${HTMLClickInput.value}; path=/`;
 })
 
-speedChanger.addEventListener('keyup', () => {
+speedChanger.addEventListener('click', () => {
 	document.cookie = `replaySpeed=${speedChanger.value}; path=/`;
 })
 
