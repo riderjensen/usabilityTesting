@@ -152,7 +152,7 @@
 						<ul>
 							<%for (var i=0; i < projects.length; i++) {%>
 							<li class="spanCheking">
-								<a href="http://localhost:3000/results/<%=projects[i].objectId%>" id="<%=projects[i].objectId%>">
+								<a href="<%=usableURL%>/results/<%=projects[i].objectId%>" id="<%=projects[i].objectId%>">
 									<%=projects[i].testName%>
 
 								</a> - <a href="#" data-toggle="modal" data-target="#deleteTest">Delete test</a> - <a href="#" data-toggle="modal"

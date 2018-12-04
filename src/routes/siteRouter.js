@@ -10,6 +10,8 @@ const shortid = require('shortid');
 
 const siteRouter = express.Router();
 
+const usableURL = 'http://localhost:3000';
+
 function router(nav) {
 	siteRouter.route('/')
 		.post((req, res) => {
@@ -96,8 +98,8 @@ function router(nav) {
 		});
 	siteRouter.route('/testCreate')
 		.get((req, res) => {
-			let URLPull = `http://localhost:3000/t/${req.query.shortID}`;
-			let mainPage = `http://localhost:3000/results/${req.query.id}`;
+			let URLPull = `${usableURL}/t/${req.query.shortID}`;
+			let mainPage = `${usableURL}/results/${req.query.id}`;
 			let ArrayPull = req.query.array;
 			let testName = req.query.testName;
 			if (req.query.log) {
