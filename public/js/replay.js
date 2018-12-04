@@ -149,7 +149,7 @@ socket.on('returnMoves', (data) => {
 			let blurDiv = document.createElement('div');
 			blurDiv.style.cssText = 'position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; background-color: rgba(0,0,0,0.8)';
 			let ourH1 = document.createElement('h1');
-			ourH1.style.cssText = 'top: 30vh; text-align: center; color: #fff; z-index: 100;';
+			ourH1.style.cssText = 'top: 30vh; position: absolute; width: 100%; text-align: center; color: #fff; z-index: 100;';
 			ourH1.innerText = 'The user window has lost focus';
 			blurDiv.appendChild(ourH1);
 			blurDiv.id = 'ourBlurDiv';
