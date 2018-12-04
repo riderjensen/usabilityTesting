@@ -94,6 +94,10 @@ dbCon.connectToServer(function (err) {
 	const resultsRouter = require('./src/routes/resultsRouter.js')();
 	app.use('/results', resultsRouter);
 
+	// any test main pages pass through this area
+	const testRedirect = require('./src/routes/testRedirectRouter.js')();
+	app.use('/t', testRedirect);
+
 	// 404
 	app.use(function (err, req, res, next) {
 		console.log(err);
