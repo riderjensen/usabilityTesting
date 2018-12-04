@@ -43,7 +43,7 @@
 			<div class="row">
 				<div class="col-lg-12 mx-auto">
 					<h2>About Your Test</h2>
-					<p><a href="http://localhost:3000/site/<%=reqID%>">Link for users</a></p>
+					<p><a href="<%=usableURL%>/site/<%=reqID%>">Link for users</a></p>
 					<h3>Tests Name:</h3>
 					<p>
 						<%=testName%>
@@ -135,7 +135,7 @@
 
 								</li>
 							</ul>
-							<a href="http://localhost:3000/replay/first/<%=ourUserInfoArray[i].initID%>" class="btn btn-primary">Watch</a>
+							<a href="<%=usableURL%>/replay/first/<%=ourUserInfoArray[i].initID%>" class="btn btn-primary">Watch</a>
 						</div>
 					</div>
 					<%}%>

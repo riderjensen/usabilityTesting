@@ -3,6 +3,7 @@ const express = require('express');
 const mongoUtil = require('../extraScripts/dbConnect');
 const ObjectId = require('mongodb').ObjectID;
 
+const usableURL = 'http://localhost:3000';
 
 const resultsRouter = express.Router();
 
@@ -73,7 +74,8 @@ function router() {
 						webURL,
 						createdDate,
 						testName,
-						reqID
+						reqID,
+						usableURL
 					});
 				});
 			});

@@ -7,6 +7,8 @@ const passport = require('passport');
 const bcrypt = require('bcrypt-nodejs');
 const ObjectId = require('mongodb').ObjectID;
 
+const usableURL = 'http://localhost:3000';
+
 const authRouter = express.Router();
 
 function router(nav) {
@@ -151,7 +153,8 @@ function router(nav) {
 					res.render('profile', {
 						userData,
 						projects,
-						nav
+						nav,
+						usableURL
 					});
 				} catch (error) {
 					console.log(error);
