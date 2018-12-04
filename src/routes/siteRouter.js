@@ -6,6 +6,7 @@ const extraScripts = require('../extraScripts/scrapper');
 const mongoUtil = require('../extraScripts/dbConnect');
 const ObjectId = require('mongodb').ObjectID;
 const fs = require('fs');
+const shortid = require('shortid');
 
 const siteRouter = express.Router();
 
@@ -34,12 +35,13 @@ function router(nav) {
 					let objectId;
 					let db = mongoUtil.getDb();
 					const col = db.collection('websites');
-
+					let shortURL = shortid.generate();
 					const website = new webStorage({
 						webURL,
 						questionArray,
 						addedOn,
-						testName
+						testName,
+						shortURL
 					});
 					await col.insertOne(website, (err) => {
 						objectId = website._id;
@@ -51,7 +53,7 @@ function router(nav) {
 						for (let i = 0; i < questionArray.length; i++) {
 							querystring += `array=${questionArray[i]}&`
 						}
-						querystring += `testName=${testName}&`;
+						querystring += `testName=${testName}&shortID=${shortURL}&`;
 						if (req.user) {
 							// add objectId into the user array
 							let username = req.user.username;
@@ -94,7 +96,7 @@ function router(nav) {
 		});
 	siteRouter.route('/testCreate')
 		.get((req, res) => {
-			let URLPull = `http://localhost:3000/site/${req.query.id}`;
+			let URLPull = `http://localhost:3000/t/${req.query.shortID}`;
 			let mainPage = `http://localhost:3000/results/${req.query.id}`;
 			let ArrayPull = req.query.array;
 			let testName = req.query.testName;

@@ -25,7 +25,8 @@ const websiteStorage = new Schema({
 		default: Date.now
 	},
 	testName: String,
-	questionArray: Array
+	questionArray: Array,
+	shortURL: String
 });
 module.exports = mongoose.model("webStorage", websiteStorage);
 
