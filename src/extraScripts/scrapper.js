@@ -3,13 +3,13 @@ const fs = require('fs');
 const shortid = require('shortid');
 
 
-
+const url = 'http://localhost:3000';
 // This will be our JS file that we load into the page that will track everything that the user does
-const ourScript = '<% if (typeof reqID != "undefined" && reqID) { %><p style="display: none;" id="usableReqID"><%=reqID%></p><% } %><% if (typeof questions != "undefined" && questions) { %><p style="display: none;" id="ourTestArray"><%=questions%></p><% } %><script>const locationURL = location.href.split("/");if (locationURL[3] == "site") {let script = document.createElement("script"); script.src="http://localhost:3000/js/recMove.js"; document.getElementsByTagName("body")[0].appendChild(script); let modalScript = document.createElement("script"); modalScript.src="http://localhost:3000/js/taskModal.js"; document.getElementsByTagName("body")[0].appendChild(modalScript)}; if (locationURL[3] == "replay") {let script = document.createElement("script"); script.src="http://localhost:3000/js/replay.js"; document.getElementsByTagName("body")[0].appendChild(script)};</script>'
+const ourScript = `<% if (typeof reqID != "undefined" && reqID) { %><p style="display: none;" id="usableReqID"><%=reqID%></p><% } %><% if (typeof questions != "undefined" && questions) { %><p style="display: none;" id="ourTestArray"><%=questions%></p><% } %><script>const locationURL = location.href.split("/");if (locationURL[3] == "site") {let script = document.createElement("script"); script.src="${url}/js/recMove.js"; document.getElementsByTagName("body")[0].appendChild(script); let modalScript = document.createElement("script"); modalScript.src="${url}/js/taskModal.js"; document.getElementsByTagName("body")[0].appendChild(modalScript)}; if (locationURL[3] == "replay") {let script = document.createElement("script"); script.src="${url}/js/replay.js"; document.getElementsByTagName("body")[0].appendChild(script)};</script>`
 
 
 // Our URL that will be used to request extra href on the page
-const ourURL = 'http://localhost:3000/req/?url=';
+const ourURL = `${url}/req/?url=`;
 
 module.exports = {
 	requestURL(URL, id) {
