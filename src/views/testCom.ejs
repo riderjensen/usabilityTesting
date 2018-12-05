@@ -25,34 +25,21 @@
 
 <body id="page-top">
 
-	<!-- Navigation -->
-	<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-		<div class="container">
-			<a class="navbar-brand js-scroll-trigger" href="../">UsabL</a>
-			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-			 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-				Menu
-				<i class="fa fa-bars"></i>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarResponsive">
-
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a class="nav-link" href="/auth/profile">Profile</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-
 	<!-- Intro Header -->
 	<header class="masthead">
 		<div class="intro-body">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-8 mx-auto">
-						<h1>Test Complete</h1>
-						<a class="btn btn-primary" href="../">Home</a>
+						<h1>Your test is completed</h1>
+						<p>Thank you for taking the time to take this test. Below are the questions and answers that you put during the
+							test. Feel free to revise them. We also have a text area below to put any general thoughts that you would like.</p>
+						<form action="/site/recordResults" method="post">
+							<input type="hidden" value="<%=userId%>" name="testID">
+							add inputs here
+							<input type="submit" value="submit">
+						</form>
+
 					</div>
 				</div>
 			</div>

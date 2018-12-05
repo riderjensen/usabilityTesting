@@ -124,6 +124,18 @@ function router(nav) {
 				});
 			}
 		});
+	siteRouter.route('/com')
+		.get((req, res) => {
+			let userId = req.query.id
+			res.render('testCom', {
+				userId
+			})
+		})
+	siteRouter.route('/recordResults')
+		.post((req, res) => {
+			let userId = req.body.testID;
+			res.render('replayCom');
+		})
 	siteRouter.route('/:id')
 		.get((req, res) => {
 			let reqID = req.params.id;
@@ -172,8 +184,6 @@ function router(nav) {
 					}
 				});
 			}, 100);
-
-
 		});
 	return siteRouter;
 }
