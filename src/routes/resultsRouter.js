@@ -38,6 +38,7 @@ function router() {
 						webURL = testFound.webURL;
 						createdDate = testFound.createdAt;
 						testName = testFound.testName;
+						url = testFound.shortURL;
 					}
 				} catch (err) {
 					res.render('404', {
@@ -75,7 +76,8 @@ function router() {
 						createdDate,
 						testName,
 						reqID,
-						usableURL
+						usableURL,
+						url
 					});
 				});
 			});
