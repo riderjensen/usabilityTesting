@@ -124,6 +124,10 @@ function router(nav) {
 				});
 			}
 		});
+	siteRouter.route('/com')
+		.get((req, res) => {
+			res.send('site compelted')
+		})
 	siteRouter.route('/:id')
 		.get((req, res) => {
 			let reqID = req.params.id;
@@ -172,8 +176,6 @@ function router(nav) {
 					}
 				});
 			}, 100);
-
-
 		});
 	return siteRouter;
 }
