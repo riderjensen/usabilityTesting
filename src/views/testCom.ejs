@@ -35,7 +35,7 @@
 						<p>Thank you for taking the time to take this test. Below are the questions and answers that you put during the
 							test. Feel free to revise them. We also have a text area below to put any general thoughts that you would like.</p>
 						<form action="/site/recordResults" method="post">
-							<input type="hidden" value="<%=userId%>">
+							<input type="hidden" value="<%=userId%>" name="testID">
 							add inputs here
 							<input type="submit" value="submit">
 						</form>
