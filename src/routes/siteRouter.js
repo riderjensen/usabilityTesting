@@ -133,7 +133,8 @@ function router(nav) {
 		})
 	siteRouter.route('/recordResults')
 		.post((req, res) => {
-			// this is posted from /com and we need to get results and store them
+			let userId = req.body.testID;
+			res.render('replayCom');
 		})
 	siteRouter.route('/:id')
 		.get((req, res) => {
