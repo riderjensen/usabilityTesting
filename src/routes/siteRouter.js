@@ -126,7 +126,14 @@ function router(nav) {
 		});
 	siteRouter.route('/com')
 		.get((req, res) => {
-			res.send('site compelted')
+			let userId = req.query.id
+			res.render('testCom', {
+				userId
+			})
+		})
+	siteRouter.route('/recordResults')
+		.post((req, res) => {
+			// this is posted from /com and we need to get results and store them
 		})
 	siteRouter.route('/:id')
 		.get((req, res) => {
