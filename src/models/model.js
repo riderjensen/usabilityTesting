@@ -49,6 +49,7 @@ const useTrack = new Schema({
 	createdAt: {
 		type: Date,
 		default: Date.now
-	}
+	},
+	finalAnswers: Array
 });
 module.exports = mongoose.model("userTracking", useTrack);
