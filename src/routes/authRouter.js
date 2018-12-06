@@ -20,60 +20,6 @@ function router(nav) {
 				res.redirect('/');
 			}
 		})
-		.post((req, res) => {
-			const {
-				testID,
-				ourUsername
-			} = req.body;
-			(async function storeData() {
-				try {
-					let db = mongoUtil.getDb();
-					const col = db.collection('websites');
-					const testIDObj = ObjectId(testID);
-					const idFromDB = await col.findOne({
-						"_id": testIDObj
-					});
-					if (idFromDB) {
-						const usercol = db.collection('users');
-						const userFromDB = await usercol.findOne({
-							"username": ourUsername
-						});
-						let strPrjArry = [];
-						userFromDB.projects.forEach((element) => {
-							strPrjArry.push(element.toString());
-						})
-						if (strPrjArry.includes(testID)) {
-							// tell the user that they already have this test added
-							let errMsg = 'You already added this test';
-							console.log(errMsg);
-						} else {
-							const newVals = {
-								$push: {
-									projects: {
-										objectId: testIDObj,
-										date: Date.now()
-									}
-								}
-							};
-							await usercol.updateOne(userFromDB, newVals, (error) => {
-								if (error) {
-									throw error;
-								} else {
-									res.redirect('profile');
-								}
-							});
-						}
-
-					} else {
-						// send an error to the user
-						console.log('No test with this ID can be found.')
-					}
-				} catch (error) {
-					// probably an incorrect testing id passed into mongo, send error to user
-					console.log(error);
-				}
-			}());
-		});
 	authRouter.route('/signUp')
 		.get((req, res) => {
 			res.redirect('/auth/profile');
