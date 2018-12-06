@@ -72,7 +72,6 @@ function router() {
 					}
 
 				}()).then(() => {
-					console.log('bef render')
 					res.render('resultsPage', {
 						ourUserInfoArray,
 						ourUserStatesArray,
