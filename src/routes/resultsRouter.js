@@ -57,8 +57,10 @@ function router() {
 								const testFound = await userTrackCol.findOne({
 									"_id": ObjectId(testArray[i])
 								});
-								ourUserInfoArray.push(testFound.userData);
-								ourUserStatesArray.push(testFound.initInformation);
+								if (testFound != null) {
+									ourUserInfoArray.push(testFound.userData);
+									ourUserStatesArray.push(testFound.initInformation);
+								}
 							}
 						}
 					} catch (err) {
