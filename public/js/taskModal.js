@@ -52,6 +52,7 @@ outerDiv.appendChild(taskParagraph);
 const feedback = document.createElement('textarea');
 feedback.style.cssText = 'padding: 15px; width: 75%; display: block; margin: 25px auto; border-radius: 3px;'
 feedback.setAttribute('placeholder', 'Give us some feedback about this task!');
+feedback.id = "usableUserResponseTextArea"
 outerDiv.appendChild(feedback);
 
 // Create Bottom Section
@@ -114,21 +115,23 @@ if (getCookie('userTestingArray')) {
 	document.cookie = `userTestingArray=${stringTaskList}; path=/`;
 }
 
-let userAnswerArray;
-if (getCookie('userAnswerArray')) {
-	let string = getCookie('userAnswerArray');
-	userAnswerArray = JSON.parse(string);
+
+let feedbackArray = [];
+
+if (getCookie('feedbackArray')) {
+	let string = getCookie('feedbackArray');
+	feedbackArray = JSON.parse(string);
 } else {
-	userAnswerArray = [];
+	feedbackArray = [];
 }
 window.addEventListener('unload', () => {
-	const userArray = JSON.stringify(userAnswerArray);
-	document.cookie = `userAnswerArray=${userArray}; path=/`;
+	const userArray = JSON.stringify(feedbackArray);
+	document.cookie = `feedbackArray=${userArray}; path=/`;
 });
 
 let taskCounter = 0;
 let headingTaskCounter = 1;
-let feedbackArray = [];
+
 
 // Minimize and Maximize Modal
 const minMaxButtonEvent = document.getElementById('minMaxButton');
@@ -156,28 +159,35 @@ nextButton.addEventListener('mouseover', (e) => {
 });
 
 nextButton.addEventListener('click', () => {
-	let feedbackGet = document.querySelector('textarea').value;
-	feedbackArray.splice(taskCounter, 1, feedbackGet);
-	// console.log(feedbackGet);
+	let feedbackGet = document.getElementById('usableUserResponseTextArea');
+	feedbackArray.splice(taskCounter, 1, feedbackGet.value);
+	feedbackArray[taskCounter] = feedbackGet.value;
+	taskCounter++
+	headingTaskCounter++;
 
-	if (taskCounter <= taskList.length - 2) {
-		taskCounter++
-		document.querySelector('textarea').value = '';
-		taskParagraph.textContent = taskList[taskCounter];
-		headingTaskCounter++;
-		heading1.textContent = 'Task ' + headingTaskCounter;
-		taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
-		console.log(taskCounter);
-		// console.log(taskList.length);
+	taskParagraph.textContent = taskList[taskCounter];
+	heading1.textContent = 'Task ' + headingTaskCounter;
+	taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
+
+	if (feedbackArray[taskCounter] == undefined || feedbackArray[taskCounter] == '') {
+		feedbackGet.value = '';
+		feedbackGet.textContent = '';
+		console.log('undef or empty');
+	} else {
+		console.log('NOT undef or empty');
+		feedbackGet.value = feedbackArray[taskCounter];
+		feedbackGet.textContent = feedbackArray[taskCounter];
 	}
 
 	if (taskCounter === taskList.length - 1) {
 		nextButton.textContent = 'FINISH';
-		console.log('finished');
-		// send out array information to the backend - userAnswerArray
 	}
 
-	// console.log(feedbackArray);
+	if (taskCounter === taskList.length) {
+		let ourID = getCookie('usableCookieTracking');
+		window.location.href = `http://localhost:3000/site/com?id=${ourID}`;
+	}
+	console.log(feedbackArray)
 });
 
 // Back Button
@@ -186,19 +196,22 @@ backButton.addEventListener('mouseover', (e) => {
 });
 
 backButton.addEventListener('click', () => {
+	let feedbackGet = document.getElementById('usableUserResponseTextArea');
+	feedbackArray[taskCounter] = feedbackGet.value
+	feedbackGet.value = feedbackArray[taskCounter - 1];
+	feedbackGet.textContent = feedbackArray[taskCounter - 1];
 	if (taskCounter >= 1) {
 		taskCounter--;
 		taskParagraph.textContent = taskList[taskCounter];
 		headingTaskCounter--;
 		heading1.textContent = 'Task ' + headingTaskCounter;
 		taskDiv.textContent = 'Task ' + headingTaskCounter + ' of ' + taskList.length;
-		// console.log(taskCounter);
-	}
 
+	}
 	if (taskCounter < taskList.length - 1) {
 		nextButton.textContent = 'NEXT';
-		console.log('not finished');
 	}
+	console.log(feedbackArray)
 });
 
 // Initiate Test

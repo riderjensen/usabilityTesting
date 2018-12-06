@@ -24,7 +24,7 @@ function router(nav) {
 				task4,
 				testName
 			} = req.body;
-			const questionArray = [task0, task1, task2, task3, task4];
+			let questionArray = [task0, task1, task2, task3, task4];
 
 			while (questionArray[questionArray.length - 1] === undefined) {
 				questionArray.pop();
@@ -133,7 +133,35 @@ function router(nav) {
 		})
 	siteRouter.route('/recordResults')
 		.post((req, res) => {
-			let userId = req.body.testID;
+			const {
+				userResp0,
+				userResp1,
+				userResp2,
+				userResp3,
+				userResp4,
+				testID
+			} = req.body;
+			let questionArray = [userResp0, userResp1, userResp2, userResp3, userResp4];
+
+			while (questionArray[questionArray.length - 1] === undefined) {
+				questionArray.pop();
+			}
+			(async function addFinalResults() {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('userTracking');
+					col.updateOne({
+						_id: ObjectId(testID)
+					}, {
+						$set: {
+							finalAnswers: questionArray
+						}
+					})
+
+				} catch (err) {
+					console.log(err);
+				}
+			}());
 			res.render('replayCom');
 		})
 	siteRouter.route('/:id')

@@ -34,9 +34,9 @@
 						<h1>Your test is completed</h1>
 						<p>Thank you for taking the time to take this test. Below are the questions and answers that you put during the
 							test. Feel free to revise them. We also have a text area below to put any general thoughts that you would like.</p>
-						<form action="/site/recordResults" method="post">
+						<form action="/site/recordResults" id="completedForm" method="post">
 							<input type="hidden" value="<%=userId%>" name="testID">
-							add inputs here
+
 							<input type="submit" value="submit">
 						</form>
 
@@ -53,7 +53,7 @@
 			<p>Copyright &copy; Your Website 2018</p>
 		</div>
 	</footer>
-
+	<script src="../../js/completedTest.js"></script>
 </body>
 
 </html>

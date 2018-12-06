@@ -20,6 +20,7 @@ function router() {
 			let testArray, questionArray, webURL, createdDate, testName;
 			let ourUserInfoArray = [];
 			let ourUserStatesArray = [];
+			let ourUserAnswers = [];
 			(async function mongo() {
 				try {
 					let db = mongoUtil.getDb();
@@ -60,6 +61,7 @@ function router() {
 								if (testFound != null) {
 									ourUserInfoArray.push(testFound.userData);
 									ourUserStatesArray.push(testFound.initInformation);
+									ourUserAnswers.push(testFound.finalAnswers)
 								}
 							}
 						}
@@ -70,6 +72,7 @@ function router() {
 					}
 
 				}()).then(() => {
+					console.log('bef render')
 					res.render('resultsPage', {
 						ourUserInfoArray,
 						ourUserStatesArray,
@@ -79,7 +82,8 @@ function router() {
 						testName,
 						reqID,
 						usableURL,
-						url
+						url,
+						ourUserAnswers
 					});
 				});
 			});
