@@ -134,8 +134,16 @@
 								<li class="list-group-item">
 									Browser Type:
 									<%=ourUserStatesArray[i].userBrowserType%>
+								</li>
+
+								<%for (var j=0; j < ourUserAnswers[i].length; j++) {%>
+								<li class="list-group-item">
+									Answer to question
+									<%=[j]%>:<br />
+									<%=ourUserAnswers[i][j]%>
 
 								</li>
+								<%}%>
 							</ul>
 							<a href="<%=usableURL%>/replay/first/<%=ourUserInfoArray[i].initID%>" class="btn btn-primary">Watch</a>
 						</div>
