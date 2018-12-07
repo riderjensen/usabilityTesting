@@ -98,39 +98,13 @@ function cookieTest() {
 		usableModalHeading.style.cssText = 'color: rebeccapurple; text-align: center;';
 		usableModalDivContent.appendChild(usableModalHeading);
 		let usableModalParagraph = createElement('p');
-		usableModalParagraph.innerHTML = '<p>Welcome to Usable! We are an online usability testing site. If you are seeing this screen, someone probably needs your help to test their website! After you enter some initial information into the form below, the test will begin. You will see a small box on the screen that has a number of tasks that user has requested you to answer/accomplish. Please be as detailed as possible in order to give good feedback that can help this user improve their website. Not everything will work as intended during your time here, not everything will look the same though we have tried to make it look as close as possible. Once you fill in the answers on the box, please click finish to be taken to a final page where you can edit your answers and add any additional final thoughts that you had.</p> <p>Please be aware that when you take a test, we record a number of things from your browser including </p> <ul><li> Mouse movements </li> <li > Mouse clicks </li> <li> Scrolling </li> <li> Pages visited </li> </ul><p>By continuing, you have given your consent for us to record these things.</p>';
+		usableModalParagraph.innerHTML = '<p>Welcome to Usable! We are an online usability testing site. If you are seeing this screen, someone probably needs your help to test their website! After you enter some initial information into the form below, the test will begin. You will see a small box on the screen that has a number of tasks that user has requested you to answer/accomplish. Please be as detailed as possible in order to give good feedback that can help this user improve their website. Not everything will work as intended during your time here, not everything will look the same though we have tried to make it look as close as possible. Once you fill in the answers on the box, please click finish to be taken to a final page where you can edit your answers and add any additional final thoughts that you had.</p> ';
 		usableModalDivContent.appendChild(usableModalParagraph);
-
-		// create form
-		let usableModalForm = createElement('form');
-		usableModalDivContent.appendChild(usableModalForm);
-		// box one
-		let usableModalInput1 = createElement('input');
-		usableModalForm.appendChild(usableModalInput1);
-		usableModalInput1.placeholder = "Name";
-		usableModalInput1.setAttribute('required', true);
-		inputBoxStyles(usableModalInput1);
-		giveID(usableModalInput1, 'usableModalOne');
-
-		// box two
-		let usableModalInput2 = createElement('input');
-		usableModalForm.appendChild(usableModalInput2);
-		usableModalInput2.placeholder = "Age";
-		usableModalInput2.type = 'number';
-		inputBoxStyles(usableModalInput2);
-		giveID(usableModalInput2, 'usableModalTwo');
-
-		// box three
-		let usableModalInput3 = createElement('input');
-		usableModalForm.appendChild(usableModalInput3);
-		usableModalInput3.placeholder = "Race";
-		inputBoxStyles(usableModalInput3);
-		giveID(usableModalInput3, 'usableModalThree');
 
 		// acknowledge button
 		let usableModalDivButton = createElement('button');
-		usableModalDivButton.id = 'usableModalDivButton';
-		usableModalDivButton.innerHTML = 'I accept';
+		usableModalDivButton.id = 'usableModalcontinueButton';
+		usableModalDivButton.innerHTML = 'Continue';
 		usableModalDivButton.style.cssText = 'background-color: rebeccapurple;  border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: block; font-size: 16px; margin: auto; margin-top: 20px; border-radius: 4px; ';
 		usableModalDivContent.appendChild(usableModalDivButton);
 
@@ -141,16 +115,58 @@ function cookieTest() {
 
 		// close modal
 		usableModalDivButton.onclick = function () {
-			usableModalDiv.style.display = "none";
-			let userInformationInit = {};
-			userInformationInit.name = document.getElementById(inputIDArray[0]).value;
-			userInformationInit.age = document.getElementById(inputIDArray[1]).value;
-			userInformationInit.race = document.getElementById(inputIDArray[2]).value;
-			userInformationInit.initID = globalCookie;
-			// send user information to back
-			socket.emit('userInitInformation', userInformationInit);
-			// start recording moves now
-			acceptTerms = true;
+
+			usableModalParagraph.innerHTML = '<p>Please be aware that when you take a test, we record a number of things from your browser including </p> <ul><li> Mouse movements </li> <li > Mouse clicks </li> <li> Scrolling </li> <li> Pages visited </li> </ul><p>By continuing, you have given your consent for us to record these things.</p>';
+			usableModalDivContent.removeChild(usableModalDivButton);
+
+			// create form
+			let usableModalForm = createElement('form');
+			usableModalDivContent.appendChild(usableModalForm);
+			// box one
+			let usableModalInput1 = createElement('input');
+			usableModalForm.appendChild(usableModalInput1);
+			usableModalInput1.placeholder = "Name";
+			usableModalInput1.setAttribute('required', true);
+			inputBoxStyles(usableModalInput1);
+			giveID(usableModalInput1, 'usableModalOne');
+
+			// box two
+			let usableModalInput2 = createElement('input');
+			usableModalForm.appendChild(usableModalInput2);
+			usableModalInput2.placeholder = "Age";
+			usableModalInput2.type = 'number';
+			inputBoxStyles(usableModalInput2);
+			giveID(usableModalInput2, 'usableModalTwo');
+
+			// box three
+			let usableModalInput3 = createElement('input');
+			usableModalForm.appendChild(usableModalInput3);
+			usableModalInput3.placeholder = "Race";
+			inputBoxStyles(usableModalInput3);
+			giveID(usableModalInput3, 'usableModalThree');
+
+			// acknowledge button
+
+			let usableModalFinishButton = createElement('button');
+			usableModalFinishButton.id = 'usableModalcontinueButton';
+			usableModalFinishButton.innerHTML = 'Finish';
+			usableModalFinishButton.style.cssText = 'background-color: rebeccapurple;  border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: block; font-size: 16px; margin: auto; margin-top: 20px; border-radius: 4px; ';
+			usableModalDivContent.appendChild(usableModalFinishButton);
+
+
+			usableModalFinishButton.onclick = function () {
+				usableModalDiv.style.display = "none";
+				let userInformationInit = {};
+				userInformationInit.name = document.getElementById(inputIDArray[0]).value;
+				userInformationInit.age = document.getElementById(inputIDArray[1]).value;
+				userInformationInit.race = document.getElementById(inputIDArray[2]).value;
+				userInformationInit.initID = globalCookie;
+				// send user information to back
+				socket.emit('userInitInformation', userInformationInit);
+				// start recording moves now
+				acceptTerms = true;
+			}
+
 		}
 
 
