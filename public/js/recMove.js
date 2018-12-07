@@ -98,7 +98,7 @@ function cookieTest() {
 		usableModalHeading.style.cssText = 'color: rebeccapurple; text-align: center;';
 		usableModalDivContent.appendChild(usableModalHeading);
 		let usableModalParagraph = createElement('p');
-		usableModalParagraph.innerHTML = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius ante aliquet mauris mattis congue. Etiam tincidunt ut sem non vulputate. Nullam sit amet nisl eget ante fringilla pulvinar. Etiam bibendum cursus tortor at semper. Nullam tristique est vitae tellus commodo convallis. In congue aliquam nisi, non mollis arcu ultrices ac. Pellentesque vitae diam vulputate, semper turpis quis, venenatis metus. Quisque diam turpis, scelerisque ut tincidunt id, mollis et sem.';
+		usableModalParagraph.innerHTML = 'Welcome to Usable! We are an online usability testing site. If you are seeing this screen, someone probably needs your help to test their website! After you enter some initial information into the form below, the test will begin. You will see a small box on the screen that has a number of tasks that user has requested you to answer/accomplish. Please be as detailed as possible in order to give good feedback that can help this user improve their website. Not everything will work as intended during your time here, not everything will look the same though we have tried to make it look as close as possible. Once you fill in the answers on the box, please click finish to be taken to a final page where you can edit your answers and add any additional final thoughts that you had.'
 		usableModalDivContent.appendChild(usableModalParagraph);
 
 		// create form

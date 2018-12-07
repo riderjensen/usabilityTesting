@@ -106,6 +106,8 @@
 			<div class="row">
 				<div class="col-lg-12 mx-auto">
 					<h2 style="margin-top: 35px">Watch replays</h2>
+					<p style="color: red">We recommend watching replays in the same browser where they occured. Otherwise there may be
+						some sizing issues.</p>
 					<%for (var i=0; i < ourUserInfoArray.length; i++) {%>
 					<div class="card" style="width: 50%; margin: auto; color: #000; margin-top: 40px;">
 						<div class="card-body">
@@ -122,16 +124,6 @@
 									<%=ourUserInfoArray[i].race%>
 								</li>
 								<li class="list-group-item">
-									Browser Height:
-									<%=ourUserStatesArray[i].userHeight%>px
-
-								</li>
-								<li class="list-group-item">
-									Browser Width:
-									<%=ourUserStatesArray[i].userWidth%>px
-
-								</li>
-								<li class="list-group-item">
 									Browser Type:
 									<%=ourUserStatesArray[i].userBrowserType%>
 								</li>
@@ -139,13 +131,15 @@
 								<%for (var j=0; j < ourUserAnswers[i].length; j++) {%>
 								<li class="list-group-item">
 									Answer to question
-									<%=[j]%>:<br />
+									<%=[j+1]%>:<br />
 									<%=ourUserAnswers[i][j]%>
 
 								</li>
 								<%}%>
 							</ul>
-							<a href="<%=usableURL%>/replay/first/<%=ourUserInfoArray[i].initID%>" class="btn btn-primary">Watch</a>
+
+							<a href="<%=usableURL%>/replay/first/<%=ourUserInfoArray[i].initID%>" class="btn btn-primary" onclick="window.open(this.href,'targetWindow', 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=<%=ourUserStatesArray[i].userWidth%>, height= <%=ourUserStatesArray[i].userHeight%>'); return false;">Watch
+								(opens a new window)</a>
 						</div>
 					</div>
 					<%}%>
