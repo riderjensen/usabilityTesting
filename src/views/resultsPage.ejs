@@ -122,16 +122,6 @@
 									<%=ourUserInfoArray[i].race%>
 								</li>
 								<li class="list-group-item">
-									Browser Height:
-									<%=ourUserStatesArray[i].userHeight%>px
-
-								</li>
-								<li class="list-group-item">
-									Browser Width:
-									<%=ourUserStatesArray[i].userWidth%>px
-
-								</li>
-								<li class="list-group-item">
 									Browser Type:
 									<%=ourUserStatesArray[i].userBrowserType%>
 								</li>
@@ -139,13 +129,14 @@
 								<%for (var j=0; j < ourUserAnswers[i].length; j++) {%>
 								<li class="list-group-item">
 									Answer to question
-									<%=[j]%>:<br />
+									<%=[j+1]%>:<br />
 									<%=ourUserAnswers[i][j]%>
 
 								</li>
 								<%}%>
 							</ul>
-							<a href="<%=usableURL%>/replay/first/<%=ourUserInfoArray[i].initID%>" class="btn btn-primary">Watch</a>
+
+							<a href="<%=usableURL%>/replay/first/<%=ourUserInfoArray[i].initID%>" class="btn btn-primary" onclick="window.open(this.href,'targetWindow', 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=<%=ourUserStatesArray[i].userWidth%>, height= <%=ourUserStatesArray[i].userHeight%>'); return false;">Watch</a>
 						</div>
 					</div>
 					<%}%>
