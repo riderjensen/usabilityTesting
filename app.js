@@ -67,7 +67,7 @@ dbCon.connectToServer(function (err) {
 	require('./src/config/passport')(app);
 	require('./src/config/strategies/local.strategy')(passport);
 	// Correcting all CSS and JS file areas
-	app.use(express.static(`${__dirname}/public/`));
+	app.use(express.static(`public`));
 	app.use(flash());
 
 	// setting the view engine and where the views are stored
