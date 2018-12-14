@@ -10,7 +10,6 @@ dbCon.connectToServer(function (err) {
 	const cookieParser = require('cookie-parser');
 	const session = require('express-session');
 	const mongoose = require('mongoose');
-	const request = require('request');
 	const mongoUtil = require('./src/extraScripts/dbConnect');
 	const ObjectId = require('mongodb').ObjectID;
 	const shortid = require('shortid');
