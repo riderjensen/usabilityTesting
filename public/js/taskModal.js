@@ -1,5 +1,5 @@
-// document.querySelector('body').style.position = 'relative;';
-// document.querySelector('body').cssText = 'background: blue; height: 5000px;';
+// this needs to be changed in new environments
+const usableURL = 'http://localhost:8080';
 
 // Create outer div
 const outerDiv = document.createElement('div');
@@ -185,7 +185,7 @@ nextButton.addEventListener('click', () => {
 
 	if (taskCounter === taskList.length) {
 		let ourID = getCookie('usableCookieTracking');
-		window.location.href = `http://localhost:8080/site/com?id=${ourID}`;
+		window.location.href = `${usableURL}/site/com?id=${ourID}`;
 	}
 	console.log(feedbackArray)
 });
