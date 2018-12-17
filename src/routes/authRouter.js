@@ -7,7 +7,7 @@ const passport = require('passport');
 const bcrypt = require('bcrypt-nodejs');
 const ObjectId = require('mongodb').ObjectID;
 
-const usableURL = 'http://localhost:3000';
+const usableURL = process.env.ADDR;
 
 const authRouter = express.Router();
 

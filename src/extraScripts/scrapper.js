@@ -3,7 +3,7 @@ const fs = require('fs');
 const shortid = require('shortid');
 
 
-const url = 'http://localhost:3000';
+const url = process.env.ADDR;
 // This will be our JS file that we load into the page that will track everything that the user does
 const ourScript = `<% if (typeof reqID != "undefined" && reqID) { %><p style="display: none;" id="usableReqID"><%=reqID%></p><% } %><% if (typeof questions != "undefined" && questions) { %><p style="display: none;" id="ourTestArray"><%=questions%></p><% } %><script>const locationURL = location.href.split("/");if (locationURL[3] == "site") {let script = document.createElement("script"); script.src="${url}/js/recMove.js"; document.getElementsByTagName("body")[0].appendChild(script); let modalScript = document.createElement("script"); modalScript.src="${url}/js/taskModal.js"; document.getElementsByTagName("body")[0].appendChild(modalScript)}; if (locationURL[3] == "replay") {let script = document.createElement("script"); script.src="${url}/js/replay.js"; document.getElementsByTagName("body")[0].appendChild(script)};</script>`
 
