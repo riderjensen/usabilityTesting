@@ -1,22 +1,13 @@
 // required files
 const express = require('express');
-const extraScripts = require('../extraScripts/scrapper');
-const shortid = require('shortid');
+
+const requestController = require('../controllers/requestController');
 
 const reqRouter = express.Router();
 
 function router() {
 	reqRouter.route('/')
-		.get((req, res) => {
-			let webURL = req.query.url;
-			webURL = decodeURIComponent(webURL);
-			const newID = shortid.generate();
-			const {
-				requestURL
-			} = extraScripts;
-			requestURL(webURL, newID);
-			res.redirect(`/site/${newID}.ejs`);
-		});
+		.get(requestController.reqAPage);
 	return reqRouter;
 }
 // exporting out the router
