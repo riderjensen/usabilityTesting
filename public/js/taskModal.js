@@ -185,7 +185,7 @@ nextButton.addEventListener('click', () => {
 
 	if (taskCounter === taskList.length) {
 		let ourID = getCookie('usableCookieTracking');
-		window.location.href = `http://localhost:3000/site/com?id=${ourID}`;
+		window.location.href = `http://localhost:8080/site/com?id=${ourID}`;
 	}
 	console.log(feedbackArray)
 });
