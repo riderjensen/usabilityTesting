@@ -9,3 +9,7 @@ User should be able to do the following:
 ## Codepen links
 
 * [mouse tracking](https://codepen.io/riderjensen/pen/xaRNEy)
+
+## Before Running
+* You need to update your package.json in the ENV.ADDR to be reflective of where you are running this (default is localhost :8080)
+* You need to change the first line in public/js/taskModal.js to reflect that same address
