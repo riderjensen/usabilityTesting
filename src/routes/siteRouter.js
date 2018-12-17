@@ -10,7 +10,7 @@ const shortid = require('shortid');
 
 const siteRouter = express.Router();
 
-const usableURL = 'http://localhost:3000';
+const usableURL = process.env.ADDR;
 
 function router(nav) {
 	siteRouter.route('/')

@@ -36,7 +36,7 @@
 		"env": {
 			"NODE_ENV": "development",
 			"PORT": 8080,
-			"ADDR": "riderjensen.com"
+			"ADDR": "http://localhost:8080"
 		}
 	},
 	"devDependencies": {

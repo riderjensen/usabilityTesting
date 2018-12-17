@@ -1,4 +1,5 @@
-const ourURL = 'http://localhost:3000/replay/';
+let theCurrentUrl = window.location.href.split('/');
+const ourURL = `${theCurrentUrl[0]}//${theCurrentUrl[2]}/replay/`;
 let scrollAmountFromURL = 0;
 
 function createScript(theURL) {

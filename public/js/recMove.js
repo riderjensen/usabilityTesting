@@ -387,10 +387,12 @@ window.addEventListener("load", () => {
 			if (element.src === '') {
 				// src is null, dont do anything
 			} else {
-				let elHREF = element.src;
-				let test = elHREF.split('');
-				let firstPart = test[0] + test[1] + test[2] + test[3] + test[4] + test[5] + test[6] + test[7] + test[8] + test[9] + test[10];
-				if (firstPart === 'http://loca') {
+				const elHREF = element.src;
+				const test = elHREF.split('');
+				const firstPart = test[0] + test[1] + test[2] + test[3] + test[4] + test[5] + test[6] + test[7] + test[8] + test[9] + test[10];
+				const secondPartArray = pageURL.split('');
+				const secondPart = secondPartArray[0] + secondPartArray[1] + secondPartArray[2] + secondPartArray[3] + secondPartArray[4] + secondPartArray[5] + secondPartArray[6] + secondPartArray[7] + secondPartArray[8] + secondPartArray[9] + secondPartArray[10];
+				if (firstPart === secondPart) {
 					let splitnewURL = elHREF.split('/');
 					newURL = rootURL;
 					for (let i = 3; i < splitnewURL.length; i++) {

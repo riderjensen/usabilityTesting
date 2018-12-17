@@ -3,7 +3,7 @@ const express = require('express');
 const mongoUtil = require('../extraScripts/dbConnect');
 const ObjectId = require('mongodb').ObjectID;
 
-const usableURL = 'http://localhost:3000';
+const usableURL = process.env.ADDR;
 
 const resultsRouter = express.Router();
 
