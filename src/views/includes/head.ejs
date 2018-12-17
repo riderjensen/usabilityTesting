@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>UsabL</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Custom fonts for this template -->
+	<link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+	<link href='https://fonts.googleapis.com/css?family=Cabin:700' rel='stylesheet' type='text/css'>
+
+	<!-- Custom styles for this template -->
+	<link href="/css/grayscale.css" rel="stylesheet">
+
+</head>
+<div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+ aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<form name="signUpForm" action="/auth/signUp" method="post">
+				<div class="modal-header">
+					<h5 style="color:#000" class="modal-title" id="exampleModalLongTitle">Sign Up</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-12 pt-2">
+							<p style="color:#000">Username:</p>
+							<div class="popup">
+								<input type="text" name="username" id="signUpUsername" pattern="[A-Za-z0-9]{5,20}" placeholder="Username"
+								 required>
+								<span class="toolTipHide popuptext" id="signUpUsernameReqs">Username must be 5-20 characters and only
+									contain letters and numbers.</span>
+							</div>
+							<p style="color:#000">Password:</p>
+							<div class="popup">
+								<input type="password" id="signUpPassword" placeholder="Password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+								 title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+								 required>
+								<span class="toolTipHide popuptext" id="signUpPasswordReqs">Password must containt a lowercase,
+									uppercase, number, and be at least 8 characters long.</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Sign Up</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+ aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<form name="signUpForm" action="/auth/signIn" method="post">
+				<div class="modal-header">
+					<h5 style="color:#000" class="modal-title" id="exampleModalLongTitle">Sign In</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-12 pt-2">
+							<p style="color:#000">Username:</p>
+							<div class="popup">
+								<input type="text" name="username" value="Riderjensen" id="username" pattern="[A-Za-z0-9]{5,20}" placeholder="Username"
+								 required>
+							</div>
+							<p style="color:#000">Password:</p>
+							<div class="popup">
+								<input type="password" id="password" placeholder="Password" value="12345678Ah" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+								 title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+								 required>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Sign In</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
