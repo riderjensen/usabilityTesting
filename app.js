@@ -23,8 +23,6 @@ dbCon.connectToServer(function (err) {
 		reconnectTries: Number.MAX_VALUE
 	};
 
-
-
 	// Connect to MongoDB
 	mongoose.Promise = global.Promise;
 	mongoose.connect(mongoURI, connectOptions, (err, db) => {
@@ -40,7 +38,6 @@ dbCon.connectToServer(function (err) {
 
 	// Middleware
 	// This lets you get information from the user
-	app.use(express.static('public'));
 	app.use(cookieParser());
 	app.use(bodyParser.urlencoded({
 		extended: false,
