@@ -31,16 +31,6 @@ dbCon.connectToServer(function (err) {
 		if (err) console.log('Error', err);
 	});
 
-	const nav = [{
-			Link: '/auth/profile',
-			Text: 'Profile'
-		},
-		{
-			Link: '/auth/stats',
-			Text: 'Stats'
-		}
-	];
-
 	// creating the application and attaching to socket	
 	const app = express();
 	const server = require('http').Server(app);
@@ -74,11 +64,11 @@ dbCon.connectToServer(function (err) {
 	app.set('view engine', 'ejs');
 
 	// all movement for the authorization route on the domain
-	const authRouter = require('./src/routes/authRouter.js')(nav);
+	const authRouter = require('./src/routes/authRouter.js')();
 	app.use('/auth', authRouter);
 
 	// site routes go here
-	const siteRouter = require('./src/routes/siteRouter.js')(nav);
+	const siteRouter = require('./src/routes/siteRouter.js')();
 	app.use('/site', siteRouter);
 
 	// any requests pass through this area
