@@ -18,14 +18,14 @@
 		"express": "^4.16.4",
 		"express-session": "^1.15.6",
 		"mongodb": "^3.1.10",
-		"mongoose": "^5.3.13",
-		"nodemon": "^1.18.7",
-		"npm": "^6.4.1",
+		"mongoose": "^5.4.2",
+		"nodemon": "^1.18.9",
+		"npm": "^6.5.0",
 		"passport": "^0.4.0",
 		"passport-local": "^1.0.0",
 		"request": "^2.88.0",
 		"shortid": "^2.2.14",
-		"socket.io": "^2.1.1"
+		"socket.io": "^2.2.0"
 	},
 	"nodemonConfig": {
 		"restartable": "rs",
