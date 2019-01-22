@@ -14,6 +14,7 @@ dbCon.connectToServer(function (err) {
 	const ObjectId = require('mongodb').ObjectID;
 	const shortid = require('shortid');
 	const flash = require('connect-flash');
+	const compression = require('compression');
 	const deleteAtMidnight = require('./src/extraScripts/deleteOldTests');
 
 	const mongoURI = 'mongodb://localhost/usabilityTesting';
@@ -49,6 +50,7 @@ dbCon.connectToServer(function (err) {
 		saveUninitialized: true
 	}));
 	app.use(bodyParser.json());
+	app.use(compression());
 	// used for passport authentication
 	require('./src/config/passport')(app);
 	require('./src/config/strategies/local.strategy')(passport);
@@ -205,30 +207,30 @@ dbCon.connectToServer(function (err) {
 								}
 							}
 						}, {
-							arrayFilters: [{
-								"i.secretID": data.secret
-							}]
-						})
+								arrayFilters: [{
+									"i.secretID": data.secret
+								}]
+							})
 						if (data.endingScroll) {
 							db.collection('userTracking').updateOne(cookieInDB, {
 								$set: {
 									'recMoves.$[i].endingScroll': data.endingScroll
 								}
 							}, {
-								arrayFilters: [{
-									"i.secretID": data.secret
-								}]
-							})
+									arrayFilters: [{
+										"i.secretID": data.secret
+									}]
+								})
 						} else {
 							db.collection('userTracking').updateOne(cookieInDB, {
 								$set: {
 									'recMoves.$[i].endingScroll': 0
 								}
 							}, {
-								arrayFilters: [{
-									"i.secretID": data.secret
-								}]
-							})
+									arrayFilters: [{
+										"i.secretID": data.secret
+									}]
+								})
 						}
 					} else {
 						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
