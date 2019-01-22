@@ -15,6 +15,7 @@ dbCon.connectToServer(function (err) {
 	const shortid = require('shortid');
 	const flash = require('connect-flash');
 	const compression = require('compression');
+	const helmet = require('helmet');
 	const deleteAtMidnight = require('./src/extraScripts/deleteOldTests');
 
 	const mongoURI = 'mongodb://localhost/usabilityTesting';
@@ -51,6 +52,7 @@ dbCon.connectToServer(function (err) {
 	}));
 	app.use(bodyParser.json());
 	app.use(compression());
+	app.use(helmet());
 	// used for passport authentication
 	require('./src/config/passport')(app);
 	require('./src/config/strategies/local.strategy')(passport);
