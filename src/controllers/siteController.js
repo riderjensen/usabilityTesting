@@ -121,7 +121,8 @@ exports.fixRefreshIssueOnCreate = (req, res) => {
 exports.testCompleted = (req, res) => {
 	let userId = req.query.id
 	res.render('testCom', {
-		userId
+		userId,
+		user: req.user
 	})
 }
 
