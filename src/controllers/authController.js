@@ -85,7 +85,8 @@ exports.loadProfile = (req, res) => {
 			res.render('profile', {
 				userData,
 				projects,
-				usableURL
+				usableURL,
+				user: req.user
 			});
 		} catch (error) {
 			console.log(error);

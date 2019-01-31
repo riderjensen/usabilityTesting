@@ -104,15 +104,16 @@ exports.fixRefreshIssueOnCreate = (req, res) => {
 			ArrayPull,
 			mainPage,
 			noLog,
-			testName
-
+			testName,
+			user: req.user
 		});
 	} else {
 		res.render('testCreate', {
 			URLPull,
 			ArrayPull,
 			mainPage,
-			testName
+			testName,
+			user: req.user
 		});
 	}
 }
@@ -154,7 +155,9 @@ exports.recordTheResults = (req, res) => {
 			console.log(err);
 		}
 	}());
-	res.render('replayCom');
+	res.render('replayCom', {
+		user: req.user
+	});
 }
 
 exports.getIDPage = (req, res) => {

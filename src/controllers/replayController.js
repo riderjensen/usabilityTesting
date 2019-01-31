@@ -6,7 +6,9 @@ exports.sendHome = (req, res) => {
 }
 
 exports.replayComplete = (req, res) => {
-	res.render('replayCom')
+	res.render('replayCom', {
+		user: req.user
+	})
 }
 
 exports.firstPageOfTest = (req, res) => {
