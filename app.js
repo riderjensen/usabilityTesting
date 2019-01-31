@@ -91,20 +91,25 @@ dbCon.connectToServer(function (err) {
 	// 404
 	app.use(function (err, req, res, next) {
 		console.log(err);
-		res.status(404).render('404');
+		res.status(404).render('404', {
+			user: req.user
+		});
 	})
 
 	// getting our index served
 	app.get('/', (req, res) => {
 		// flash for sign in errors
+
 		let ourmsg;
+		let user;
 		if (req.query.duplicateUser) {
 			ourmsg = 'Duplicate user, please choose a new username';
 		} else {
 			ourmsg = req.flash('error')
 		}
 		res.render('index', {
-			message: ourmsg
+			message: ourmsg,
+			user: req.user
 		});
 	});
 
@@ -209,30 +214,30 @@ dbCon.connectToServer(function (err) {
 								}
 							}
 						}, {
-								arrayFilters: [{
-									"i.secretID": data.secret
-								}]
-							})
+							arrayFilters: [{
+								"i.secretID": data.secret
+							}]
+						})
 						if (data.endingScroll) {
 							db.collection('userTracking').updateOne(cookieInDB, {
 								$set: {
 									'recMoves.$[i].endingScroll': data.endingScroll
 								}
 							}, {
-									arrayFilters: [{
-										"i.secretID": data.secret
-									}]
-								})
+								arrayFilters: [{
+									"i.secretID": data.secret
+								}]
+							})
 						} else {
 							db.collection('userTracking').updateOne(cookieInDB, {
 								$set: {
 									'recMoves.$[i].endingScroll': 0
 								}
 							}, {
-									arrayFilters: [{
-										"i.secretID": data.secret
-									}]
-								})
+								arrayFilters: [{
+									"i.secretID": data.secret
+								}]
+							})
 						}
 					} else {
 						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
