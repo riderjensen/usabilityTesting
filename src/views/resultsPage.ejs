@@ -1,130 +1,167 @@
 <%- include('./includes/head.ejs') %>
 </head>
 
-
-
-
 <body id="page-top">
 
 	<!-- Navigation -->
 	<%- include('./includes/nav.ejs') %>
-	<section id="about" class="text-center">
+	<section id="about" class="text-center pt-5 mt-5">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 mx-auto">
-					<h2>About Your Test</h2>
-					<p>User Link: <a href="<%=usableURL%>/t/<%=url%>">
-							<%=usableURL%>/t/
-							<%=url%></a></p>
-					<h3>Tests Name:</h3>
-					<p>
-						<%=testName%>
-					</p>
-					<h3>Tests Taken:</h3>
-					<p>
-						<%=ourUserInfoArray.length%>
-					</p>
-					<h3>URL Referenced: </h3>
-					<p>
-						<%=webURL%>
-					</p>
-					<h3>Created At</h3>
-					<p id="createdDate">
-						<%=createdDate%>
-					</p>
-					<p id="timeRemaining"></p>
-					<div class="progress">
-						<div id="ourProgressBar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+				<div class="col-lg-12 mx-auto pt-5">	
+					
+					<div class="about-title">
+						<h2>About Your Test</h2>
+						<p>Created At</p>
+						<p id="createdDate">
+							<%=createdDate%>
+						</p>
+						<p id="timeRemaining"></p>
+					</div>
+
+					<div class="row about-row mb-5">
+						<div class="col-xs-12 col-md-6 col-lg-3 mx-auto mb-4">
+							<div class="card about-card">
+								<h3>User Link:</h3>
+								<a href="<%=usableURL%>/t/<%=url%>">
+									<%=usableURL%>/t/
+									<%=url%>
+								</a>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6 col-lg-3 mx-auto mb-4">
+							<div class="card about-card">
+								<h3>Tests Name:</h3>
+								<p class="mb-3">
+									<%=testName%>
+								</p>                      
+	
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6 col-lg-3 mx-auto mb-4">
+							<div class="card about-card">
+								<h3>Tests Taken:</h3>
+								<p class="mb-3">
+									<%=ourUserInfoArray.length%>
+								</p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6 col-lg-3 mx-auto mb-4">
+							<div class="card about-card">
+	
+								<h3>URL Referenced: </h3>
+								<p class="mb-3">
+									<%=webURL%>
+								</p>
+							</div>
 						</div>
 					</div>
-					<h3>Questions:</h3>
-					<ul class="list-group list-group-flush">
-						<%for (var i=0; i < questionArray.length; i++) {%>
-						<li class="list-group-item" style="background-color: #000;">
-							<p>
-								<%=questionArray[i]%>
-							</p>
-						</li>
-						<%}%>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
 
-	<section id="about" class="text-center">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 mx-auto">
-					<h2>Change replay colors</h2>
-					<p style="margin: 0">Change the clicking circle color</p>
-					<input class="form-control" id="changeClickingColor" placeholder="rebeccapurple" />
-					<div id="clickColorTest" style="z-index: 100; position:absolute; height: 30px; width: 30px; background-color: rebeccapurple; border-radius: 50%; display: inline-block;"></div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-4 mx-auto">
-					<h2 style="margin-top: 30px;">Change replay speed</h2>
-					<select name="cars" class="form-control" id="changeReplaySpeed">
-						<option value="0.5">0.5x Speed</option>
-						<option value="1" selected>1.0x Speed</option>
-						<option value="1.5">1.5x Speed</option>
-						<option value="2">2x Speed</option>
-					</select>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-12 mx-auto">
-					<h2 style="margin-top: 35px">Watch replays</h2>
-					<p style="color: red">We recommend watching replays in the same browser where they occured. Otherwise there may be
-						some sizing issues.</p>
-					<%for (var i=0; i < ourUserInfoArray.length; i++) {%>
-					<div class="card" style="width: 50%; margin: auto; color: #000; margin-top: 40px;">
-						<div class="card-body">
-							<h5 class="card-title">Tester Name:
-								<%=ourUserInfoArray[i].name%>
-							</h5>
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item">
-									Age:
-									<%=ourUserInfoArray[i].age%>
-								</li>
-								<li class="list-group-item">
-									Race:
-									<%=ourUserInfoArray[i].race%>
-								</li>
-								<li class="list-group-item">
-									Browser Type:
-									<%=ourUserStatesArray[i].userBrowserType%>
-								</li>
+					<div class="progress">
+						<div id="ourProgressBar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" style="style=&quot;min-width: 2em; width: 100">100%</div>
+					</div>
 
-								<%for (var j=0; j < ourUserAnswers[i].length; j++) {%>
-								<li class="list-group-item">
-									Answer to question
-									<%=[j+1]%>:<br />
-									<%=ourUserAnswers[i][j]%>
 
+                <div class="row about-row mb-5 mt-5">
+                    <div class="col-xs-12 col-md-12 col-lg-8 mx-auto text-left">
+                        <div class="card about-card">
+                            <h3>Questions:</h3>
+                            <ul class="list-group list-group-flush about-list text-left">
+								<%for (var i=0; i < questionArray.length; i++) {%>
+								<li class="list-group-item">
+									<p>
+										<%=questionArray[i]%>
+									</p>
 								</li>
 								<%}%>
 							</ul>
-
-							<a href="<%=usableURL%>/replay/first/<%=ourUserInfoArray[i].initID%>" class="btn btn-primary" onclick="window.open(this.href,'targetWindow', 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=<%=ourUserStatesArray[i].userWidth%>, height= <%=ourUserStatesArray[i].userHeight%>'); return false;">Watch
-								(opens a new window)</a>
 						</div>
 					</div>
-					<%}%>
-
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<%- include('./includes/footer.ejs') %>
 
-	<%- include('./includes/scripts.ejs') %>
+<section id="about" class="text-center">
+	<div class="container">
+		<div class="row p-5 about-replay">
+			<div class="col-lg-7 mx-auto">
+				<h3 class="mb-1">Video Replay Settings</h3>
+				<p class="text-danger">We recommend watching replays in the same browser where they occured. Otherwise there may be
+							some sizing issues.</p>
+			</div>
+						
+			<div class="col-lg-6 mx-auto">
+				<p class="text-uppercase mb-4">Change replay colors</p>
+				<!-- <p style="margin: 0">Change the clicking circle color</p> -->
+				<input class="form-control" id="changeClickingColor" placeholder="rebeccapurple" style="
+		display: inline;
+		">
+				<div id="clickColorTest" class="replay-color-circle mt-3" style=""></div>
+			</div>
 
-	<!-- Custom scripts for this template -->
-	<script src="../js/changeColor.js"></script>
+			<div class="col-lg-6 mx-auto">
+				<p class="text-uppercase mb-4">Change replay speed</p>
+				<select name="cars" class="form-control" id="changeReplaySpeed">
+					<option value="0.5">0.5x Speed</option>
+					<option value="1" selected="">1.0x Speed</option>
+					<option value="1.5">1.5x Speed</option>
+					<option value="2">2x Speed</option>
+				</select>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-xs-12 col-md-12 col-lg-6 mx-auto">
+				
+				<h2 class="pt-5">Results &amp; Replays</h2>
+				<%for (var i=0; i < ourUserInfoArray.length; i++) {%>
+					<div class="card about-card about-2 pb-4">
+						
+						<h5 class="card-title">Tester Name:</h5>
+						<h5 class="mb-4">
+							<%=ourUserInfoArray[i].name%>
+						</h5>					
+						<ul class="list-group list-group-flush text-left pb-4">
+							<li class="list-group-item">
+								Age:
+								<%=ourUserInfoArray[i].age%>
+							</li>
+							<li class="list-group-item">
+								Race:
+								<%=ourUserInfoArray[i].race%>
+							</li>
+							<li class="list-group-item">
+								Browser Type:
+								<%=ourUserStatesArray[i].userBrowserType%>
+							</li>
+							<%for (var j=0; j < ourUserAnswers[i].length; j++) {%>
+							<li class="list-group-item">
+								Answer to question
+								<%=[j+1]%>:<br />
+								<%=ourUserAnswers[i][j]%>
+							</li>
+							<%}%>
+						</ul>
+
+						<a href="<%=usableURL%>/replay/first/<%=ourUserInfoArray[i].initID%>" class="btn btn-primary" onclick="window.open(this.href,'targetWindow', 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=<%=ourUserStatesArray[i].userWidth%>, height= <%=ourUserStatesArray[i].userHeight%>'); return false;">Watch
+							(opens a new window)</a>
+					</div>
+				<%}%>
+			</div>
+		</div>
+	</div>
+</section>
+
+<%- include('./includes/footer.ejs') %>
+
+<%- include('./includes/scripts.ejs') %>
+
+<!-- Custom scripts for this template -->
+<script src="../js/changeColor.js"></script>
 
 </body>
 
