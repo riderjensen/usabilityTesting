@@ -9,23 +9,25 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
+				
 				<h2>Welcome to your dashboard,
 					<%=userData.username%>.</h2>
+					
 				<div id="dashboard-content">
-					<ul>
-						<%for (var i=0; i < projects.length; i++) {%>
+					<ul class="d-flex flex-wrap list-unstyled">
+					<%for (var i=0; i < projects.length; i++) {%>
 						<li class="spanCheking">
 							<a href="<%=usableURL%>/results/<%=projects[i].objectId%>" id="<%=projects[i].objectId%>">
 								<%=projects[i].testName%>
 
 							</a> - <a href="#" data-toggle="modal" data-target="#deleteTest">Delete test</a> - <a href="#" data-toggle="modal"
-							 data-target="#copyTest">Copy test</a>
+							data-target="#copyTest">Copy test</a>
 						</li>
-						<%}%>
+					<%}%>
 					</ul>
-					<p>You can <a class="btn btn-default" href="/#start-test">start
-							a new test</a></p>
+					<p>You can <a class="btn btn-default" href="/#start-test">starta new test</a></p>
 				</div>
+		
 			</div>
 		</div>
 	</div>
