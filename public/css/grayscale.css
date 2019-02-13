@@ -158,7 +158,7 @@ a:hover {
 
 /* style="width: 50%; margin: auto; color: #000; margin-top: 40px;" */
 .card.about-card {
-	padding: 30px 30px 10px 30px;
+	padding: 30px 30px 30px 30px;
 	height: 100%;
 	font-family: 'Cabin', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	color: #FFF;
@@ -203,17 +203,17 @@ a:hover {
 	padding: 20px 30px 30px 30px;
 	margin: 20px;
 	position: relative;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    flex-wrap: wrap;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 1px solid rgba(0,0,0,.125);
-    border-radius: .25rem;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	flex-wrap: wrap;
+	min-width: 0;
+	word-wrap: break-word;
+	background-color: #313131;
+	background-clip: border-box;
+	border: 1px solid rgba(0,0,0,.125);
+	border-radius: .25rem;
 }
 
 .spanCheking a:nth-last-child(3) {
@@ -221,10 +221,10 @@ a:hover {
 	padding-bottom: 20px;
 	font-family: 'Cabin', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	text-transform: uppercase;
-    font-weight: 700;
+	font-weight: 700;
 	font-size: 18px;
-	color: #000;
-	text-align: center; 
+	color: #FFF;
+	text-align: center;
 }
 
 .spanCheking a:nth-last-child(1), .spanCheking a:nth-last-child(2) {
@@ -233,12 +233,17 @@ a:hover {
 	color: #42DCA3;
 	border: 1px solid #42DCA3;
 	padding: .375rem .75rem;
-    font-size: .75rem;
-    font-family: 'Cabin', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 400;
+	font-size: .75rem;
+	font-family: 'Cabin', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: 400;
 	transition: all 0.3s ease-in-out;
-    text-transform: uppercase;
-    border-radius: 0;
+	text-transform: uppercase;
+	border-radius: 0;
+	display: block;
+}
+
+.spanCheking a:nth-last-child(2) {
+	margin-right: auto;
 }
 
 .spanCheking a:nth-last-child(1):hover, .spanCheking a:nth-last-child(2):hover {
@@ -246,12 +251,7 @@ a:hover {
     border: 1px solid #42DCA3;
     outline: none;
     background-color: #42DCA3;
-
 }
-
-
-
-
 
 
 
