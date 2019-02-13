@@ -1,0 +1,19 @@
+#start-test:hover {
+  color: #42DCA3;
+  border-color: #42DCA3;
+  position: relative;
+  transform: translateY(-2px);
+  transition: all .3s;
+}
+
+.usable-text {
+  color: #42DCA3;
+}
+
+#submit {
+  cursor: pointer;
+}
+
+.w50 {
+  width: 50%;
+}
