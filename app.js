@@ -1,7 +1,4 @@
-const dbCon = require('./src/extraScripts/dbConnect');
 
-dbCon.connectToServer(function (err) {
-	// start the rest of app here
 
 	// required statments
 	const express = require('express');
@@ -347,4 +344,3 @@ dbCon.connectToServer(function (err) {
 	// run db 
 	// mongod --dbpath "C:\Program Files\MongoDB\data"
 
-});

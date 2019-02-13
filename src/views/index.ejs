@@ -16,11 +16,11 @@
 		<div class="intro-body">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-8 mx-auto">
-						<h1 class="brand-heading">UsabL</h1>
-						<p class="intro-text">Make sure users can find what they need to.
-							<br>Keep track of all the feedback you recieve.</p>
-						<a href="#about" class="btn btn-circle js-scroll-trigger">
+					<div class="col-lg-12 mx-auto">
+						<h2>A testing platform to enhance your <span style="text-decoration: underline;">User's Experience</span></h2>
+							<div class="col-8 mx-auto mb-5">
+								<input placeholder="Put your website address here." name="webURL" id="webURL" class="form-control" required>
+						<a href="#start-test" class="btn btn-circle js-scroll-trigger mt-5">
 							<i class="fa fa-angle-double-down animated"></i>
 						</a>
 					</div>
@@ -42,25 +42,30 @@
 								complete some tasks then do not use this
 								form. This report will contain more information on user interaction with page.</p>
 							<form name="noLog" action="/site/" method="post">
-								<div class="row text-black" style="margin-bottom: 20px">
-									<div class="col-3">Name</div>
-									<div class="col-9">
-										<input class="form-control" name="testName" placeholder="Name of Test" value="My Great Test">
+								<div class="row">
+									<div class="col-12 mb-5">
+										<input placeholder="URL" name="webURL" id="webURL" class="form-control" required>
 									</div>
 								</div>
-								<div class="row text-black" style="margin-bottom: 20px">
+								<div class="row text-black mb-3">
+									<div class="col-3">Name</div>
+									<div class="col-9">
+										<input class="form-control" name="testName" placeholder="Give your test a name.">
+									</div>
+								</div>
+								<div class="row text-black mb-3">
 									<div class="col-3">1</div>
 									<div class="col-9">
 										<input class="form-control" name="task0" placeholder="Test Item" value="Our first test question">
 									</div>
 								</div>
-								<div class="row text-black" style="margin-bottom: 20px">
+								<div class="row text-black mb-3">
 									<div class="col-3">2</div>
 									<div class="col-9">
 										<input class="form-control" name="task1" placeholder="Test Item" value="Our second test question">
 									</div>
 								</div>
-								<div class="row text-black" style="margin-bottom: 20px">
+								<div class="row text-black mb-3">
 									<div class="col-3">3</div>
 									<div class="col-8">
 										<input class="form-control" name="task2" placeholder="Test Item" value="Our third test question">
@@ -72,10 +77,8 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-9">
-										<input placeholder="URL" name="webURL" id="webURL" class="form-control" required>
-									</div>
-									<div class="col-3">
+								
+									<div class="col-12">
 										<button type="submit" id="submit" class="btn btn-default btn-sm">Submit</button>
 									</div>
 								</div>
@@ -88,51 +91,7 @@
 		</div>
 	</section>
 
-	<!-- Download Section -->
-	<section id="download" class="download-section content-section text-center">
-		<div class="container">
-			<div class="col-lg-8 mx-auto">
-				<h2>Download Grayscale</h2>
-				<p>You can download Grayscale for free on the preview page at Start Bootstrap.</p>
-				<a href="http://startbootstrap.com/template-overviews/grayscale/" class="btn btn-default btn-lg">Visit Download
-					Page</a>
-			</div>
-		</div>
-	</section>
 
-	<!-- Contact Section -->
-	<section id="contact" class="content-section text-center">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 mx-auto">
-					<h2>Contact Start Bootstrap</h2>
-					<p>Feel free to leave us a comment on the
-						<a href="http://startbootstrap.com/template-overviews/grayscale/">Grayscale template overview page</a>
-						on Start Bootstrap to give some feedback about this theme!</p>
-					<ul class="list-inline banner-social-buttons">
-						<li class="list-inline-item">
-							<a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg">
-								<i class="fa fa-twitter fa-fw"></i>
-								<span class="network-name">Twitter</span>
-							</a>
-						</li>
-						<li class="list-inline-item">
-							<a href="https://github.com/BlackrockDigital/startbootstrap" class="btn btn-default btn-lg">
-								<i class="fa fa-github fa-fw"></i>
-								<span class="network-name">Github</span>
-							</a>
-						</li>
-						<li class="list-inline-item">
-							<a href="https://plus.google.com/+Startbootstrap/posts" class="btn btn-default btn-lg">
-								<i class="fa fa-google-plus fa-fw"></i>
-								<span class="network-name">Google+</span>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
 
 	<%- include('./includes/footer.ejs') %>
 
