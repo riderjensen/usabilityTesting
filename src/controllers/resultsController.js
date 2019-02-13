@@ -24,7 +24,8 @@ exports.displayTheResults = (req, res) => {
 			});
 			if (testFound == null || testFound.testArray == null) {
 				res.render('404', {
-					errMsg: 'Your results page cannot be found. This is usually a cookie error on your browser. Try deleteing all your cookies and returning to this page.'
+					errMsg: 'Your results page cannot be found. This is usually a cookie error on your browser. Try deleteing all your cookies and returning to this page.',
+					user: req.user
 				});
 			} else {
 				testArray = testFound.testArray;
@@ -36,7 +37,8 @@ exports.displayTheResults = (req, res) => {
 			}
 		} catch (err) {
 			res.render('404', {
-				errMsg: `Your results page cannot be found. Please refer to the error message:${err.stack}`
+				errMsg: `Your results page cannot be found. Please refer to the error message:${err.stack}`,
+				user: req.user
 			})
 		}
 	}()).then(() => {
@@ -60,7 +62,8 @@ exports.displayTheResults = (req, res) => {
 				}
 			} catch (err) {
 				res.render('404', {
-					errMsg: `We experienced and error within our code. Please refer to the error message:${err}`
+					errMsg: `We experienced and error within our code. Please refer to the error message:${err}`,
+					user: req.user
 				})
 			}
 
@@ -75,7 +78,8 @@ exports.displayTheResults = (req, res) => {
 				reqID,
 				usableURL,
 				url,
-				ourUserAnswers
+				ourUserAnswers,
+				user: req.user
 			});
 		});
 	});

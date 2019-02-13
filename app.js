@@ -12,6 +12,7 @@ dbCon.connectToServer(function (err) {
 	const mongoose = require('mongoose');
 	const mongoUtil = require('./src/extraScripts/dbConnect');
 	const ObjectId = require('mongodb').ObjectID;
+	const request = require('request');
 	const shortid = require('shortid');
 	const flash = require('connect-flash');
 	const compression = require('compression');
@@ -91,20 +92,25 @@ dbCon.connectToServer(function (err) {
 	// 404
 	app.use(function (err, req, res, next) {
 		console.log(err);
-		res.status(404).render('404');
+		res.status(404).render('404', {
+			user: req.user
+		});
 	})
 
 	// getting our index served
 	app.get('/', (req, res) => {
 		// flash for sign in errors
+
 		let ourmsg;
+		let user;
 		if (req.query.duplicateUser) {
 			ourmsg = 'Duplicate user, please choose a new username';
 		} else {
 			ourmsg = req.flash('error')
 		}
 		res.render('index', {
-			message: ourmsg
+			message: ourmsg,
+			user: req.user
 		});
 	});
 
@@ -115,6 +121,25 @@ dbCon.connectToServer(function (err) {
 
 	// socket.io
 	io.on('connection', (socket) => {
+		socket.on('website', (data) => {
+			const splitURL = data.split("");
+			// check to see if they added http
+			const addedItems = splitURL[0] + splitURL[1] + splitURL[2] + splitURL[3];
+			if (addedItems != 'http') {
+				data = 'http://' + data;
+			}
+			try {
+				request(data, (error, response) => {
+					if (error != null) {
+						socket.emit('badURL');
+					} else {
+						socket.emit('goodURL');
+					}
+				});
+			} catch (err) {
+				console.log(err);
+			}
+		});
 		socket.on('initInformation', (data) => {
 			// bringing in the init data that should be sent to our db on the first page load
 			let ourCookie = data.initPage;
@@ -209,30 +234,30 @@ dbCon.connectToServer(function (err) {
 								}
 							}
 						}, {
-								arrayFilters: [{
-									"i.secretID": data.secret
-								}]
-							})
+							arrayFilters: [{
+								"i.secretID": data.secret
+							}]
+						})
 						if (data.endingScroll) {
 							db.collection('userTracking').updateOne(cookieInDB, {
 								$set: {
 									'recMoves.$[i].endingScroll': data.endingScroll
 								}
 							}, {
-									arrayFilters: [{
-										"i.secretID": data.secret
-									}]
-								})
+								arrayFilters: [{
+									"i.secretID": data.secret
+								}]
+							})
 						} else {
 							db.collection('userTracking').updateOne(cookieInDB, {
 								$set: {
 									'recMoves.$[i].endingScroll': 0
 								}
 							}, {
-									arrayFilters: [{
-										"i.secretID": data.secret
-									}]
-								})
+								arrayFilters: [{
+									"i.secretID": data.secret
+								}]
+							})
 						}
 					} else {
 						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
@@ -322,4 +347,4 @@ dbCon.connectToServer(function (err) {
 	// run db 
 	// mongod --dbpath "C:\Program Files\MongoDB\data"
 
-});
+}); 

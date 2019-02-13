@@ -1,7 +1,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
 	<div class="container">
-		<a class="navbar-brand js-scroll-trigger" href="/">UsabL</a>
+		<a class="navbar-brand js-scroll-trigger" href="/"><img src="img/usable-logo.svg" alt=""></a>
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive"
 		 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			Menu
@@ -10,17 +10,27 @@
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 
 			<ul class="navbar-nav ml-auto">
+
+
+				<% if (!user) { %>
+
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="modal" data-target="#signInModal" href="#">Sign In</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="modal" data-target="#signUpModal" href="#">Sign Up</a>
 				</li>
+				<% } %>
+
+				<% if (user) { %>
+
 				<li class="nav-item">
 					<a class="nav-link" href="/auth/profile">Profile</a>
 				</li>
+				<% } %>
+
 				<li class="nav-item">
-					<a class="nav-link" href="#start-test">Create a Test</a>
+					<a class="nav-link" href="#anchor">Create a Test</a>
 				</li>
 			</ul>
 		</div>
