@@ -17,3 +17,7 @@
 .w50 {
   width: 50%;
 }
+
+.nav-link:hover {
+  color: #42DCA3 !important;
+}
