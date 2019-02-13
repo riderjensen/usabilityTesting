@@ -347,4 +347,4 @@ dbCon.connectToServer(function (err) {
 	// run db 
 	// mongod --dbpath "C:\Program Files\MongoDB\data"
 
-});
+}); 
