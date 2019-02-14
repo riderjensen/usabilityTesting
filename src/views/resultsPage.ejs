@@ -8,8 +8,8 @@
 	<section id="about" class="text-center pt-5 mt-5">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12 mx-auto pt-5">	
-					
+				<div class="col-lg-12 mx-auto pt-5">
+
 					<div class="about-title">
 						<h2>About Your Test</h2>
 						<p>Created At</p>
@@ -34,8 +34,8 @@
 								<h3>Tests Name:</h3>
 								<p class="mb-3">
 									<%=testName%>
-								</p>                      
-	
+								</p>
+
 							</div>
 						</div>
 						<div class="col-xs-12 col-md-6 col-lg-3 mx-auto mb-4">
@@ -48,7 +48,7 @@
 						</div>
 						<div class="col-xs-12 col-md-6 col-lg-3 mx-auto mb-4">
 							<div class="card about-card">
-	
+
 								<h3>URL Referenced: </h3>
 								<p class="mb-3">
 									<%=webURL%>
@@ -57,74 +57,76 @@
 						</div>
 					</div>
 
-					<div class="progress">
-						<div id="ourProgressBar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" style="style=&quot;min-width: 2em; width: 100">100%</div>
-					</div>
+					<!-- <div class="progress">
+						<div id="ourProgressBar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+						 aria-valuenow="100">100%</div>
+					</div> -->
 
 
-                <div class="row about-row mb-5 mt-5">
-                    <div class="col-xs-12 col-md-12 col-lg-8 mx-auto text-left">
-                        <div class="card about-card">
-                            <h3>Questions:</h3>
-                            <ul class="list-group list-group-flush about-list text-left">
-								<%for (var i=0; i < questionArray.length; i++) {%>
-								<li class="list-group-item">
-									<p>
-										<%=questionArray[i]%>
-									</p>
-								</li>
-								<%}%>
-							</ul>
+					<div class="row about-row mb-5 mt-5">
+						<div class="col-xs-12 col-md-12 col-lg-8 mx-auto text-left">
+							<div class="card about-card">
+								<h3>Questions:</h3>
+								<ul class="list-group list-group-flush about-list text-left">
+									<%for (var i=0; i < questionArray.length; i++) {%>
+									<li class="list-group-item">
+										<p>
+											<%=questionArray[i]%>
+										</p>
+									</li>
+									<%}%>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
 
 
-<section id="about" class="text-center">
-	<div class="container">
-		<div class="row p-5 about-replay">
-			<div class="col-lg-7 mx-auto">
-				<h3 class="mb-1">Video Replay Settings</h3>
-				<p class="text-danger">We recommend watching replays in the same browser where they occured. Otherwise there may be
-							some sizing issues.</p>
-			</div>
-						
-			<div class="col-lg-6 mx-auto">
-				<p class="text-uppercase mb-4">Change replay colors</p>
-				<!-- <p style="margin: 0">Change the clicking circle color</p> -->
-				<input class="form-control" id="changeClickingColor" placeholder="rebeccapurple" style="
+	<section id="about" class="text-center">
+		<div class="container">
+			<div class="row p-5 about-replay">
+				<div class="col-lg-7 mx-auto">
+					<h3 class="mb-1">Video Replay Settings</h3>
+					<p class="text-danger">We recommend watching replays in the same browser where they occured. Otherwise there may
+						be
+						some sizing issues.</p>
+				</div>
+
+				<div class="col-lg-6 mx-auto">
+					<p class="text-uppercase mb-4">Change replay colors</p>
+					<!-- <p style="margin: 0">Change the clicking circle color</p> -->
+					<input class="form-control" id="changeClickingColor" placeholder="rebeccapurple" style="
 		display: inline;
 		">
-				<div id="clickColorTest" class="replay-color-circle mt-3" style=""></div>
+					<div id="clickColorTest" class="replay-color-circle mt-3" style=""></div>
+				</div>
+
+				<div class="col-lg-6 mx-auto">
+					<p class="text-uppercase mb-4">Change replay speed</p>
+					<select name="cars" class="form-control" id="changeReplaySpeed">
+						<option value="0.5">0.5x Speed</option>
+						<option value="1" selected="">1.0x Speed</option>
+						<option value="1.5">1.5x Speed</option>
+						<option value="2">2x Speed</option>
+					</select>
+				</div>
 			</div>
 
-			<div class="col-lg-6 mx-auto">
-				<p class="text-uppercase mb-4">Change replay speed</p>
-				<select name="cars" class="form-control" id="changeReplaySpeed">
-					<option value="0.5">0.5x Speed</option>
-					<option value="1" selected="">1.0x Speed</option>
-					<option value="1.5">1.5x Speed</option>
-					<option value="2">2x Speed</option>
-				</select>
-			</div>
-		</div>
 
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-6 mx-auto">
 
-		<div class="row">
-			<div class="col-xs-12 col-md-12 col-lg-6 mx-auto">
-				
-				<h2 class="pt-5">Results &amp; Replays</h2>
-				<%for (var i=0; i < ourUserInfoArray.length; i++) {%>
+					<h2 class="pt-5">Results &amp; Replays</h2>
+					<%for (var i=0; i < ourUserInfoArray.length; i++) {%>
 					<div class="card about-card about-2 pb-4">
-						
+
 						<h5 class="card-title">Tester Name:</h5>
 						<h5 class="mb-4">
 							<%=ourUserInfoArray[i].name%>
-						</h5>					
+						</h5>
 						<ul class="list-group list-group-flush text-left pb-4">
 							<li class="list-group-item">
 								Age:
@@ -150,18 +152,18 @@
 						<a href="<%=usableURL%>/replay/first/<%=ourUserInfoArray[i].initID%>" class="btn btn-primary" onclick="window.open(this.href,'targetWindow', 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=<%=ourUserStatesArray[i].userWidth%>, height= <%=ourUserStatesArray[i].userHeight%>'); return false;">Watch
 							(opens a new window)</a>
 					</div>
-				<%}%>
+					<%}%>
+				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
 
-<%- include('./includes/footer.ejs') %>
+	<%- include('./includes/footer.ejs') %>
 
-<%- include('./includes/scripts.ejs') %>
+	<%- include('./includes/scripts.ejs') %>
 
-<!-- Custom scripts for this template -->
-<script src="../js/changeColor.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../js/changeColor.js"></script>
 
 </body>
 
