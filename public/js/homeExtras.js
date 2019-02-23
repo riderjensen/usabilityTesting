@@ -9,14 +9,21 @@ homeUrl.addEventListener('keyup', (e) => {
 
 
 
-const addTask = (e) => {
+const addTask = () => {
   // Grab all tasks
   const taskList = document.querySelectorAll('#taskItem');
   const taskListArray = Array.from(taskList);
+
+
+  if(taskListArray.length > 4) {
+    return;
+  } else if(taskListArray.length > 3) {
+    document.querySelector('.add-task-button').style.display = 'none';
+  } else {
+    document.querySelector('.add-task-button').style.display = 'block';
+  }
   
   let taskNumber = taskListArray.length;
-  
-  // console.log(taskListArray.length);
 
 
   // Create new Task
@@ -26,16 +33,10 @@ const addTask = (e) => {
   taskListArray.push(newTaskItem);
   taskNumber++;
   
-
-  console.log(taskListArray.length);
-  console.log(taskNumber);
-  console.log(taskListArray[taskNumber - 1]);
-
+  // Change Task Number on left and update name attribute
   taskListArray[taskNumber - 1].children[0].children[0].innerHTML = taskNumber;
+  taskListArray[taskNumber - 1].children[1].children[0].attributes[1].value = `task${taskNumber}`;
 
   // Add new task
   taskSection.appendChild(newTaskItem);
- 
-
-  // taskList.appendChild(newTaskItem);
 }
