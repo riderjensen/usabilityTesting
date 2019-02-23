@@ -19,9 +19,7 @@ const addTask = () => {
     return;
   } else if(taskListArray.length > 3) {
     document.querySelector('.add-task-button').style.display = 'none';
-  } else {
-    document.querySelector('.add-task-button').style.display = 'block';
-  }
+  } 
   
   let taskNumber = taskListArray.length;
 
