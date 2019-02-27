@@ -20,22 +20,36 @@
 					<h3>Test name:
 						<span style="color: #42DCA3;"><%=testName%></span>
 					</h3>
-					<ul class="list-group mb-5">
-						<%for (var i=0; i < ArrayPull.length; i++) {%>
-						<li class="list-group-item">
-							<p class="" style="color:#000;">
-								<%=ArrayPull[i]%>
-							</p>
-						</li>
-						<%}%>
-					</ul>
 
-					<h3>Link to send to users:</h3>
-					<p><a href="<%=URLPull%>" target="_blank">
-							<%=URLPull%></a></p>
-					<h3>Results Page:</h3>
-					<p><a href="<%=mainPage%>" target="_blank">
-							<%=mainPage%></a></p>
+
+					<div class="card about-card about-2 mb-4 p-4">
+						<ul class="list-group list-group-flush text-left">
+						<%for (var i=0; i < ArrayPull.length; i++) {%>
+							<li class="list-group-item">
+								<p class="m-2">
+									<%=ArrayPull[i]%>
+								</p>
+							</li>
+						<%}%>
+						</ul>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 col-md-6">	
+							<div class="card h-100 about-card about-2 mb-4 p-4">
+								<h3>Link to send to users:</h3>
+								<p><a href="<%=URLPull%>" target="_blank">
+										<%=URLPull%></a></p>
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6">	
+							<div class="card h-100 about-card about-2 mb-4 p-4">
+								<h3>Results Page:</h3>
+								<p><a href="<%=mainPage%>" target="_blank">
+										<%=mainPage%></a></p>
+
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
