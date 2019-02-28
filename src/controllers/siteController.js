@@ -21,7 +21,7 @@ exports.createTest = (req, res) => {
 	} = req.body;
 	let questionArray = [task0, task1, task2, task3, task4];
 
-	while (questionArray[questionArray.length - 1] === undefined) {
+	while (questionArray[questionArray.length - 1] === undefined || questionArray[questionArray.length - 1] === null || questionArray[questionArray.length - 1] === '') {
 		questionArray.pop();
 	}
 	const date = new Date();
