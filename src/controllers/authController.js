@@ -14,7 +14,6 @@ exports.checkUserLog = (req, res, next) => {
 }
 
 exports.sendRedirect = (req, res) => {
-	console.log('here')
 	res.redirect('/auth/profile');
 }
 
@@ -42,16 +41,17 @@ exports.postSignUp = (req, res, next) => {
 						addedOn
 					});
 					user.save().then(_ => {
-						next();
+						passport.authenticate('local', {
+							successRedirect: '/auth/profile',
+							failureRedirect: '/'
+						});
 
 					})
+
 				}
 			}).catch(error => console.log(error))
-	});
-}, passport.authenticate('local', {
-	successRedirect: '/auth/profile',
-	failureRedirect: '/'
-})
+	})
+}
 
 exports.postSignIn = passport.authenticate('local', {
 	successRedirect: '/auth/profile',
