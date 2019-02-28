@@ -33,3 +33,19 @@
   opacity: 0;
   transition: all .3s;
 }
+
+div.add-task-button {
+  margin: auto;
+}
+
+div.add-task-button i {
+  font-size: 26px;
+  color: green;
+  margin-bottom: 15px;
+}
+
+div.add-task-button i:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
