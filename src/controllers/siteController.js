@@ -1,5 +1,4 @@
-const mongoose = require('../models/model');
-const webStorage = mongoose.model('webStorage');
+const webStorage = require('../models/websiteStorage.model');
 const extraScripts = require('../extraScripts/scrapper');
 const mongoUtil = require('../extraScripts/dbConnect');
 const ObjectId = require('mongodb').ObjectID;
@@ -147,10 +146,10 @@ exports.recordTheResults = (req, res) => {
 			col.updateOne({
 				_id: ObjectId(testID)
 			}, {
-				$set: {
-					finalAnswers: questionArray
-				}
-			})
+					$set: {
+						finalAnswers: questionArray
+					}
+				})
 
 		} catch (err) {
 			console.log(err);

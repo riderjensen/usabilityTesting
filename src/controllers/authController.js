@@ -1,6 +1,5 @@
 const mongoUtil = require('../extraScripts/dbConnect');
-const mongoose = require('../models/model');
-const userStorage = mongoose.model('userStorage');
+const userStorage = require('../models/userStorage.model');
 const passport = require('passport');
 const bcrypt = require('bcrypt-nodejs');
 const ObjectId = require('mongodb').ObjectID;
@@ -105,10 +104,10 @@ exports.deleteTest = (req, res) => {
 			await col.updateOne({
 				'_id': ObjectId(testToDelete)
 			}, {
-				$set: {
-					createdAt: d
-				}
-			});
+					$set: {
+						createdAt: d
+					}
+				});
 			// delete the test since the time is set to be older than the 30 days
 			const deleteAtMidnight = require('../extraScripts/deleteOldTests');
 			deleteAtMidnight.midNight();
