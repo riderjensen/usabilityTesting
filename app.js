@@ -167,7 +167,7 @@ io.on('connection', (socket) => {
 				arrayFilters: [{
 					"i.secretID": data.secret
 				}]
-			})
+			}, (err, item) => console.log('Something saved'))
 		// information should be stored, you can add a callback function with (err, item) at the end if you want
 
 
@@ -180,7 +180,7 @@ io.on('connection', (socket) => {
 					arrayFilters: [{
 						"i.secretID": data.secret
 					}]
-				})
+				}, (err, item) => console.log('Something saved'))
 		} else {
 
 
@@ -193,7 +193,7 @@ io.on('connection', (socket) => {
 					arrayFilters: [{
 						"i.secretID": data.secret
 					}]
-				})
+				}, (err, item) => console.log('Something saved'))
 		}
 	});
 
