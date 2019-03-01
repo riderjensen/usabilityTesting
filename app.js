@@ -158,66 +158,20 @@ io.on('connection', (socket) => {
 	});
 	socket.on('testingInfo', (data) => {
 		let ourCookie = data.userID;
-		const dbCon = require('./src/extraScripts/dbConnect');
-		const ObjectId = require('mongodb').ObjectID;
-		dbCon.connectToServer(function (err) {
-
-			(async function addRecMoves() {
-				try {
-					let db = mongoUtil.getDb();
-					const col = db.collection('usertrackings');
-
-					const cookieInDB = await col.findOne({
-						"_id": ObjectId(ourCookie)
-					});
-
-					const webID = ObjectId(cookieInDB._id);
-					if (webID == ourCookie) {
-						db.collection('usertrackings').updateOne(cookieInDB, {
-							$push: {
-								'recMoves.$[i].cursorPoints': {
-									$each: data.recMoves
-								}
-							}
-						}, {
-								arrayFilters: [{
-									"i.secretID": data.secret
-								}]
-							})
-						if (data.endingScroll) {
-							db.collection('usertrackings').updateOne(cookieInDB, {
-								$set: {
-									'recMoves.$[i].endingScroll': data.endingScroll
-								}
-							}, {
-									arrayFilters: [{
-										"i.secretID": data.secret
-									}]
-								})
-						} else {
-							db.collection('usertrackings').updateOne(cookieInDB, {
-								$set: {
-									'recMoves.$[i].endingScroll': 0
-								}
-							}, {
-									arrayFilters: [{
-										"i.secretID": data.secret
-									}]
-								})
-						}
-					} else {
-						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
-					}
-
-				} catch (err) {
-					console.log(err);
+		UserTrackingModel.findByIdAndUpdate(ourCookie, {
+			"$push": {
+				'recMoves.$[i].cursorPoints': {
+					$each: data.recMoves
 				}
-
-			}());
-		})
-
-
+			}
+		}, {
+				arrayFilters: [{
+					"i.secretID": data.secret
+				}]
+			})
+		// information should be stored, you can add a callback function with (err, item) at the end if you want
 	});
+
 	socket.on('newPageReached', (data) => {
 		let ourCookie = data.cookie;
 		let ourPage = data.page;
