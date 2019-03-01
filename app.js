@@ -5,8 +5,6 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const mongoose = require('mongoose');
-const mongoUtil = require('./src/extraScripts/dbConnect');
-const ObjectId = require('mongodb').ObjectID;
 const request = require('request');
 const shortid = require('shortid');
 const flash = require('connect-flash');
@@ -100,7 +98,6 @@ app.get('/', (req, res) => {
 	// flash for sign in errors
 
 	let ourmsg;
-	let user;
 	if (req.query.duplicateUser) {
 		ourmsg = 'Duplicate user, please choose a new username';
 	} else {
@@ -146,7 +143,6 @@ io.on('connection', (socket) => {
 			userWidth: data.windowWidth,
 			userBrowserType: data.browserType
 		};
-		let docsIns;
 		// adding userTracking model for use in tracking
 
 		const userTestInit = new UserTrackingModel({
@@ -155,163 +151,102 @@ io.on('connection', (socket) => {
 		});
 		userTestInit.save()
 			.then(resp => {
-				socket.emit('testingID', resp.insertedId);
-			}).then(_ => {
-				// secondary pages are passing in url including ejs, need to just send cookie?
-
-				WebsiteModel.findOneAndUpdate({ id: ourCookie }, {
-					$push: {
-						testArray: docsIns
-					}
-				}).then(webTest => {
-					if (webTest === undefined) {
-						console.log('There was a problem finding the website test that this came from');
-
-					}
-				}).catch(err => console.log(err));
-			});
-		socket.on('userInitInformation', (data) => {
-			UserTrackingModel.findOneAndUpdate({ id: data.initID }, {
-				$set: {
-					userData: data
-				}
-			}).then(cookieInDB => {
-				if (cookieInDB === undefined) {
-					console.log('User init information failed');
-				}
-			});
-		});
-		socket.on('testingInfo', (data) => {
-			let ourCookie = data.userID;
-			(async function addRecMoves() {
-				try {
-					let db = mongoUtil.getDb();
-					const col = db.collection('userTracking');
-					const cookieInDB = await col.findOne({
-						"_id": ObjectId(ourCookie)
-					});
-					const webID = ObjectId(cookieInDB._id);
-					if (webID == ourCookie) {
-						db.collection('userTracking').updateOne(cookieInDB, {
-							$push: {
-								'recMoves.$[i].cursorPoints': {
-									$each: data.recMoves
-								}
-							}
-						}, {
-								arrayFilters: [{
-									"i.secretID": data.secret
-								}]
-							})
-						if (data.endingScroll) {
-							db.collection('userTracking').updateOne(cookieInDB, {
-								$set: {
-									'recMoves.$[i].endingScroll': data.endingScroll
-								}
-							}, {
-									arrayFilters: [{
-										"i.secretID": data.secret
-									}]
-								})
-						} else {
-							db.collection('userTracking').updateOne(cookieInDB, {
-								$set: {
-									'recMoves.$[i].endingScroll': 0
-								}
-							}, {
-									arrayFilters: [{
-										"i.secretID": data.secret
-									}]
-								})
-						}
-					} else {
-						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
-					}
-				} catch (err) {
-					console.log(err);
-				}
-			}());
-		});
-		socket.on('newPageReached', (data) => {
-			let ourCookie = data.cookie;
-			let ourPage = data.page;
-			let newID = shortid.generate();
-			(async function createPageObj() {
-				try {
-					let db = mongoUtil.getDb();
-					const col = db.collection('userTracking');
-					const cookieInDB = await col.findOne({
-						"_id": ObjectId(ourCookie)
-					});
-					// not sending the correct cookie
-					const webID = ObjectId(cookieInDB._id);
-					if (webID == ourCookie) {
-						await db.collection('userTracking').updateOne(cookieInDB, {
-							$push: {
-								recMoves: {
-									pageID: ourPage,
-									secretID: newID,
-									cursorPoints: []
-								}
-							}
-						})
-						socket.emit('returnSecret', newID);
-					} else {
-						console.log(`Issue on new page reached`);
-					}
-				} catch (err) {
-					console.log(err);
-				}
-			}());
-		});
-		socket.on('replayInformationID', (data) => {
-			let ourID = data.testID;
-			let pageNum = data.pageNum;
-			(async function getOurRecordedMoves() {
-				try {
-					let db = mongoUtil.getDb();
-					const col = db.collection('userTracking');
-					const webTest = await col.findOne({
-						"_id": ObjectId(ourID)
-					});
-					if (webTest) {
-						let nextURL;
-						let prevArray = [];
-						if (webTest.recMoves[pageNum + 1] == undefined) {
-							nextURL = 'com'
-						} else {
-							nextURL = webTest.recMoves[pageNum + 1].pageID
-							for (let i = 0; i <= pageNum; i++) {
-								// prev array is supposed to get every single page before this page
-								prevArray.push(webTest.recMoves[i]);
-							}
-						}
-						let sendObj = {
-							moves: webTest.recMoves[pageNum].cursorPoints,
-							nextURL: nextURL,
-							endingScroll: webTest.recMoves[pageNum].endingScroll,
-							prevArray
-						}
-						socket.emit('returnMoves', sendObj);
-					} else {
-						console.log('no find')
-					}
-				} catch (err) {
-					console.log(err);
-				}
-			}())
-		});
-		socket.on('disconnect', () => {
-			// any events we need to fire on disconnection of a socket
-		});
+				WebsiteModel.findById(ourCookie).then(item => {
+					item.testArray.push(resp._id);
+					item.save().then(resp => {
+						console.log(resp)
+					})
+				})
+				socket.emit('testingID', resp._id);
+			}).catch(err => console.log(err));
 	});
+	socket.on('userInitInformation', (data) => {
+		UserTrackingModel.findByIdAndUpdate(data.initID, {
+			userData: data
+		}).then(resp => {
+			console.log('Init information updated');
+		})
+	});
+	socket.on('testingInfo', (data) => {
+		let ourCookie = data.userID;
+		UserTrackingModel.findById(ourCookie).then(cookieInDB => {
+			if (cookieInDB._id == ourCookie) {
+				UserTrackingModel.findById(ourCookie).then(itemBack => {
+					itemBack.recMoves[itemBack.recMoves.length - 1].cursorPoints.push(...data.recMoves)
+					console.log('------')
+					// console.log(item.recMoves[item.recMoves.length - 1].cursorPoints)
+					itemBack.save()
+						.then(itemRet => {
+							console.log(itemRet.recMoves)
+						})
+				})
+			} else {
+				console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
+			}
+		}).catch(err => console.log(err))
+	});
+	socket.on('newPageReached', (data) => {
+		let ourCookie = data.cookie;
+		let ourPage = data.page;
+		let newID = shortid.generate();
 
-	mongoose.connect('mongodb://localhost:27017/usabilityTesting', {
-		useNewUrlParser: true
-	}).then(_ => {
-		server.listen(port, () => console.log(`App is running on ${port}`));
+		UserTrackingModel.findById(ourCookie).then(cookieInDB => {
+			if (cookieInDB._id == ourCookie) {
+				UserTrackingModel.findById(ourCookie).then(item => {
+					item.recMoves.push({
+						pageID: ourPage,
+						secretID: newID,
+						cursorPoints: []
+					})
+					item.save().then(saved => {
+						socket.emit('returnSecret', newID);
+					})
+				})
+			} else {
+				console.log(`Issue on new page reached`);
+			}
+		}).catch(err => console.log(err))
 
-	})
+	});
+	socket.on('replayInformationID', (data) => {
+		let ourID = data.testID;
+		let pageNum = data.pageNum;
+		UserTrackingModel.findById(ourID).then(webTest => {
+			if (webTest) {
+				let nextURL;
+				let prevArray = [];
+				if (webTest.recMoves[pageNum + 1] == undefined) {
+					nextURL = 'com'
+				} else {
+					nextURL = webTest.recMoves[pageNum + 1].pageID
+					for (let i = 0; i <= pageNum; i++) {
+						// prev array is supposed to get every single page before this page
+						prevArray.push(webTest.recMoves[i]);
+					}
+				}
+				let sendObj = {
+					moves: webTest.recMoves[pageNum].cursorPoints,
+					nextURL: nextURL,
+					endingScroll: webTest.recMoves[pageNum].endingScroll,
+					prevArray
+				}
+				socket.emit('returnMoves', sendObj);
+			}
+		}).catch(err => console.log(err))
+	});
+	socket.on('disconnect', () => {
+		// any events we need to fire on disconnection of a socket
+	});
+});
+
+
+
+mongoose.connect('mongodb://localhost:27017/usabilityTesting', {
+	useNewUrlParser: true
+}).then(_ => {
+	server.listen(port, () => console.log(`App is running on ${port}`));
+
+})
 
 	// run db 
 	// mongod --dbpath "C:\Program Files\MongoDB\data"
