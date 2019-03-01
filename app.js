@@ -12,21 +12,10 @@ const compression = require('compression');
 const helmet = require('helmet');
 const deleteAtMidnight = require('./src/extraScripts/deleteOldTests');
 
+const mongoUtil = require('./src/extraScripts/dbConnect');
+
 const UserTrackingModel = require('./src/models/useTrack.model');
 const WebsiteModel = require('./src/models/websiteStorage.model');
-
-const mongoURI = 'mongodb://localhost/usabilityTesting';
-const connectOptions = {
-	keepAlive: true,
-	useNewUrlParser: true,
-	reconnectTries: Number.MAX_VALUE
-};
-
-// Connect to MongoDB
-mongoose.Promise = global.Promise;
-mongoose.connect(mongoURI, connectOptions, (err, db) => {
-	if (err) console.log('Error', err);
-});
 
 // creating the application and attaching to socket	
 const app = express();
@@ -169,21 +158,67 @@ io.on('connection', (socket) => {
 	});
 	socket.on('testingInfo', (data) => {
 		let ourCookie = data.userID;
-		UserTrackingModel.findById(ourCookie).then(cookieInDB => {
-			if (cookieInDB._id == ourCookie) {
-				UserTrackingModel.findById(ourCookie).then(itemBack => {
-					itemBack.recMoves[itemBack.recMoves.length - 1].cursorPoints.push(...data.recMoves)
-					console.log('------')
-					// console.log(item.recMoves[item.recMoves.length - 1].cursorPoints)
-					itemBack.save()
-						.then(itemRet => {
-							console.log(itemRet.recMoves)
-						})
-				})
-			} else {
-				console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
-			}
-		}).catch(err => console.log(err))
+
+
+		const dbCon = require('./src/extraScripts/dbConnect');
+		const ObjectId = require('mongodb').ObjectID;
+		dbCon.connectToServer(function (err) {
+
+			(async function addRecMoves() {
+				try {
+					let db = mongoUtil.getDb();
+					const col = db.collection('usertrackings');
+
+					const cookieInDB = await col.findOne({
+						"_id": ObjectId(ourCookie)
+					});
+
+					const webID = ObjectId(cookieInDB._id);
+					if (webID == ourCookie) {
+						db.collection('usertrackings').updateOne(cookieInDB, {
+							$push: {
+								'recMoves.$[i].cursorPoints': {
+									$each: data.recMoves
+								}
+							}
+						}, {
+								arrayFilters: [{
+									"i.secretID": data.secret
+								}]
+							})
+						if (data.endingScroll) {
+							db.collection('usertrackings').updateOne(cookieInDB, {
+								$set: {
+									'recMoves.$[i].endingScroll': data.endingScroll
+								}
+							}, {
+									arrayFilters: [{
+										"i.secretID": data.secret
+									}]
+								})
+						} else {
+							db.collection('usertrackings').updateOne(cookieInDB, {
+								$set: {
+									'recMoves.$[i].endingScroll': 0
+								}
+							}, {
+									arrayFilters: [{
+										"i.secretID": data.secret
+									}]
+								})
+						}
+					} else {
+						console.log(`something wrong with ${ourCookie}, we could not find the test in the db`);
+					}
+
+				} catch (err) {
+					console.log(err);
+				}
+
+			}());
+		})
+
+
 	});
 	socket.on('newPageReached', (data) => {
 		let ourCookie = data.cookie;
@@ -246,7 +281,7 @@ mongoose.connect('mongodb://localhost:27017/usabilityTesting', {
 }).then(_ => {
 	server.listen(port, () => console.log(`App is running on ${port}`));
 
-})
+}).catch(err => console.log('Cant connect to the DB'))
 
 	// run db 
 	// mongod --dbpath "C:\Program Files\MongoDB\data"
