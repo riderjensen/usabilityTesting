@@ -143,7 +143,7 @@ io.on('connection', (socket) => {
 				WebsiteModel.findById(ourCookie).then(item => {
 					item.testArray.push(resp._id);
 					item.save().then(resp => {
-						console.log(resp)
+						console.log('Init saved')
 					})
 				})
 				socket.emit('testingID', resp._id);
@@ -158,8 +158,6 @@ io.on('connection', (socket) => {
 	});
 	socket.on('testingInfo', (data) => {
 		let ourCookie = data.userID;
-
-
 		const dbCon = require('./src/extraScripts/dbConnect');
 		const ObjectId = require('mongodb').ObjectID;
 		dbCon.connectToServer(function (err) {
