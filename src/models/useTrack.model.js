@@ -8,7 +8,15 @@ const {
 const useTrack = new Schema({
 	initInformation: Object,
 	// array of objects that we continuously push on to
-	recMoves: Array,
+	recMoves: {
+		type: Array,
+		Object: {
+			type: Object,
+			cursorPoints: {
+				type: Array
+			}
+		}
+	},
 	pageName: String,
 	userData: {
 		type: Object,
