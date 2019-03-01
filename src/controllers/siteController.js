@@ -1,8 +1,7 @@
 const extraScripts = require('../extraScripts/scrapper');
-const mongoUtil = require('../extraScripts/dbConnect');
-const ObjectId = require('mongodb').ObjectID;
 const fs = require('fs');
 const shortid = require('shortid');
+
 const WebsiteStorageModel = require('../models/websiteStorage.model');
 const UserModel = require('../models/userStorage.model');
 const UserTrackingModel = require('../models/useTrack.model');
@@ -35,44 +34,35 @@ exports.createTest = (req, res) => {
 		testName,
 		shortURL
 	});
-	website.save().then(resp => {
-		objectId = website._id;
-		const {
-			requestURL
-		} = extraScripts;
-		requestURL(webURL, objectId);
-		let querystring = '/?';
-		for (let i = 0; i < questionArray.length; i++) {
-			querystring += `array=${questionArray[i]}&`
-		}
-		querystring += `testName=${testName}&shortID=${shortURL}&`;
-		if (req.user) {
-			// add objectId into the user array
-			let username = req.user.username;
-			UserModel.findOneAndUpdate({
-				username
-			}, {
-					$push: {
-						projects: {
-							objectId: objectId,
-							date: Date.now(),
-							testName
-						}
+	website.save()
+		.then(resp => {
+			objectId = website._id;
+			const {
+				requestURL
+			} = extraScripts;
+			requestURL(webURL, objectId);
+			let querystring = '/?';
+			for (let i = 0; i < questionArray.length; i++) {
+				querystring += `array=${questionArray[i]}&`
+			}
+			querystring += `testName=${testName}&shortID=${shortURL}&`;
+			if (req.user) {
+				// add objectId into the user array
+				let username = req.user.username;
+				UserModel.findOneAndUpdate({ username: username }, {
+					projects: {
+						objectId: objectId,
+						date: Date.now(),
+						testName
 					}
 				}).then(resp => {
 					console.log('Hopefully a test was added to the user ')
 				})
-			res.redirect("/site/testCreate" + querystring + 'id=' + objectId);
-		} else {
-			res.redirect("/site/testCreate" + querystring + "id=" + objectId + "&log=false");
-		}
-	})
-
-
-
-
-
-
+				res.redirect("/site/testCreate" + querystring + 'id=' + objectId);
+			} else {
+				res.redirect("/site/testCreate" + querystring + "id=" + objectId + "&log=false");
+			}
+		})
 }
 
 exports.fixRefreshIssueOnCreate = (req, res) => {
@@ -125,18 +115,15 @@ exports.recordTheResults = (req, res) => {
 		questionArray.pop();
 	}
 
-	UserTrackingModel.findOneAndUpdate({
-		_id: ObjectId(testID)
-	}, {
-			$set: {
-				finalAnswers: questionArray
-			}
-		}).then(resp => {
-			console.log('hopefully added final results')
-			res.render('replayCom', {
-				user: req.user
-			});
-		})
+	UserTrackingModel.findByIdAndUpdate(testID, {
+		$set: {
+			finalAnswers: questionArray
+		}
+	}).then(resp => {
+		res.render('replayCom', {
+			user: req.user
+		});
+	})
 }
 
 
