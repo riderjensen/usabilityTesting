@@ -20,24 +20,23 @@ exports.firstPageOfTest = (req, res) => {
 		WebsiteModel.findOne({
 			"testArray": ObjectId(reqID)
 		}).then(ourWeb => {
-			const ourUpperTestId = ObjectId(ourWeb._id);
-			UserTrackingModel.findOne({
-				"_id": ObjectId(reqID)
-			}).then(findTracking => {
-				let firstPageID = ourWeb._id;
-				const initInfo = findTracking.initInformation;
-				res.render(`files/${ourUpperTestId}`, {
-					initInfo,
-					reqID,
-					firstPageID
-				});
-			})
+			UserTrackingModel.findById(reqID)
+				.then(findTracking => {
+					const firstPageID = ourWeb._id;
+					const initInfo = findTracking.initInformation;
+					res.render(`files/${firstPageID}`, {
+						initInfo,
+						reqID,
+						firstPageID
+					});
+				})
 		}).catch(err => console.log(err))
 	}
 }
 
 exports.replayPage = (req, res) => {
 	const reqID = req.params.id;
+	console.log(reqID)
 	if (reqID.length > 23) {
 		res.render(`files/${reqID}`);
 	} else {
