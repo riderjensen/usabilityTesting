@@ -12,7 +12,6 @@ const compression = require('compression');
 const helmet = require('helmet');
 const deleteAtMidnight = require('./src/extraScripts/deleteOldTests');
 
-const mongoUtil = require('./src/extraScripts/dbConnect');
 
 const UserTrackingModel = require('./src/models/useTrack.model');
 const WebsiteModel = require('./src/models/websiteStorage.model');
@@ -170,6 +169,32 @@ io.on('connection', (socket) => {
 				}]
 			})
 		// information should be stored, you can add a callback function with (err, item) at the end if you want
+
+
+		if (data.endingScroll) {
+			UserTrackingModel.findByIdAndUpdate(ourCookie, {
+				"$set": {
+					'recMoves.$[i].endingScroll': data.endingScroll
+				}
+			}, {
+					arrayFilters: [{
+						"i.secretID": data.secret
+					}]
+				})
+		} else {
+
+
+
+			UserTrackingModel.findByIdAndUpdate(ourCookie, {
+				"$set": {
+					'recMoves.$[i].endingScroll': 0
+				}
+			}, {
+					arrayFilters: [{
+						"i.secretID": data.secret
+					}]
+				})
+		}
 	});
 
 	socket.on('newPageReached', (data) => {
