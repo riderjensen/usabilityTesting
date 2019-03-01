@@ -10,7 +10,7 @@ function router() {
 		.all(authController.checkUserLog);
 
 	authRouter.route('/signUp')
-		.post(authController.postToSignUp)
+		.post(authController.postSignUp)
 		.get(authController.sendRedirect);
 
 	authRouter.route('/signIn')

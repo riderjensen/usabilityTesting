@@ -1,77 +1,67 @@
 const fs = require('fs');
-const mongoUtil = require('./dbConnect');
-const ObjectId = require('mongodb').ObjectID;
+
+const WebsiteStorageModel = require('../models/websiteStorage.model');
+const UserModel = require('../models/userStorage.model');
+const UserTrackingModel = require('../models/useTrack.model');
 
 // need to delete website IDs from users collection
 // delete
 module.exports = {
-midNight: function(){
-		(async function deleteWebsiteFromDB() {
-			try {
-				let db = mongoUtil.getDb();
-				const col = db.collection('websites');
+	midNight: function () {
 
-				const date = new Date();
-				const daysToDeletion = 30;
-				const deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
-				let myquery = {
-					createdAt: {
-						$lt: deletionDate
-					}
-				};
+		const date = new Date();
+		const daysToDeletion = 30;
+		const deletionDate = new Date(date.setDate(date.getDate() - daysToDeletion));
 
-				// find all the ones made pasts my deletion date
-				await col.find(myquery).toArray(function (err, obj) {
-					if (err) throw err;
-					obj.forEach(async (item) => {
-						try {
-							let webCol = db.collection('users');
-							let newQuery = {
-								$pull: {
-									projects: {
-										objectId: item._id
-									}
-
-								}
-							};
-							// delete from the project array in users
-							await webCol.updateOne({
-								"projects.objectId": ObjectId(item._id)
-							}, newQuery);
-							// delete all websites ones that are past the date
-							await col.deleteMany(myquery, function (err, obj) {
-								if (err) throw err;
-							});
-
-							// delete all associated files
-							const usercol = db.collection('userTracking');
-							await usercol.find(myquery, (err, obj) => {
-								obj.forEach((item) => {
-									item.recMoves.forEach((page) => {
-										let pageID = page.pageID;
-										if (pageID.length >= 15) {
-											pageID = pageID + '.ejs';
-										}
-										fs.unlink(`src/views/files/${pageID}`, (err) => {
-											if (err) console.log(err);
-										});
-									});
-								})
-							});
-							// delete all user Tracking that are past the date
-							await usercol.deleteMany(myquery, function (err, obj) {
-								if (err) throw err;
-							});
-
-						} catch (err) {
-							console.log(err)
-						}
-					})
-				})
-			} catch (err) {
-				console.log(err);
+		let myquery = {
+			createdAt: {
+				$lt: deletionDate
 			}
-		}());
+		};
 
-}
+		WebsiteStorageModel.find({
+			createdAt: {
+				$lt: deletionDate
+			}
+		}).toArray(function (err, obj) {
+			if (err) throw err;
+			obj.forEach(item => {
+				// delete from the project array in users
+				UserModel.updateOne({
+					"projects.objectId": item._id
+				}, {
+						$pull: {
+							projects: {
+								objectId: item._id
+							}
+
+						}
+					});
+				// delete all websites ones that are past the date
+				WebsiteStorageModel.deleteMany(myquery, function (err, obj) {
+					if (err) throw err;
+				});
+
+				// delete all associated files
+				UserTrackingModel.find(myquery, (err, obj) => {
+					obj.forEach((item) => {
+						item.recMoves.forEach(page => {
+							if (page.pageID.length >= 15) {
+								page.pageID = page.pageID + '.ejs';
+							}
+							fs.unlink(`src/views/files/${page.pageID}`, (err) => {
+								if (err) console.log(err);
+							});
+						});
+					})
+				});
+				// delete all user Tracking that are past the date
+				UserTrackingModel.deleteMany(myquery, function (err, obj) {
+					if (err) throw err;
+				});
+
+			})
+		})
+	}
+
 };

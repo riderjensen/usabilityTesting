@@ -2,7 +2,7 @@
 
 let socket = io.connect();
 
-const website = document.getElementById('homeURL');
+const website = document.getElementById('webURL');
 const checkmark = document.querySelector('.checkmark');
 website.onkeyup = () => {
 	// send website to back end with a 1second delay
