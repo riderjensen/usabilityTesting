@@ -49,3 +49,17 @@ div.add-task-button i:hover {
   cursor: pointer;
 }
 
+.fa-minus-circle {
+  float: right;
+  color: red;
+  position: relative;
+  bottom: 28px;
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.fa-minus-circle:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+
