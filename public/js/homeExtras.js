@@ -19,7 +19,7 @@ const addTask = () => {
     return;
   }
 
-  if (taskListArray.length > 0 && taskListArray.length < 5) {
+  if (taskListArray.length > 0 && taskListArray.length <= 4) {
     document.querySelector('.add-task-button').style.display = 'block';
   }
 
@@ -46,10 +46,8 @@ const addTask = () => {
   deleteButton.classList.add('fa', 'fa-minus-circle');
   deleteButton.setAttribute('onclick', 'deleteTask(this)');
   
-  // // '<i class="fa fa-minus-circle" onclick="deleteTask(this)"></i>';
   const nameTag = newTaskItem.children[1].children[0];
   nameTag.after(deleteButton);
-  // console.log(nameTag);
 
   // Add new task
   taskSection.appendChild(newTaskItem);
