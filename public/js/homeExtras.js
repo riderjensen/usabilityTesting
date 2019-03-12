@@ -33,7 +33,7 @@ const addTask = () => {
   const taskSection = document.querySelector('#tasks');
   const taskItem = document.querySelector('.task-copy-template');
   let newTaskItem = taskItem.cloneNode(true);
-  // console.log(newTaskItem);
+ 
   taskListArray.push(newTaskItem);
   taskNumber++;
 
@@ -46,10 +46,10 @@ const addTask = () => {
   deleteButton.classList.add('fa', 'fa-minus-circle');
   deleteButton.setAttribute('onclick', 'deleteTask(this)');
   
-  // '<i class="fa fa-minus-circle" onclick="deleteTask(this)"></i>';
+  // // '<i class="fa fa-minus-circle" onclick="deleteTask(this)"></i>';
   const nameTag = newTaskItem.children[1].children[0];
   nameTag.after(deleteButton);
-  console.log(nameTag);
+  // console.log(nameTag);
 
   // Add new task
   taskSection.appendChild(newTaskItem);
@@ -60,15 +60,11 @@ const addTask = () => {
 // DELETE TASKS
 const deleteTask = (taskToDelete) => {
 
-  // console.log(taskToDelete);
-
-  // const deleteButton = '<i class="fa fa-minus-circle" onclick="deleteTask(this)"></i>';
-
   // Grab all tasks
   const taskList = document.querySelectorAll('#taskItem');
   const taskListArray = Array.from(taskList);
 
-  if (taskListArray.length < 3) {
+  if (taskListArray.length < 2) {
     return;
   }
 
