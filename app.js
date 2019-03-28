@@ -8,7 +8,6 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const compression = require('compression');
 const helmet = require('helmet');
-const deleteAtMidnight = require('./src/extraScripts/deleteOldTests');
 
 // creating the application and attaching to socket	
 const app = express();
@@ -93,14 +92,6 @@ app.get('/', (req, res) => {
 		user: req.user
 	});
 });
-
-
-setInterval(() => {
-	deleteAtMidnight.midNight();
-}, 86400000)
-
-
-
 
 
 mongoose.connect('mongodb://localhost:27017/usabilityTesting', {
